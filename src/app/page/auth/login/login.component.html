@@ -1,0 +1,35 @@
+<div class="container">
+
+    <div class="left">
+        <div class="logo">imune+</div>
+    </div>
+
+    <div class="right">
+        <div class="login-box">
+            <h2>Login</h2>
+            <form>
+                <div class="cpf">
+                    <label for="cpf">CPF</label>
+                    <p-inputmask mask="999.999.999-99" class="cpf-nb" placeholder="000.000.000-00" required ></p-inputmask>
+                </div>
+
+                <div class="senha">
+                    <label for="senha">Senha</label>
+                    <p-password class="senha-ps" maxlength="150" formControlName="value" [feedback]="false" placeholder="Digite sua senha.." required />
+                </div>
+
+                <button class="login-button">Login</button>
+                <a routerLink="/recuperar-senha" class="forgot-password">Esqueceu sua senha?</a>
+            </form>
+        </div>
+
+        <div class="criar-cadastro">
+            <div class="dividir">
+                <div></div>
+                <span>Ainda não tem conta?</span>
+                <div></div>
+            </div>
+            <a routerLink="/cadastro" class="register">Crie seu cadastro!</a>
+        </div>
+    </div>
+</div>

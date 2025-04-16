@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: url('/background-main-screen.png') no-repeat center center / cover;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 1px solid #B2B2B2;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 35px 23px;
+    padding-right: 50px;
+    height: 20px;
+    width: 100%;
+    background-color: #FBFBFB;
+
+    .navbar-left .logo {
+        padding: 4px 16px;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.7);
+    }
+}
+  
+.navbar-right {
+    display: flex;
+    gap: 10px;
+
+    .icon-profile {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;     
+    }
+
+    .name-user {
+        display: flex;
+        align-items: center;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}
+
+.menu {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 50px;
+    top: 71px;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    font-weight: bold;
+    color: black;
+    background-color: #E6E6E6;
+    border: 1px solid #B2B2B2;
+
+    .options div {
+        padding-bottom: 60px;
+    }
+
+    .options a {
+        text-decoration: none;
+        color: black;
+    }
+
+}
+
+.bar-profile {
+    display: flex;
+    margin-top: 71px;
+    padding-left: 250px;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    background-color: #f5f5f5;
+    border: 1px solid #B2B2B2;
+
+}
+
+
+.id-leftbar {
+    height: 100%;
+    width: 40%;
+    
+    span {
+        display: flex;
+        padding: 25px 0 0 10px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+}
+
+.id-rightbar {
+    padding: 15px 0 0 0;
+
+    .pendentes {
+        margin-left: 10px;
+    }
+}
+
+.cartela-vacinas-user .vaccine {
+    width: 100%;
+    margin-left: 250px;
+    padding-top: 40px;
+    padding-left: 50px;
+    display: flex;
+
+    p {
+        padding-left: 15px;
+    }
+
+    span {
+        padding-left: 15px;
+    }
+}
