@@ -17,65 +17,27 @@
         <div class="options">
             <div>
                 <!-- aqui tem que colocar um componente angular icone -->
-                <a routerLink="#" class="your-profile">Seu perfil</a>
+                <span class="pi pi-face-smile"></span>             
+                <a class="your-profile" (click)="mostrarPerfil()">Seu Perfil</a>
             </div>
             <div>
                 <!-- aqui tem que colocar um componente angular icone -->
-                <button class="your-vaccines" (click)="mostrarVacinas()">Suas Vacinas</button>
+                <a class="your-vaccines" (click)="mostrarVacinas()">Suas Vacinas</a>
             </div>
             <div>
-                <!-- aqui tem que colocar um componente angular icone -->
-                <a routerLink="#" class="calendar">Calendário</a>
+                <!-- aqui tem que colocar um componente angular icone
+                <a routerLink="#" class="calendar">Calendário</a> -->
             </div>
         </div>
     </div>
 
-    <div class="bar-profile">
-        <span>Meu Perfil</span>
-    </div>
-
-    <div class="profile-card">
-
-        <div class="profile-user">
-            <img src="default-icon.jpg" alt="Foto de perfil" class="profile-user-icon">
-            <p>nome de usuário</p>
-            <button>Alterar dados</button> <!-- Adicionar botão PrimeNG  -->
-        </div>
-
-        <div class="information-user1">
-            <div>
-                <p>Nome civil</p>
-                <p class="nome-user"></p>
-            </div>
-
-            <div>
-                <p>CPF</p>
-                <p class="cpf-user"></p>
-            </div>
-
-            <div>
-                <p>Data de Nascimento</p>
-                <p class="data-nascimento-user"></p>
-            </div>
-
-            <div>
-                @if(vacinasLista === true) {
-                    <app-vacinas></app-vacinas>
-                }
-            </div>
-        </div>
-
-        <div class="information-user2">
-            <div>
-                <p>Telefone</p>
-                <p class="telefone-user"></p>
-            </div>
-
-            <div>
-                <p>E-mail</p>
-                <p class="email-user"></p>
-            </div>
-        </div>
+    <div>
+        @if(perfilDados === true) {
+            <app-perfil></app-perfil>
+        }
+        @if(vacinasLista === true) {
+            <app-vacinas></app-vacinas>
+        }
     </div>
 
     <div class="page-content">

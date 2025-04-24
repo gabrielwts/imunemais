@@ -8,17 +8,25 @@
         <div class="register-box">
             <h2>Cadastro</h2>
             <form>
-                <label for="nome">Nome <span style="color: red;" title="Campo obrigatório">*</span></label>
-                <input type="text" id="nome" placeholder="Digite seu nome completo.." required>
+                <div>
+                    <label for="nome">Nome <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <input type="text" pInputText formControlName="text" class="nome" placeholder="Digite seu nome completo.." required /> <!-- declarar [(ngModel)]="value" -->
+                </div>
                 
-                <label for="cpf">CPF <span style="color: red;" title="Campo obrigatório">*</span></label>
-                <input type="text" id="cpf" placeholder="000.000.000-00" required>
+                <div>
+                    <label for="cpf">CPF <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <p-inputmask mask="999.999.999-99" class="cpf" placeholder="000.000.000-00" required ></p-inputmask>
+                </div>
                 
-                <label for="data-nascimento">Data de Nascimento <span style="color: red;" title="Campo obrigatório">*</span></label>
-                <input type="date" id="data-nascimento" required>
+                <div>
+                    <label for="data-nascimento">Data de Nascimento <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <p-datepicker class="data-nascimento" dateFormat="yy-mm-dd" placeholder="Selecione sua data de nascimento" required /> <!-- declarar [(ngModel)]="date" -->
+                </div>
 
-                <label for="email">E-mail <span style="color: red;" title="Campo obrigatório">*</span></label>
-                <input type="text" id="email" placeholder="Digite seu e-mail.." required>
+                <div>
+                    <label for="email">E-mail <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <input type="text" class="email" pInputText placeholder="Digite seu e-mail.."  /> <!-- declarar [(ngModel)]="value" -->
+                </div>
             </form>
             <div class="botao-cadastrar">
                 <button type="submit" class="register-button">Próximo</button>

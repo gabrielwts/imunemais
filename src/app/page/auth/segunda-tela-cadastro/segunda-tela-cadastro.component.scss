@@ -52,14 +52,6 @@
     text-align: left;
 }
 
-.register-password-box input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
 .requisitos-senha {
     font-size: 12px;
 
@@ -78,20 +70,49 @@
     }
 }
 
-.register-button {
-    margin-top: 30px;
-    width: 100%;
-    height: 40px;
+.botao-cadastrar {
+    margin-top: 25px;
     padding: 10px;
-    background: #0051FF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease-in-out;
+
+    ::ng-deep .p-button {
+        height: 40px;
+        width: 100%;
+    }
 }
 
-.register-button:hover{
-    background: #004761;
+form {
+    div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 18px;
+        width: 100%;
+
+        p-password {
+            margin-top: 5px;
+            width: 100%;
+        }
+    }
+
+    .senha,
+    .senha-confirm {
+        display: flex;
+        flex-direction: column;
+    }
+
+    ::ng-deep p-password {
+        width: 100%;
+
+        .p-password {
+            width: 100%;
+        }
+
+        .p-inputtext {
+            width: 100% !important; // força o input a ocupar tudo
+        }
+
+        .p-password-input {
+            width: 100%;
+        }
+    }
+
 }

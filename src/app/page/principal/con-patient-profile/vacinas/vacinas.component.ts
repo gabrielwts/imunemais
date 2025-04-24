@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+
 
 @Component({
   selector: 'app-vacinas',
-  imports: [],
+  imports: [ButtonModule],
   templateUrl: './vacinas.component.html',
   styleUrl: './vacinas.component.scss'
 })

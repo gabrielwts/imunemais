@@ -1,0 +1,48 @@
+.bar-profile {
+    display: flex;
+    margin-top: 71px;
+    padding-left: 250px;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    background-color: #f5f5f5;
+    border: 1px solid #B2B2B2;
+
+}
+
+
+.id-leftbar {
+    height: 100%;
+    width: 40%;
+    
+    span {
+        display: flex;
+        padding: 25px 0 0 10px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+}
+
+.id-rightbar {
+    padding: 6px 0 0 0;
+
+    .pendentes p-button {
+        margin-left: 10px;
+    }
+}
+
+.cartela-vacinas-user .vaccine {
+    width: 100%;
+    margin-left: 250px;
+    padding-top: 40px;
+    padding-left: 50px;
+    display: flex;
+
+    p {
+        padding-left: 15px;
+    }
+
+    span {
+        padding-left: 15px;
+    }
+}

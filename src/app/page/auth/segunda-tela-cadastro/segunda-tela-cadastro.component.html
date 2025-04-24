@@ -7,11 +7,15 @@
             <div class="register-password-box">
                 <h2>Cadastro</h2>
                 <form>
-                    <label for="senha">Senha <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <input type="text" id="senha" placeholder="Digite uma senha.." required>
+                    <div class="senha">
+                        <label for="senha">Senha <span style="color: red;" title="Campo obrigatório">*</span></label>
+                        <p-password maxlength="150" placeholder="Digite sua senha.." [feedback]="false" required />
+                    </div>
                     
-                    <label for="confirmar-senha">Confirmar senha <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <input type="text" id="confirmar-senha" placeholder="Digite novamente sua senha.." required>
+                    <div class="senha-confirm">
+                        <label for="confirmar-senha">Confirmar senha <span style="color: red;" title="Campo obrigatório">*</span></label>
+                        <p-password maxlength="150" placeholder="Digite novamente sua senha..." [feedback]="false" required />
+                    </div>
                 </form>
                 <div class="requisitos-senha">
                     <p>Requisitos da senha:</p>
@@ -23,7 +27,7 @@
                     </ul>
                 </div>
                 <div class="botao-cadastrar">
-                    <button type="submit" class="register-button">Cadastrar-se</button>
+                    <p-button type="submit" label="Cadastrar-se" severity="info" />
                 </div>
             </div>
         </div>

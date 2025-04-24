@@ -47,18 +47,49 @@
     text-align: left;
 }
 
+form {
+
+    div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+
+        ::ng-deep p-inputmask {
+            width: 100%;
+
+            input {
+                width: 100%;
+            }
+        }
+
+        ::ng-deep .p-datepicker {
+            width: 100%;
+
+            input {
+                width: 100%;
+            }
+        }
+
+    }
+
+    .nome {
+        height: 36px;
+        width: 100%;
+        padding-left: 10px;
+    }
+    .email {
+        height: 36px;
+        width: 100%;
+        padding-left: 10px;
+    }
+
+}
+
 .register-box h2 {
     margin-bottom: 25px;
     text-align: left;
 }
 
-.register-box input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
 
 .register-button {
     margin-top: 12px;
