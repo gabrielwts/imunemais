@@ -1,0 +1,25 @@
+<div class="container">
+
+    <div class="left">
+      <div class="logo">imune+</div>
+    </div>
+    
+    <div class="right">
+
+      <div class="fgt-psw-box">
+        <h2>Esqueci minha senha</h2>
+        <p>Para redefinir sua senha, informe o seu CPF<br>e lhe enviaremos um link com as instruções.</p>
+
+        <form class="form-radio" onsubmit="delayedSubmit(event)">
+          <div class="cpf">
+            <label for="cpf">CPF</label>
+            <p-inputmask mask="999.999.999-99" class="cpf-nb" placeholder="000.000.000-00" required ></p-inputmask>
+          </div>
+
+          <p-button type="submit" label="Próximo" severity="info" />
+          <a routerLink="/login" class="bttn-back">Cancelar</a>
+        </form>
+
+      </div>
+    </div>
+</div>

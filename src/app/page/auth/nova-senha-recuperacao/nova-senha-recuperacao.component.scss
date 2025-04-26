@@ -37,104 +37,76 @@
     background: url("/screen2_l.jpeg") no-repeat center center/cover;
 }
 
-p {
-    text-align: center;
-    font-size: 16px;
-}
-
-.login-box {
+.new-passw-rec {
     width: 420px;
-    height: 415px;
     background: white;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     text-align: left;
+
+    h2 {
+        margin-bottom: 20px;
+        text-align: center;
+    }
 }
 
-.login-box h2 {
-    margin-bottom: 20px;
-    text-align: center;
+form {
+
+    div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 18px;
+        width: 100%;
+    }
+
+    .new_passw {
+        display: flex;
+        flex-direction: column;
+    }
+
+    ::ng-deep p-password {
+        margin-top: 5px;
+        width: 100%;
+
+        .p-password {
+            width: 100%;
+        }
+
+        .p-inputtext {
+            width: 100% !important; // força o input a ocupar tudo
+        }
+
+        .p-password-input {
+            width: 100%;
+        }
+    }
+
+    p-button {
+
+        ::ng-deep .p-button {
+            height: 35px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+    }
 }
 
-.login-box input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.login-button {
-    margin-top: 20px;
-    width: 100%;
-    height: 40px;
-    padding: 10px;
-    background: #0051ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.login-button:hover{
-    background: #003cb3;
-}
-
-.forgot-password {
+.back-reset {
     font-size: 14px;
     text-align: center;
 }
 
-.forgot-password, .register {
+.back-reset, .register {
     display: block;
     margin-top: 15px;
-    color: blue;
+    color: #1a73e8;
     text-decoration: none;
 }
 
-.forgot-password:hover, .register:hover {
+.back-reset:hover, .register:hover {
     text-decoration: underline;
 }
-
-.criar-cadastro {
-    padding: 17px;
-
-    a {
-        margin-bottom: 10px;
-    }
-}
-
-.dividir {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: black;
-    font-weight: 100;
-    gap: 17px;
-    width: 100%;
-
-
-    div {
-        width: 90px;
-        height: 1px;
-        background-color: black;
-        flex-grow: 1;
-    }
-}
-
-.criar-cadastro .register {
-    text-align: center;
-    margin-top: 18px;
-}
-
-.register:hover {
-    text-decoration: underline;
-}
-
 
 .requisitos-senha {
     font-size: 12px;

@@ -1,0 +1,29 @@
+<div class="container">
+
+    <div class="left">
+      <div class="logo">imune+</div>
+    </div>
+    
+    <div class="right">
+
+      <div class="reset-pswd-mctt-email">
+        <h2>Como devemos contatá-lo?</h2>
+        <p>Insira um telefone diferente daquele que você<br>está tentando recuperar.</p>
+
+        <form onsubmit="delayedSubmit(event)">
+
+          <div class="means-ctt">
+            <label>Telefone de contato</label>
+            <p-inputmask class="telefone" mask="(99) 9-9999-9999" placeholder="(00) 9-0000-0000" /> <!-- declarar [(ngModel)]="value" -->
+          </div>
+          
+          <div>
+            <p-button class="submit-btn" type="submit" label="Próximo" severity="info" />
+            <a routerLink="/esqueceu-senha" class="bttn-back">Voltar</a>
+          </div>
+        </form>
+
+      </div>
+
+    </div>
+</div>

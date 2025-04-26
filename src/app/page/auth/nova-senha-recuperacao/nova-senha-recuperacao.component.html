@@ -5,16 +5,20 @@
     </div>
 
     <div class="right">
-        <div class="login-box">
+        <div class="new-passw-rec">
             <h2>Nova Senha</h2>
 
             <form>
-                <label for="text">Nova senha</label>
+                <div>
+                    <label for="text">Nova senha</label>
+                    <p-password class="new_passw" maxlength="150" placeholder="Digite sua nova senha.." [feedback]="false" required />
+                </div>
                 
-                <input type="text" id="text" placeholder="Digite sua nova senha" required>
             
-                <label for="text">Confirme sua nova senha</label>
-                <input type="text" placeholder="Digite novamente sua senha">
+                <div>
+                    <label for="text">Confirme sua nova senha</label>
+                    <p-password class="new_passw" maxlength="150" placeholder="Digite novamente sua senha.." [feedback]="false" required />
+                </div>
                 
                 <div class="requisitos-senha">
                     <p>Requisitos da senha:</p>
@@ -26,8 +30,8 @@
                     </ul>
                 </div>
 
-                <button pButton class="login-button">Próximo</button>
-                <a href="#" class="forgot-password">Cancelar</a>
+                <p-button class="submit-btn" type="submit" label="Alterar senha" severity="info" />
+                <a href="/esqueceu-senha" class="back-reset">Cancelar</a>
             </form>
     </div>
 </div>

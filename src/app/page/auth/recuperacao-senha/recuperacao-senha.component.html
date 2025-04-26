@@ -5,24 +5,24 @@
     </div>
     
     <div class="right">
-      <div class="login-box">
+      <div class="reset-pswd">
         <h2>Esqueci minha senha</h2>
         <p>Para redefinir sua senha, confirme seu telefone<br> e lhe enviaremos um código de segurança.</p>
 
         <form class="form-radio" onsubmit="delayedSubmit(event)">
           <div class="field-radio">
-            <input type="radio" id="email" name="recoveryMethod" value="email" required />
-            <label for="email">E-mail<br><span class="mask">j**********sgmail.com</span></label>
+            <input type="radio" id="email" name="recoveryMethod" [(ngModel)]="opcaoSelecionada" value="email" required />
+            <label for="email">E-mail<br><span class="email_user"></span></label>
           </div>
 
           <div class="field-radio">
-            <input type="radio" id="telefone" name="recoveryMethod" value="telefone" required checked />
-            <label for="telefone">Telefone<br><span class="mask">(**) *****-**43</span></label>
+            <input type="radio" id="telefone" [(ngModel)]="opcaoSelecionada" value="telefone" name="recoveryMethod" required checked />
+            <label for="telefone">Telefone<br><span class="number_user"></span></label>
           </div>
 
-          <a href="#" class="link-info">Perdi acesso a este telefone</a>
+          <p *ngIf="opcaoSelecionada" [routerLink]="['/sem-acesso', opcaoSelecionada]" class="link-info">Perdi acesso a este {{ opcaoSelecionada }}</p>
 
-          <button type="submit" class="login-button">Próximo</button>
+          <p-button type="submit" label="Próximo" severity="info" />
           <a routerLink="/login" class="forgot-password">Cancelar</a>
         </form>
       </div>

@@ -27,6 +27,11 @@
                     <label for="email">E-mail <span style="color: red;" title="Campo obrigatório">*</span></label>
                     <input type="text" class="email" pInputText placeholder="Digite seu e-mail.."  /> <!-- declarar [(ngModel)]="value" -->
                 </div>
+
+                <div>
+                    <label for="telefone">Telefone <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <p-inputmask mask="(99) 9-9999-9999" placeholder="(00) 9-0000-0000" /> <!-- declarar [(ngModel)]="value" -->
+                </div>
             </form>
             <div class="botao-cadastrar">
                 <button type="submit" class="register-button">Próximo</button>

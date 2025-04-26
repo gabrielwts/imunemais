@@ -3,22 +3,17 @@
         <div class="logo">imune+</div>
     </div>
     <div class="right">
-        <div class="login-box">
+
+        <div class="security-code-card">
             <h2>Confirmar código de segurança</h2>
-            <span>Enviamos o código de segurança para o seu novo telefone, confirme o código abaixo para alterar sua senha.</span>
+            <p>Enviamos o código de segurança para o seu novo telefone, confirme o código abaixo para alterar sua senha.</p>
 
             <form>
-                <label for="codigo">Código de segurança</label>
-                <div class="code-inputs">
-                    <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required placeholder="0"> 
-                    <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required placeholder="0"> 
-                    <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required placeholder="0"> 
-                    <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required placeholder="0"> 
-                    <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" required placeholder="0"> 
-                </div>
+                <span>Código de segurança</span>
+                <p-inputotp size="large" class="code-veri" [(ngModel)]="verification_code" [integerOnly]="true" />
 
-                <button pButton class="login-button">Próximo</button>
-                <a href="#" class="forgot-password">Cancelar</a>
+                <p-button type="submit" label="Confirmar código" severity="info" />
+                <a routerLink="/login" class="back-login">Cancelar</a>
             </form>
         </div>
     </div>

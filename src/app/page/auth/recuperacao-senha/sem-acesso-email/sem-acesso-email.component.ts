@@ -4,14 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 
 @Component({
-  selector: 'app-recuperacao-senha',
-  imports: [RouterLink, FormsModule, CommonModule, InputMaskModule, PasswordModule, ButtonModule],
-  templateUrl: './recuperacao-senha.component.html',
-  styleUrl: './recuperacao-senha.component.scss'
+  selector: 'app-sem-acesso-email',
+  imports: [RouterLink, FormsModule, CommonModule, InputMaskModule, PasswordModule, ButtonModule, InputTextModule],
+  templateUrl: './sem-acesso-email.component.html',
+  styleUrl: './sem-acesso-email.component.scss'
 })
-export class RecuperacaoSenhaComponent {
-  opcaoSelecionada: string = '';
+export class SemAcessoEmailComponent {
+
 }
