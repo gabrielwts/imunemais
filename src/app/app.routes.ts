@@ -12,6 +12,7 @@ import { CodigoValidacaoComponent } from './page/auth/codigo-validacao/codigo-va
 import { EsqueciMinhaSenhaComponent } from './page/auth/esqueci-minha-senha/esqueci-minha-senha.component';
 import { SemAcessoEmailComponent } from './page/auth/recuperacao-senha/sem-acesso-email/sem-acesso-email.component';
 import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-acesso-telefone/sem-acesso-telefone.component';
+import { TecnicoComponent } from './page/tecnico/tecnico.component';
 
 export const routes: Routes = [
     //Página inicial
