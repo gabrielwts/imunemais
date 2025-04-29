@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-perfil',
-  imports: [],
+  imports: [ButtonModule],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })

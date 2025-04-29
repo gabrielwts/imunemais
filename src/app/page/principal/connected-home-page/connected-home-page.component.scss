@@ -22,6 +22,7 @@ header {
 }
 
 .navbar {
+    position: relative;
     height: 40px;
     width: 100%;
     display: flex;
@@ -29,6 +30,22 @@ header {
     align-items: center;
     padding: 35px 20px;
     background-color: #fff;
+}
+
+.navbar-left {
+    display: flex;
+    flex-direction: row;
+
+    ul {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        margin-left: 50px;
+        margin-top: 10px;
+        gap: 30px;
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
   
 .navbar-left .logo {
@@ -42,7 +59,15 @@ header {
   
 .navbar-right {
     display: flex;
+    align-items: center;
     gap: 10px; /* 10px entre os botões */
+
+    .profile-user-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
 
     .nav-button-lg {
         background-color: #009951;
@@ -53,6 +78,15 @@ header {
     }
 
     a {
+        cursor: pointer;
+    }
+
+    :host ::ng-deep .meu-avatar {
+        background-color: #dee9fc;
+        color: #1a2551;
+    }
+
+    i {
         cursor: pointer;
     }
 }
@@ -68,6 +102,12 @@ header {
   
 .nav-button:hover {
     background-color: #0056b3;
+}
+
+.cardUserProfile {
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .card-announcement-one {

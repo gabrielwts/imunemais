@@ -4,8 +4,7 @@
     </div>
 
     <div class="id-rightbar">
-        <p-button class="historico" label="Histórico" />
-        <p-button label="Pendentes" severity="danger" />
+        <p-selectbutton [options]="stateOptions" [(ngModel)]="value" (ngModelChange)="buscarDados()" optionLabel="label" optionValue="value" aria-labelledby="basic" />
     </div>
 </div>
 

@@ -64,7 +64,6 @@ header {
 .menu {
     position: fixed;
     display: flex;
-    align-items: center;
     flex-direction: column;
     padding-top: 50px;
     top: 71px;
@@ -76,6 +75,14 @@ header {
     background-color: #E6E6E6;
     border: 1px solid #B2B2B2;
 
+    .options {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        margin-left: 30px;
+        width: 100%;
+    }
+
     .options div {
         padding-bottom: 60px;
     }
@@ -83,8 +90,14 @@ header {
     .options a {
         text-decoration: none;
         color: black;
+        margin-left: 15px;
     }
 
+    .options img {
+        width: 38px;
+        height: 38px;
+        object-fit: cover;
+    }
 }
 
 .your-vaccines {

@@ -5,7 +5,6 @@ import { SegundaTelaCadastroComponent } from './page/auth/segunda-tela-cadastro/
 import { HomePageComponent } from './page/principal/home-page/home-page.component';
 import { ConnectedHomePageComponent } from './page/principal/connected-home-page/connected-home-page.component';
 import { ConPatientProfileComponent } from './page/principal/con-patient-profile/con-patient-profile.component';
-import { ConPatientVaccineComponent } from './page/principal/con-patient-vaccine/con-patient-vaccine.component';
 import { RecuperacaoSenhaComponent } from './page/auth/recuperacao-senha/recuperacao-senha.component';
 import { NovaSenhaRecuperacaoComponent } from './page/auth/nova-senha-recuperacao/nova-senha-recuperacao.component';
 import { CodigoValidacaoComponent } from './page/auth/codigo-validacao/codigo-validacao.component';
@@ -13,6 +12,8 @@ import { EsqueciMinhaSenhaComponent } from './page/auth/esqueci-minha-senha/esqu
 import { SemAcessoEmailComponent } from './page/auth/recuperacao-senha/sem-acesso-email/sem-acesso-email.component';
 import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-acesso-telefone/sem-acesso-telefone.component';
 import { TecnicoComponent } from './page/tecnico/tecnico.component';
+import { ProfileCardComponent } from './page/principal/connected-home-page/profile-card/profile-card.component';
+import { PerfilAlterardadosComponent } from './page/principal/con-patient-profile/perfil-alterardados/perfil-alterardados.component';
 
 export const routes: Routes = [
     //Página inicial
@@ -69,7 +70,7 @@ export const routes: Routes = [
         component: ConPatientProfileComponent
     },
     {
-        path: "teste2",
-        component: ConPatientVaccineComponent
+        path: "desenvolver",
+        component: PerfilAlterardadosComponent
     }
 ];
