@@ -6,8 +6,12 @@
 
     <div class="profile-user">
         <img src="default-icon.jpg" alt="Foto de perfil" class="profile-user-icon">
-        <p>Jorge Gabriel Rodrigues Ferreira</p>
-        <p-button label="Alterar Dados" severity="contrast" />
+        <p></p>
+        @if (this.alterarInfo) {
+            <p-button label="Alterar Dados" severity="contrast" (click)="mostrarInputs()"/>
+        } @else {
+            <p-button label="Salvar alterações" (click)="salvarAlteracao()" severity="success" />
+        }
     </div>
 
     <div class="information-user1">
@@ -29,14 +33,38 @@
     </div>
 
     <div class="information-user2">
-        <div>
-            <p>Telefone</p>
-            <p class="telefone-user"></p>
-        </div>
-
-        <div>
-            <p>E-mail</p>
-            <p class="email-user"></p>
-        </div>
+        @if (this.alterarInfo) {
+            <div> 
+                <p>Telefone</p>
+                <p class="telefone-user"></p>
+            </div>
+        } @else {
+            <div class="alterInfo"> 
+                <p>Telefone</p>
+                <p-inputmask mask="(99) 9-9999-9999" placeholder="Digite seu novo número.." /> <!-- declarar [(ngModel)]="value" -->
+            </div>
+        }
+                
+        @if (this.alterarInfo) {
+            <div>
+                <p>E-mail</p>
+                <p class="email-user"></p>
+            </div>
+        } @else {
+            <div class="alterInfo">
+                <p>E-mail</p>
+                <input type="text" class="email" pInputText placeholder="Digite seu novo e-mail.."  /> <!-- declarar [(ngModel)]="value" -->
+            </div>
+        }
     </div>
+
+    @if (this.alterarInfo) {
+        <div></div>
+    } @else {
+        <div class="info">
+            <div class="change-notice">
+                <p>Para alterar nome ou data de nascimento, é necessário comparecer a um posto próximo.</p>
+            </div>
+        </div>
+    }
 </div>

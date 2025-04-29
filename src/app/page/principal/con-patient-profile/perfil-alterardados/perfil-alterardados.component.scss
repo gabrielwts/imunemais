@@ -34,7 +34,6 @@
         background-color: #FFF;
         border-radius: 10px;
         align-items: center;
-        font-weight: bold;
 
         .profile-user-icon {
             margin-top: 25px;
@@ -78,19 +77,10 @@
             color: #5A5A5A;
             margin-bottom: 120px;
         }
-
-        .change-notice {
-            background-color: green;
-            
-            p {
-                font-size: 14px;
-                display: flex;
-            }
-        }
     }
 
     .information-user2 {
-        padding: 60px 0 0 50px;
+        padding: 48px 0 0 50px;
         height: 368px;
         width: 309px;
         color: black;
@@ -110,6 +100,20 @@
         .email {
             height: 36px;
             padding-left: 10px;
+        }
+    }
+
+    .info {
+        position: absolute;
+        margin-left: 300px;
+        margin-top: 320px;
+        .change-notice {
+            
+            p {
+                font-size: 14px;
+                display: flex;
+                color: #767676;
+            }
         }
     }
 }

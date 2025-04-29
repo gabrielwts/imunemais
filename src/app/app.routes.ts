@@ -11,9 +11,6 @@ import { CodigoValidacaoComponent } from './page/auth/codigo-validacao/codigo-va
 import { EsqueciMinhaSenhaComponent } from './page/auth/esqueci-minha-senha/esqueci-minha-senha.component';
 import { SemAcessoEmailComponent } from './page/auth/recuperacao-senha/sem-acesso-email/sem-acesso-email.component';
 import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-acesso-telefone/sem-acesso-telefone.component';
-import { TecnicoComponent } from './page/tecnico/tecnico.component';
-import { ProfileCardComponent } from './page/principal/connected-home-page/profile-card/profile-card.component';
-import { PerfilAlterardadosComponent } from './page/principal/con-patient-profile/perfil-alterardados/perfil-alterardados.component';
 
 export const routes: Routes = [
     //Página inicial
@@ -66,11 +63,7 @@ export const routes: Routes = [
         component: ConnectedHomePageComponent
     },
     {
-        path: "teste",
+        path: "profile",
         component: ConPatientProfileComponent
-    },
-    {
-        path: "desenvolver",
-        component: PerfilAlterardadosComponent
     }
 ];

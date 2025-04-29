@@ -93,5 +93,26 @@
         .email-user {
             color: #5A5A5A;
         }
+
+        .alterInfo {
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+
+    .info {
+        position: absolute;
+        margin-left: 300px;
+        margin-top: 320px;
+        .change-notice {
+            
+            p {
+                font-size: 14px;
+                display: flex;
+                color: #767676;
+            }
+        }
     }
 }

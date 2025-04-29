@@ -10,5 +10,9 @@ import { InputTextModule } from 'primeng/inputtext';
   styleUrl: './perfil-alterardados.component.scss'
 })
 export class PerfilAlterardadosComponent {
-
+  alterarInfo: boolean = true;
+  alteracaoDeInfo () {
+    this.alterarInfo = false;
+    console.log("Deu boa pai"); 
+  }
 }

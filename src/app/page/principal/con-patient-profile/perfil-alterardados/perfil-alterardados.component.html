@@ -6,8 +6,8 @@
 
     <div class="profile-user">
         <img src="default-icon.jpg" alt="Foto de perfil" class="profile-user-icon">
-        <p>Jorge Gabriel Rodrigues Ferreira</p>
-        <p-button label="Salvar alterações" severity="success" />
+        <p></p>
+        <p-button label="Salvar alterações" (click)="alteracaoDeInfo()" severity="success" />
     </div>
 
     <div class="information-user1">
@@ -25,10 +25,6 @@
             <p>Data de Nascimento</p>
             <p class="data-nascimento-user"></p>
         </div>
-
-        <div class="change-notice">
-            <p>Para alterar Nome ou data de nascimento, é necessário comparecer a um posto próximo.</p>
-        </div>
     </div>
 
     <div class="information-user2">
@@ -40,6 +36,12 @@
         <div>
             <p>E-mail</p>
             <input type="text" class="email" pInputText placeholder="Digite seu novo e-mail.."  /> <!-- declarar [(ngModel)]="value" -->
+        </div>
+    </div>
+
+    <div class="info">
+        <div class="change-notice">
+            <p>Para alterar nome ou data de nascimento, é necessário comparecer a um posto próximo.</p>
         </div>
     </div>
 </div>
