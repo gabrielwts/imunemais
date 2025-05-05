@@ -1,35 +1,34 @@
-<body>
-    <div class="container">
-        <div class="left">
-            <div class="logo">imune+</div>
-        </div>
-        <div class="right">
-            <div class="register-password-box">
-                <h2>Cadastro</h2>
-                <form>
-                    <div class="senha">
-                        <label for="senha">Senha <span style="color: red;" title="Campo obrigatório">*</span></label>
-                        <p-password maxlength="150" placeholder="Digite sua senha.." [feedback]="false" required />
-                    </div>
-                    
-                    <div class="senha-confirm">
-                        <label for="confirmar-senha">Confirmar senha <span style="color: red;" title="Campo obrigatório">*</span></label>
-                        <p-password maxlength="150" placeholder="Digite novamente sua senha..." [feedback]="false" required />
-                    </div>
-                </form>
-                <div class="requisitos-senha">
-                    <p>Requisitos da senha:</p>
-                    <ul>
-                        <li>Deve ter entre 8 a 150 caracteres</li>
-                        <li>Deve conter pelo menos uma letra maiúscula e uma minúscula</li>
-                        <li>Deve conter pelo menos um número</li>
-                        <li>Pode incluir os seguintes símbolos: ! # $ % & ( ) * + - . : ; ?</li>
-                    </ul>
+<div class="container">
+    <div class="left">
+        <a class="logo" href="/">imune+</a>
+    </div>
+    <div class="right">
+        <div class="register-password-box">
+            <h2>Cadastro</h2>
+            <div class="campos-senha">
+                <div class="senha">
+                    <label for="senha">Senha <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <p-password maxlength="150" placeholder="Digite sua senha.." required />
                 </div>
-                <div class="botao-cadastrar">
-                    <p-button type="submit" label="Cadastrar-se" severity="info" />
+
+                <div class="senha-confirm">
+                    <label for="confirmar-senha">Confirmar senha <span style="color: red;"
+                            title="Campo obrigatório">*</span></label>
+                    <p-password maxlength="150" placeholder="Digite novamente sua senha..." required />
                 </div>
+            </div>
+            <div class="requisitos-senha">
+                <p>Requisitos da senha:</p>
+                <ul>
+                    <li>Deve ter entre 8 a 150 caracteres</li>
+                    <li>Deve conter pelo menos uma letra maiúscula e uma minúscula</li>
+                    <li>Deve conter pelo menos um número</li>
+                    <li>Pode incluir os seguintes símbolos: ! # $ % & ( ) * + - . : ; ?</li>
+                </ul>
+            </div>
+            <div class="botao-cadastrar">
+                <p-button type="submit" label="Cadastrar-se" severity="info" />
             </div>
         </div>
     </div>
-</body>
+</div>

@@ -12,5 +12,5 @@ import { PasswordModule } from 'primeng/password';
   styleUrl: './segunda-tela-cadastro.component.scss'
 })
 export class SegundaTelaCadastroComponent {
-  
+
 }
