@@ -41,7 +41,7 @@
 
 .register-password-box {
     width: 420px;
-    height: 415px;
+    height: 360px;
     background: white;
     padding: 30px;
     border-radius: 10px;
@@ -54,26 +54,8 @@
     text-align: left;
 }
 
-.requisitos-senha {
-    font-size: 12px;
-
-    p {
-        margin-top: 7px;
-        text-align: left;
-    }
-
-    ul {
-        margin-left: 20px;
-    }
-
-    li {
-        font-size: 11px;
-        margin-top: 2px;
-    }
-}
-
 .botao-cadastrar {
-    margin-top: 25px;
+    margin-top: 50px;
     padding: 10px;
 
     ::ng-deep .p-button {

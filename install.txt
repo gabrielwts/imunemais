@@ -1,0 +1,3 @@
+16/05 - venv criado
+
+pip install fastapi uvicorn sqlalchemy pydantic
