@@ -1,6 +1,6 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 
 # ==== USUÁRIOS CADASTRADOS ====
@@ -13,9 +13,9 @@ class UsuarioBase(BaseModel):
 
 
 class UsuarioCreate(BaseModel):
-    nome_completo: str
+    nome_completo: str = Field(alias="nome")
     cpf: str
-    data_nascimento: str
+    data_nascimento: datetime = Field(alias="dataNascimento")
     telefone: str
     email: EmailStr
 

@@ -13,7 +13,7 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/v1/usuario")
+@router.post("/v1/usuarios")
 def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
     db_usuario = Usuario(
         nome_completo=usuario.nome_completo,

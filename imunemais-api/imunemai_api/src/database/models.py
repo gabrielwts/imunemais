@@ -9,7 +9,7 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True, index=True)
     nome_completo = Column(String(150), nullable=False)
     cpf = Column(String(14), unique=True, nullable=False)
-    data_nascimento = Column(String(10), nullable=False)
+    data_nascimento = Column(Date, nullable=False)
     telefone = Column(String(15), nullable=False)
     email = Column(String(254), nullable=False)
     password_hash = Column(String(150), nullable=True)
