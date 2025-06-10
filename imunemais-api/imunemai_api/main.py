@@ -11,6 +11,7 @@ from fastapi.openapi.utils import status_code_ranges
 from pydantic import BaseModel, Field
 from starlette.middleware.cors import CORSMiddleware
 from src.api.v1.endpoints import usuario_controller
+from src.api.v1.endpoints import admin_controller
 
 
 
@@ -25,7 +26,7 @@ def index():
     return {"mensagem": "Olá mundo"}
 
 app.include_router(usuario_controller.router)
-
+app.include_router(admin_controller.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app")

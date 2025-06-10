@@ -1,0 +1,44 @@
+<div class="topbar">
+  <div class="logo-top">
+    <a class="logo">imune+</a>
+  </div>
+  <div class="user-info">
+    <span>Admin</span>
+    <div class="user-circle"></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="sidebar">
+    <ul>
+      <li (click)="showSection('pacientes')">Pacientes</li>
+      <li (click)="showSection('usuarios')">Usuários</li>
+      <li (click)="showSection('vacinas')">Vacinas</li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div *ngIf="selectedSection === 'pacientes'">
+      <h2>Seção Pacientes</h2>
+    </div>
+
+    <div *ngIf="selectedSection === 'usuarios'">
+      <h2>Seção Usuários</h2>
+    </div>
+
+    <div *ngIf="selectedSection === 'vacinas'">
+      <h2>Seção Vacinas</h2>
+    </div>
+
+    <div *ngIf="showFuncionarioDetails" class="detalhes-funcionario">
+      <h3>Detalhes do Funcionário</h3>
+      <form>
+        <input type="text" [(ngModel)]="nomeFuncionario" name="nome" placeholder="Nome" />
+        <input type="text" [(ngModel)]="usuarioFuncionario" name="usuario" placeholder="Usuário" />
+        <input type="password" [(ngModel)]="senhaFuncionario" name="senha" placeholder="Senha" />
+        <input type="text" [(ngModel)]="cargoFuncionario" name="cargo" placeholder="Cargo" />
+        <img [src]="fotoFuncionario" alt="Foto do Funcionário" />
+      </form>
+    </div>
+  </div>
+</div>

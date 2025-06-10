@@ -101,3 +101,7 @@ class Profissional(ProfissionalBase):
     model_config = {
     "from_attributes": True
     }
+
+class LoginAdminRequest(BaseModel):
+    cpf: str
+    senha: str
