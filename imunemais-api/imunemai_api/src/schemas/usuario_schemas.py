@@ -21,7 +21,7 @@ class UsuarioCreate(BaseModel):
 
 
 class UsuarioSetPassword(BaseModel):
-    password_hash: str
+    password_hash: str = Field(alias="senha")
 
 
 class Usuario(UsuarioBase):
@@ -34,6 +34,9 @@ class Usuario(UsuarioBase):
 class UsuarioCreateResponse(BaseModel):
     id: int
 
+class LoginRequest(BaseModel):
+    cpf: str
+    password_hash: str = Field(alias="senha")
 
 # ==== VACINAS DO USUÁRIO ====
 class UserVaccineBase(BaseModel):

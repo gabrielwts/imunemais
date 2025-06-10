@@ -27,7 +27,7 @@ export class PrimeiraTelaCadastroComponent {
     this.usuarioService.cadastrar(this.form).subscribe({
       next: usuarioResponse => {
         alert("Usuário cadastrado com sucesso")
-        this.router.navigate(["/"])
+        this.router.navigate(["/cadastro/senha"], {state: { id: usuarioResponse.id }})
       },
       error: erro => {
         alert("Não foi possível cadastrar")

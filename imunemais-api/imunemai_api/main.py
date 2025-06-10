@@ -4,7 +4,7 @@ from datetime import datetime, date
 from src.app import app
 from src.database.database import Base, engine
 import uvicorn
-from dataclasses_json import dataclass_json, LetterCase
+# from dataclasses_json import dataclass_json, LetterCase
 from fastapi import FastAPI, HTTPException, status
 from fastapi.openapi.models import Response
 from fastapi.openapi.utils import status_code_ranges

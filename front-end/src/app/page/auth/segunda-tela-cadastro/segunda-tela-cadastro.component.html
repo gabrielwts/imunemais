@@ -8,17 +8,17 @@
             <div class="campos-senha">
                 <div class="senha">
                     <label for="senha">Senha <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <p-password maxlength="150" placeholder="Digite sua senha.." required />
+                    <p-password class="password" maxlength="150" placeholder="Digite sua senha.." required [(ngModel)]="form.senha" />
                 </div>
 
                 <div class="senha-confirm">
                     <label for="confirmar-senha">Confirmar senha <span style="color: red;"
                             title="Campo obrigatório">*</span></label>
-                    <p-password maxlength="150" placeholder="Digite novamente sua senha..." required />
+                    <p-password maxlength="150" placeholder="Digite novamente sua senha..." required  /> <!-- [(ngModel)]="confirm_senha" -->
                 </div>
             </div>
             <div class="botao-cadastrar">
-                <p-button type="submit" label="Cadastrar-se" severity="info" />
+                <p-button (click)="salvar()" label="Cadastrar-se" severity="info" />
             </div>
         </div>
     </div>

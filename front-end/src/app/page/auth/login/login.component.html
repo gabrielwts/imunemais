@@ -7,20 +7,20 @@
     <div class="right">
         <div class="login-box">
             <h2>Login</h2>
-            <form>
+            <div class="box-form">
                 <div class="cpf">
                     <label for="cpf">CPF</label>
-                    <p-inputmask mask="999.999.999-99" class="cpf-nb" placeholder="000.000.000-00" required ></p-inputmask>
+                    <p-inputmask mask="999.999.999-99" class="cpf-nb" placeholder="000.000.000-00" required required [(ngModel)]="form.cpf"></p-inputmask>
                 </div>
 
                 <div class="senha">
                     <label for="senha">Senha</label>
-                    <p-password class="senha-ps" maxlength="150" formControlName="value" [feedback]="false" placeholder="Digite sua senha.." required />
+                    <p-password class="senha-ps" maxlength="150" [feedback]="false" placeholder="Digite sua senha.." required required [(ngModel)]="form.senha" />
                 </div>
 
-                <p-button label="Login" severity="success" />
+                <p-button label="Login" (click)="logar()"/>
                 <a routerLink="/esqueceu-senha" class="forgot-password">Esqueceu sua senha?</a>
-            </form>
+            </div>
         </div>
 
         <div class="criar-cadastro">
