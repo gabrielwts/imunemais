@@ -13,6 +13,8 @@ import { SemAcessoEmailComponent } from './page/auth/recuperacao-senha/sem-acess
 import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-acesso-telefone/sem-acesso-telefone.component';
 import { LoginEnfermeiroComponent } from './page/tecnico/login-enfermeiro/login-enfermeiro.component';
 import { SistemaEnfermeiroComponent } from './page/tecnico/sistema-enfermeiro/sistema-enfermeiro.component';
+import { ConsultarPacienteComponent } from './page/tecnico/sistema-enfermeiro/consultar-paciente/consultar-paciente.component';
+import { LoginAdmComponent } from './page/adm/login-adm/login-adm.component';
 
 export const routes: Routes = [
     //Página inicial
@@ -76,5 +78,13 @@ export const routes: Routes = [
     {
         path: "sistema-enfermeiro",
         component: SistemaEnfermeiroComponent
+    },{
+        path: "sistema-adm",
+        component: LoginAdmComponent
+    },
+    //TESTE DESENVOLVIMENTO
+    {
+        path: "testedesenvolvimento",
+        component: ConsultarPacienteComponent
     }
 ];

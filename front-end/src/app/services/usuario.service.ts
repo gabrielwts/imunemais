@@ -19,8 +19,8 @@ export class UsuarioService {
     return this.http.post<UsuarioCadastroResponse>(this.apiUrl, usuarioCadastro);
   }
 
-  cadastrarSenha(id: number, senhaCadastro: SenhaCadastro) : Observable<UsuarioCadastroResponse>{
-    return this.http.put<UsuarioCadastroResponse>(`${this.apiUrl}/senha?id=${id}`, senhaCadastro);
+  cadastrarSenha(senhaCadastro: SenhaCadastro) : Observable<UsuarioCadastroResponse>{
+    return this.http.put<UsuarioCadastroResponse>(`${this.apiUrl}/senha`, senhaCadastro);
   }
 
   AutenticacaoUsuario(efetuarLogin: EfetuarLogin) : Observable<UsuarioCadastroResponse>{

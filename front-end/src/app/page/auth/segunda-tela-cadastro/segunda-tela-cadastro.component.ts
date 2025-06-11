@@ -9,6 +9,10 @@ import { UsuarioService } from '../../../services/usuario.service';
 import { error } from 'console';
 import { Route, Router } from '@angular/router';
 
+export class FormSenhaCadastro {
+    constructor(public senha: string = "", public confirmSenha: string = ""){}
+}
+
 @Component({
   selector: 'app-segunda-tela-cadastro',
   imports: [InputMaskModule, PasswordModule, ButtonModule, FormsModule],
@@ -17,10 +21,10 @@ import { Route, Router } from '@angular/router';
 })
 export class SegundaTelaCadastroComponent implements OnInit {
   id!: number;
-  form: SenhaCadastro;
+  form: FormSenhaCadastro;
 
   constructor(private usuarioService: UsuarioService, private route: ActivatedRoute, private router: Router){
-    this.form = new SenhaCadastro();
+    this.form = new FormSenhaCadastro();
   }
 
   ngOnInit(): void {
@@ -31,11 +35,11 @@ export class SegundaTelaCadastroComponent implements OnInit {
   }
 
   salvar(){
-    const senhaCad = {senha: this.form.senha};
+    const senhaCad = new SenhaCadastro(this.form.senha, this.id)
 
     console.log("Enviando:", this.id, senhaCad);
 
-    this.usuarioService.cadastrarSenha(this.id, senhaCad).subscribe({
+    this.usuarioService.cadastrarSenha(senhaCad).subscribe({
       next: (usuarioResponse) => {
         alert("Senha cadastrada com sucesso")
         this.router.navigate(["/login"])
