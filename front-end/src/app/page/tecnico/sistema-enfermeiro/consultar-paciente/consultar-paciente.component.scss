@@ -1,12 +1,7 @@
-/* Form Section (Usuários) */
-
-
 .form-container {
-  background-color: #fff;
-  border-radius: 6px;
+  background-color: #F0F0F0;
   padding: 20px;
   display: flex;
-  justify-content: space-between;
   gap: 30px;
 }
 
@@ -15,7 +10,6 @@
   height: 120px;
   object-fit: cover;
   border-radius: 50%;
-  margin: 20px auto;
   display: block;
   border: 3px solid #0e7490;
 }
@@ -23,20 +17,32 @@
 .left-form {
   display: grid;
   grid-template-columns: 180px 1fr;
-  gap: 15px 20px;
   flex: 1;
-}
+  margin-left: 20px;
 
-.left-form label {
-  display: contents;
-  font-weight: 500;
-}
+  label {
+    align-self: center;
+  }
 
-.left-form input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
+  ::ng-deep p-inputmask {
+    width: 100%;
+    height: 40px;
+    align-self: center;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .input-info {
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 100%;
+    height: 35px;
+    color: #333;
+    border-radius: 4px;
+    align-self: center;
+  }
 }
 
 .right-photo {
@@ -47,143 +53,80 @@
   margin-right: 50px;
   margin-left: 50px;
   gap: 20px;
-}
 
-.right-photo img {
-  width: 210px;
-  height: 210px;
-  border-radius: 50%;
-  object-fit: cover;
+  img {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 }
-
-.btn-alterar {
-  padding: 8px 16px;
-  background-color: #2A5490;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-
-.btn-alterar:hover {
-  background-color: #1f3d6e;
-}
-
 
 .tabs {
-  background-color: #ddd;
   display: flex;
+  padding: 5px;
   gap: 10px;
-  padding: 10px;
-}
+  background-color: #ddd;
+  border: 1px solid #B2B2B2;
 
-.tab-button {
-  padding: 8px 16px;
-  border: none;
-  background: #ddd;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  color: black;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  position: relative;
-}
+  p-selectbutton {
+    margin-left: 275px;
+  }
 
-.tab-button:hover::after {
-
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #113579;
-  border-radius: 2px 2px 0 0;
-}
-
-.tab-button.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #113579;
-  border-radius: 2px 2px 0 0;
-}
-
-.tabs-button button:hover {
-  color: #113579;
+  span {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 15px;
+  }
 }
 
 .vacina-tab {
   background-color: #f0f0f0;
-  border-radius: 2px;
+  margin-left: 15px;
   padding: 15px;
-}
 
-.vacina-item {
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  border-bottom: 1px solid #ddd;
-  padding: 12px 0;
-}
+  .vacina-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding: 12px 0;
+  }
 
-.vacina-item:last-child {
-  border-bottom: none;
-}
+  .vacina-item:last-child {
+    border-bottom: none;
+  }
 
-.vacina-img img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #ccc;
-  object-fit: cover;
-}
+  .vacina-img img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #ccc;
+    object-fit: cover;
+  }
 
-.vacina-item div strong {
-  font-size: 1rem;
-  color: #000;
-}
+  .vacina-item div strong {
+    font-size: 1rem;
+    color: #000;
+  }
 
-.vacina-item div p {
-  margin: 4px 0 0 0;
-  font-size: 0.875rem;
-  color: #333;
-}
+  .vacina-item div p {
+    margin: 4px 0 0 0;
+    font-size: 0.875rem;
+    color: #333;
+  }
 
-.vacina-item div small {
-  font-size: 0.75rem;
-  font-style: italic;
-  color: #666;
-}
+  .vacina-item div small {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #666;
+  }
 
-.icons {
-  margin-left: auto;
-  display: flex;
-  gap: 10px;
-}
-
-.icon-check,
-.icon-cross {
-  font-size: 22px;
-  cursor: pointer;
-  user-select: none;
-  padding: 4px;
-  border-radius: 50%;
-}
-
-.icon-check {
-  color: #28a745;
-  background-color: #d4edda;
-}
-
-.icon-cross {
-  color: #dc3545;
-  background-color: #f8d7da;
+  .icons {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+  }
 }

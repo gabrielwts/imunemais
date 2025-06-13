@@ -16,25 +16,25 @@
     <div class="menu">
         <div class="options">
             <div>
-                <img src="icon_smile.png" alt="Smile">            
+                <img src="/Smile.png" alt="Smile">            
                 <a class="your-profile" (click)="mostrarPaciente()">Pacientes</a>
             </div>
             <div>
-                <img src="icon_vaccine.png" alt="Vaccine">
+                <img src="/Users.png" alt="Vaccine">
                 <a class="your-vaccines" (click)="mostrarUsuarios()">Usuários</a>
             </div>
             <div>
-                <img src="icon_vaccine.png" alt="Vaccine">
+                <img src="/white-vaccine-icon.png" alt="Vaccine">
                 <a class="your-vaccines" (click)="mostrarVacinas()">Vacinas</a>
             </div>
             <div>
-                <img src="icon_vaccine.png" alt="Vaccine">
+                <img src="/clipboard-funcionarios.png" alt="Vaccine">
                 <a class="your-vaccines" (click)="mostrarFuncionarios()">Funcionários</a>
             </div>
         </div>
     </div>
 
-    <div>
+    <div class="screens-options">
         @if(pacienteDados === true) {
           <app-consultar-paciente></app-consultar-paciente>
         } 

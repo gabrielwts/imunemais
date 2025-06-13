@@ -1,77 +1,69 @@
-
 <main class="main-conten">
 
-    <section class="form-section">
+    <div class="form-container">
+        <div class="left-form">
+            <label for="cpf">CPF</label>
+            <p-inputmask id="cpf" mask="999.999.999-99" placeholder="Insira o número de CPF.."></p-inputmask>
 
-        <div class="form-container">
+            <label for="nome">Nome</label>
+            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.nome" -->
 
-            <div class="left-form">
-                <label for="cpf">CPF</label>
-                <input type="text" id="cpf" placeholder="Insira o número de CPF..">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome">
-                <label for="data">Data de Nascimento</label>
-                <input id="data">
-                <label for="telefone">Telefone</label>
-                <input id="telefone">
-                <label for="email">E-mail</label>
-                <input type="email" id="email">
-            </div>
+            <label for="data">Data de Nascimento</label>
+            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.dataNascimento" -->
 
-            <div class="right-photo">
-                <img id="fotoUsuario" src="" alt="Foto do Usuário" class="foto-usuario">
-                <button class="btn-alterar">Alterar Dados</button>
-                <div class="photo-placeholder"></div>
-            </div>
+            <label for="telefone">Telefone</label>
+            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.telefone" -->
+
+            <label for="email">E-mail</label>
+            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.email" -->
         </div>
 
-        <div class="tabs">
-            <button class="tab-button active" onclick="showVacinaTab('historico')">Histórico</button>
-            <button class="tab-button" onclick="showVacinaTab('pendentes')">Pendentes</button>
-        </div>
+        <div class="right-photo">
 
-        <div id="historico" class="vacina-tab" style="display: block;">
-            <div class="vacina-item">
-                <div class="vacina-img"><img src="imagem-vacina.png" alt="Vacina"></div>
-                <div>
-                    <strong>Pneumocócica 23 Valente</strong>
-                    <p>Previne pneumonia, otite, meningite e outras doenças causadas pelo Pneumococo</p>
-                    <small>1 dose é indicada para grupos-alvo específicos a depender da situação vacinal</small>
-                </div>
+            <img id="fotoUsuario" src="" alt="Foto do Usuário" class="foto-usuario">
                     
-                <div class="icons">
-                    <span class="icon-check">&#10003;</span>
-                    <span class="icon-cross">&#10007;</span>
-                </div>
-            </div>
+            @if (this.podeEditar) {
+                <p-button label="Salvar alterações" (click)="alternarEdicao()" severity="success" />
+            } @else {
+                <p-button label="Alterar Dados" severity="contrast" (click)="alternarEdicao()"/>
+            }
+        </div>
+    </div>
 
-            <div class="vacina-item">
-                <div class="vacina-img"><img src="imagem-vacina.png" alt="Vacina"></div>
-                <div>
-                    <strong>Tríplice viral</strong>
-                    <p>Previne sarampo, caxumba e rubéola</p>
-                    <small>Se nunca vacinado: 2 doses (20 a 29 anos) e 1 dose (30 a 49 anos)</small>
-                </div>
-                <div class="icons">
-                    <span class="icon-check">&#10003;</span>
-                    <span class="icon-cross">&#10007;</span>
-                </div>
+    <div class="tabs">
+        <div class="id-leftbar"><span>Histórico de Vacinas</span></div>
+        <div class="id-rightbar"><p-selectbutton [options]="stateOptions" [(ngModel)]="value" (ngModelChange)="buscarDados()" optionLabel="label" optionValue="value" aria-labelledby="basic" /></div>
+    </div>
+
+    <div id="historico" class="vacina-tab" style="display: block;">
+        <div class="vacina-item"> <!-- Template da vacina, cada uma vai ser nessa estilização -->
+            <div class="vacina-img"><img src="/vaccine-valid.png" alt="Vacina"></div> <!-- /vaccine-valid.png = valida | vaccine-pending.png = pendente --> 
+            <div>
+                <strong></strong><!-- nome da vacina -->
+                <p></p><!-- descrição da vacina -->
+                <small></small><!-- tipo dose da vacina -->
+            </div>
+                    
+            <div class="icons"> <!-- botões de validação -->
+                <img src="/validate-green.png" alt="validar"> <!-- Validar -->
+                <img src="/invalidate-red.png" alt="invalidar"> <!-- Retirar validação -->
             </div>
         </div>
+    </div>
 
-        <div id="pendentes" class="vacina-tab" style="display: none;">
-            <div class="vacina-item">
-                <div class="vacina-img"><img src="imagem-vacina.png" alt="Vacina"></div>
-                <div>
-                    <strong>Dupla adulto (DT)</strong>
-                    <p>Previne difteria e tétano</p>
-                    <small>Reforço a cada 10 anos</small>
-                </div>
-                <div class="icons">
-                    <span class="icon-check">&#10003;</span>
-                    <span class="icon-cross">&#10007;</span>
-                </div>
+    <div id="pendentes" class="vacina-tab" style="display: block;">
+        <div class="vacina-item"> <!-- Template da vacina, cada uma vai ser nessa estilização -->
+            <div class="vacina-img"><img src="/vaccine-valid.png" alt="Vacina"></div> <!-- /vaccine-valid.png = valida | vaccine-pending.png = pendente --> 
+            <div>
+                <strong></strong><!-- nome da vacina -->
+                <p></p><!-- descrição da vacina -->
+                <small></small><!-- tipo dose da vacina -->
+            </div>
+                    
+            <div class="icons"> <!-- botões de validação -->
+                <img src="/validate-green.png" alt="validar"> <!-- Validar -->
+                <img src="/invalidate-red.png" alt="invalidar"> <!-- Retirar validação -->
             </div>
         </div>
-    </section>
+    </div>
 </main>
