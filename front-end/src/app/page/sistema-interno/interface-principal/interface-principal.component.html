@@ -1,0 +1,56 @@
+<div class="container">
+
+    <header>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a class="logo" href="/">imune+</a>
+            </div>
+            <div class="navbar-right">
+
+                <img src="default-icon.jpg" alt="Foto de perfil" class="icon-profile">
+                <div class="name-user"><span></span></div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="menu">
+        <div class="options">
+            <div>
+                <img src="/Smile.png" alt="Smile">            
+                <a class="your-profile" (click)="mostrarPaciente()">Pacientes</a>
+            </div>
+            <div>
+                <img src="/Users.png" alt="Vaccine">
+                <a class="your-vaccines" (click)="mostrarUsuarios()">Usuários</a>
+            </div>
+            <div>
+                <img src="/white-vaccine-icon.png" alt="Vaccine">
+                <a class="your-vaccines" (click)="mostrarVacinas()">Vacinas</a>
+            </div>
+            <div>
+                <img src="/clipboard-funcionarios.png" alt="Vaccine">
+                <a class="your-vaccines" (click)="mostrarFuncionarios()">Funcionários</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="screens-options">
+        @if(pacienteDados === true) {
+          <app-consultar-paciente></app-consultar-paciente>
+        } 
+        @if(pacientesLista === true) {
+          <app-usuarios-cadastrados></app-usuarios-cadastrados>
+        }
+        @if(vacinasLista === true) {
+          <app-cartilha-de-vacinas></app-cartilha-de-vacinas>
+        } 
+        @if(funcinariosLista === true) {
+          <app-adm-profissionais-cadastrados></app-adm-profissionais-cadastrados>
+        }
+    </div>
+
+    <div class="page-content">
+        <!-- conteúdo da página -->
+    </div>
+
+</div>

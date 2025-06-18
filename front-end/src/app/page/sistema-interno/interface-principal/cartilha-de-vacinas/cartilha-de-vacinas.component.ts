@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { Select, SelectModule } from 'primeng/select';
+import { SelectModule, Select } from 'primeng/select';
 
 interface AgeRange {
   name: string;
@@ -17,7 +17,6 @@ interface AgeRange {
   styleUrl: './cartilha-de-vacinas.component.scss'
 })
 export class CartilhaDeVacinasComponent {
-
   ageRanges: AgeRange[] = [];         // Lista de opções
   selectedAgeRange: AgeRange | null = null; // Item selecionado
 
@@ -30,5 +29,4 @@ export class CartilhaDeVacinasComponent {
       { name: 'Idoso', code: '555' }
     ];
   }
-
 }

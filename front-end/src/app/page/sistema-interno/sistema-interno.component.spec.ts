@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdmComponent } from './adm.component';
+import { SistemaInternoComponent } from './sistema-interno.component';
 
-describe('AdmComponent', () => {
-  let component: AdmComponent;
-  let fixture: ComponentFixture<AdmComponent>;
+describe('SistemaInternoComponent', () => {
+  let component: SistemaInternoComponent;
+  let fixture: ComponentFixture<SistemaInternoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdmComponent]
+      imports: [SistemaInternoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AdmComponent);
+    fixture = TestBed.createComponent(SistemaInternoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

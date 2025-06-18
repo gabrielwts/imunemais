@@ -13,8 +13,8 @@ import { SemAcessoEmailComponent } from './page/auth/recuperacao-senha/sem-acess
 import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-acesso-telefone/sem-acesso-telefone.component';
 import { LoginEnfermeiroComponent } from './page/tecnico/login-enfermeiro/login-enfermeiro.component';
 import { SistemaEnfermeiroComponent } from './page/tecnico/sistema-enfermeiro/sistema-enfermeiro.component';
-import { ConsultarPacienteComponent } from './page/tecnico/sistema-enfermeiro/consultar-paciente/consultar-paciente.component';
-import { LoginAdmComponent } from './page/adm/login-adm/login-adm.component';
+import { InterfacePrincipalComponent } from './page/sistema-interno/interface-principal/interface-principal.component';
+import { CadastrarProfissionalComponent } from './page/sistema-interno/interface-principal/adm-profissionais-cadastrados/cadastrar-profissional/cadastrar-profissional.component';
 
 export const routes: Routes = [
     //Página inicial
@@ -70,6 +70,7 @@ export const routes: Routes = [
         path: "profile",
         component: ConPatientProfileComponent
     },
+
     // Tela do enfermeiro
     {
         path: "login-enfermeiro",
@@ -78,13 +79,15 @@ export const routes: Routes = [
     {
         path: "sistema-enfermeiro",
         component: SistemaEnfermeiroComponent
-    },{
-        path: "sistema-adm",
-        component: LoginAdmComponent
     },
-    //TESTE DESENVOLVIMENTO
+
+    // TESTE DESENVOLVIMENTO
     {
-        path: "testedesenvolvimento",
-        component: ConsultarPacienteComponent
+        path: "zzdesenvolvimento",
+        component: InterfacePrincipalComponent
+    }, 
+    {
+        path: "ttdesenvolvimento",
+        component: CadastrarProfissionalComponent
     }
 ];

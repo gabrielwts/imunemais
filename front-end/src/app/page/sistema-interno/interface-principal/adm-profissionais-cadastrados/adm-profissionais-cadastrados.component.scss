@@ -10,21 +10,23 @@ header {
     align-items: center;
 
     .navbar-right {
-       display: flex;
-       margin-left: 15px; 
+        margin-left: 20px;
     }
 
     .navbar-left{
         display: flex;
+        gap: 20px;
         margin-left: auto;
         align-items: center;
-        gap: 30px;
+        width: 400px;
 
         span {
+            display: flex;
             font-size: 17px;
         }
 
         ::ng-deep input.p-inputtext {
+            display: flex;
             height: 40px;
             width: 300px;
             margin-right: 20px;
@@ -32,44 +34,36 @@ header {
     }
 }
 
-.cartilha-vacina {
+.registered-professionals {
     background-color: #F0F0F0;
-
-    .vacina {
+    
+    .professionals {
         display: flex;
         align-items: center;
         border: 1px solid #B7B7B7;
-        height: 120px;
+        height: 85px;
 
-        img {
+        .right-info {
            display: flex;
            margin-left: 30px;
         }
 
-        .informacoes {
-            margin-left: 15px;
+        .job-info {
+            margin-left: auto;
             display: flex;
-            flex-direction: column;
-            align-items: left;
+            align-items: center;
+            gap: 30px;
+            padding: 0 25px 0 20px;
+            height: 36px;
+            border-left: 1px solid #B7B7B7;
+        }
 
-            padding: 0 0 0 20px;
-
-            .nome-vacina {
-                font-size: 18px;
-                display: flex;
-                margin-bottom: 10px;
-            }
-
-            .descricao-vacina{
-                font: 10px;
-                display: flex;
-                margin-bottom: 5px;
-            }
-
-            .tipo-dose-vacina{
-                font-size: 12px;
-                display: flex;
-            }
+        .left-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 0 25px 0 20px;
+            border-left: 1px solid #B7B7B7;
         }
     }
 }
