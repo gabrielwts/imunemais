@@ -130,3 +130,83 @@
     cursor: pointer;
   }
 }
+
+// BOTÕES DE VALIDAR/REMOVER VACINA
+
+.validar-vacina-box {
+    background-color: #fff;
+    height: 170px;
+    width: 450px;
+    border-radius: 6px;
+    margin-left: 200px;
+    
+    .info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+
+        span {
+            margin-bottom: 10px;
+        }
+    }
+
+    .buttons {
+        margin-top: 30px;
+        justify-content: flex-end;
+    }
+
+    div {
+        padding-top: 20px;
+        display: flex;
+        max-width: 425px;
+
+        p-button {
+            height: 37px;
+            width: 90px;
+            
+        }
+    }
+}
+
+.remover-vacina-box {
+    background-color: #fff;
+    height: 170px;
+    width: 425px;
+    border-radius: 6px;
+    margin-left: 200px;
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 20px;
+
+        span {
+            margin-bottom: 10px;
+        }
+    }
+
+    .buttons-rmv {
+        margin-top: 30px;
+        justify-content: flex-end;
+    }
+
+    div {
+        padding-top: 20px;
+        display: flex;
+        max-width: 400px;
+
+        p-button {
+            margin-left: 15px;
+
+            .removerButton {
+                height: 37px;
+                width: 180px;
+            }
+
+            .cancelaButton {
+                height: 37px;
+                width: 90px;
+            }
+        }
+    }
+}

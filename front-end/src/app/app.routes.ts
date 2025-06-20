@@ -11,10 +11,9 @@ import { CodigoValidacaoComponent } from './page/auth/codigo-validacao/codigo-va
 import { EsqueciMinhaSenhaComponent } from './page/auth/esqueci-minha-senha/esqueci-minha-senha.component';
 import { SemAcessoEmailComponent } from './page/auth/recuperacao-senha/sem-acesso-email/sem-acesso-email.component';
 import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-acesso-telefone/sem-acesso-telefone.component';
-import { LoginEnfermeiroComponent } from './page/tecnico/login-enfermeiro/login-enfermeiro.component';
-import { SistemaEnfermeiroComponent } from './page/tecnico/sistema-enfermeiro/sistema-enfermeiro.component';
 import { InterfacePrincipalComponent } from './page/sistema-interno/interface-principal/interface-principal.component';
 import { CadastrarProfissionalComponent } from './page/sistema-interno/interface-principal/adm-profissionais-cadastrados/cadastrar-profissional/cadastrar-profissional.component';
+import { AdmCadastrarVacinaComponent } from './page/sistema-interno/interface-principal/cartilha-de-vacinas/adm-cadastrar-vacina/adm-cadastrar-vacina.component';
 
 export const routes: Routes = [
     //Página inicial
@@ -71,23 +70,17 @@ export const routes: Routes = [
         component: ConPatientProfileComponent
     },
 
-    // Tela do enfermeiro
-    {
-        path: "login-enfermeiro",
-        component: LoginEnfermeiroComponent
-    },
-    {
-        path: "sistema-enfermeiro",
-        component: SistemaEnfermeiroComponent
-    },
-
     // TESTE DESENVOLVIMENTO
     {
-        path: "zzdesenvolvimento",
+        path: "zzdesenvolvimento", // Sistema inteiro de enfermeiro + ADM
         component: InterfacePrincipalComponent
     }, 
     {
-        path: "ttdesenvolvimento",
+        path: "ttdesenvolvimento", //Cadastrar Funcionário/ADM 
         component: CadastrarProfissionalComponent
+    },
+    {
+        path: "desenvolvimento200",
+        component: AdmCadastrarVacinaComponent
     }
 ];

@@ -11,7 +11,11 @@ header {
 
     .navbar-right {
        display: flex;
-       margin-left: 15px; 
+       margin-left: 15px;
+
+       p-select {
+        margin-right: 10px;
+       }
     }
 
     .navbar-left{

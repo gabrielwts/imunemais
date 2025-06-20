@@ -1,7 +1,7 @@
 <div class="container">
     <header>
         <div class="navbar-right">
-            <p-button *ngIf="cadastrar" label="Cadastrar" (click)="alternarEdicao()" severity="contrast"></p-button>
+            <p-button label="Cadastrar" (click)="cadastrarUser()" severity="contrast"></p-button>
         </div>
 
         <div class="navbar-left">
@@ -27,10 +27,18 @@
 
             <div class="left-info">
                 <p class="cpf"></p>
-                <p-button label="Acessar" severity="contrast" />
+                <p-button label="Acessar" (click)="alterarUserProfile()" severity="contrast" />
             </div>
         </div>
     </div>
 
-    <app-cadastrar-profissional *ngIf="!cadastrar"></app-cadastrar-profissional>
+    @if(cadastrar === true) {
+        <app-cadastrar-profissional></app-cadastrar-profissional>
+    }
+    @else {}
+
+    @if(alterarPerfil == true){
+        <app-alterar-dados-profissional></app-alterar-dados-profissional>
+    }
+    @else {}
 </div>

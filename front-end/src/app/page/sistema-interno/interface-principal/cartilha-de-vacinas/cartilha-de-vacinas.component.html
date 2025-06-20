@@ -2,6 +2,7 @@
     <header>
         <div class="navbar-right">
             <p-select [options]="ageRanges" [(ngModel)]="selectedAgeRange" optionLabel="name" placeholder="Faixa etária" class="w-full md:w-56" />
+            <p-button label="Cadastrar" (click)="cadastrarVacina()" severity="contrast"></p-button>
         </div>
         <div class="navbar-left">
             <span>Pesquisar</span>
@@ -23,5 +24,10 @@
             </div>
         </div>
     </div>
+
+    @if (cadastrarVac === true){
+        <app-adm-cadastrar-vacina></app-adm-cadastrar-vacina>
+    }
+    @else {}
 
 </div>

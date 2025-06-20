@@ -4,24 +4,18 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule, Select } from 'primeng/select';
-import { AdmCadastrarVacinaComponent } from './adm-cadastrar-vacina/adm-cadastrar-vacina.component';
 
 interface AgeRange {
   name: string;
 }
 
 @Component({
-  selector: 'app-cartilha-de-vacinas',
-  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, Select, AdmCadastrarVacinaComponent],
-  templateUrl: './cartilha-de-vacinas.component.html',
-  styleUrl: './cartilha-de-vacinas.component.scss'
+  selector: 'app-adm-cadastrar-vacina',
+  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, Select],
+  templateUrl: './adm-cadastrar-vacina.component.html',
+  styleUrl: './adm-cadastrar-vacina.component.scss'
 })
-export class CartilhaDeVacinasComponent {
-  cadastrarVac: boolean = false;
-
-  cadastrarVacina() {
-    this.cadastrarVac = !this.cadastrarVac;
-  }
+export class AdmCadastrarVacinaComponent {
 
   // SELECIONAR VACINAS POR FAIXA ETÁRIA
   ageRanges: AgeRange[] = [];         // Lista de opções

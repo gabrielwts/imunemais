@@ -3,19 +3,19 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule, Select } from 'primeng/select';
+import { SelectModule } from 'primeng/select';
 
 interface userType {
   name: string;
 }
 
 @Component({
-  selector: 'app-cadastrar-profissional',
+  selector: 'app-alterar-dados-profissional',
   imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule],
-  templateUrl: './cadastrar-profissional.component.html',
-  styleUrl: './cadastrar-profissional.component.scss'
+  templateUrl: './alterar-dados-profissional.component.html',
+  styleUrl: './alterar-dados-profissional.component.scss'
 })
-export class CadastrarProfissionalComponent {
+export class AlterarDadosProfissionalComponent {
   userTypes: userType[] = [];         // Lista de opções
   selecteduserType: userType | null = null; // Item selecionado
 
@@ -25,4 +25,5 @@ export class CadastrarProfissionalComponent {
       { name: 'Profissional' },
     ];
   }
+
 }

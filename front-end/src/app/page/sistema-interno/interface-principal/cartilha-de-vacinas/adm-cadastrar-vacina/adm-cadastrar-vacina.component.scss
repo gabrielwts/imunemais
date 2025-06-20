@@ -1,0 +1,35 @@
+.cadastrar-vacina-box {
+    height: 360px;
+    width: 700px;
+    border-radius: 8px;
+    background-color: #fff;
+    padding-top: 5px;
+    margin-left: 25%;
+
+    p {
+        margin-left: 25px;
+    }
+
+    .form {
+        flex-direction: column;
+        display: flex;
+        gap: 20px;
+        max-width: 700px;
+
+        .inputs-info {
+            margin-left: 45px;
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            align-items: center;
+            width: 600px;
+            gap: 10px;
+        }
+    }
+
+    .button {
+        margin-top: 30px;
+        margin-right: 25px;
+        display: flex;
+        justify-content: flex-end;
+    }
+}

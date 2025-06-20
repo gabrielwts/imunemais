@@ -45,8 +45,8 @@
             </div>
                     
             <div class="icons"> <!-- botões de validação -->
-                <img src="/validate-green.png" alt="validar"> <!-- Validar -->
-                <img src="/invalidate-red.png" alt="invalidar"> <!-- Retirar validação -->
+                <p-button icon="pi pi-check" [rounded]="true" (click)="confirmValidarVacina()" /> <!-- Validar -->
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="confirmRemoverVacina()" /> <!-- Retirar validação -->
             </div>
         </div>
     </div>
@@ -61,9 +61,44 @@
             </div>
                     
             <div class="icons"> <!-- botões de validação -->
-                <img src="/validate-green.png" alt="validar"> <!-- Validar -->
-                <img src="/invalidate-red.png" alt="invalidar"> <!-- Retirar validação -->
+                <p-button icon="pi pi-check" [rounded]="true" (click)="confirmValidarVacina()" /> <!-- Validar -->
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="confirmRemoverVacina()" /> <!-- Retirar validação -->
             </div>
         </div>
     </div>
+
+    
+
+    @if(validarVacina === true) {
+        <div class="validar-vacina-box">
+            <div class="info">
+                <span>Validação de vacina</span>
+                <small class="info-vacina">nome da vacina aqui</small>
+            </div>
+
+            <div class="buttons"> 
+                <p-button label="Validar" severity="success" class="validarButton" />
+                <p-button label="Cancelar" (click)="confirmValidarVacina()" severity="danger" class="removerButton" />
+            </div>
+        </div>
+    }
+    @else {
+    }
+
+    @if(removerValidacaoVacina === true) {
+        <div class="remover-vacina-box">
+            <div class="info">
+                <span>Retirar validação de vacina</span>
+                <small class="info-vacina">nome da vacina aqui</small>
+            </div>
+
+            <div class="buttons-rmv">
+                <p-button label="Remover validação" [raised]="true" severity="danger" class="removerButton" />
+                <p-button label="Cancelar" (click)="confirmRemoverVacina()" severity="secondary" class="cancelaButton" />
+            </div>
+        </div>
+    }
+    @else {
+    }
+
 </main>

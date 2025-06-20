@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -7,12 +8,22 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 
 @Component({
   selector: 'app-consultar-paciente',
-  imports: [ButtonModule, SelectButtonModule, FormsModule, InputMaskModule, InputTextModule],
+  imports: [CommonModule, ButtonModule, SelectButtonModule, FormsModule, InputMaskModule, InputTextModule],
   templateUrl: './consultar-paciente.component.html',
   styleUrl: './consultar-paciente.component.scss'
 })
 export class ConsultarPacienteComponent {
   podeEditar: boolean = false;
+  validarVacina: boolean = false;
+  removerValidacaoVacina: boolean = false;
+
+  confirmValidarVacina () {
+    this.validarVacina = !this.validarVacina;
+  }
+
+  confirmRemoverVacina () {
+    this.removerValidacaoVacina = !this.removerValidacaoVacina;
+  }
 
   alternarEdicao() {
     this.podeEditar = !this.podeEditar;
