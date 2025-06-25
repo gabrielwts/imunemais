@@ -5,6 +5,7 @@ from src.auth.crypto import verificar_senha
 from src.database.models import Usuario
 from sqlalchemy.orm import Session
 from src.app import router
+from src.auth.crypto import gerar_hash_senha
 
 # Dependência de sessão
 def get_db():
@@ -31,8 +32,14 @@ def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> Usua
 @router.put("/v1/usuarios/senha")
 def criar_senha(id: int, usuarioSenha: UsuarioSetPassword, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
     db_usuario = db.query(Usuario).filter(Usuario.id == id).first()
-    
-    db_usuario.password_hash = usuarioSenha.password_hash
+    if not db_usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    # Gerar o hash da senha recebida
+    senha_hash = gerar_hash_senha(usuarioSenha.senha)
+
+    # Salvar no banco
+    db_usuario.password_hash = senha_hash
     db.add(db_usuario)
     db.commit()
     db.refresh(db_usuario)

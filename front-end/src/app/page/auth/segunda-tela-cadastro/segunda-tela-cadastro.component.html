@@ -13,15 +13,15 @@
                 </div>
 
                 <div class="senha-confirm">
-                    <label for="confirmar-senha">Confirmar senha <span style="color: red;" title="Campo obrigatório"
-                            [(ngModel)]="form.confirmSenha">*</span></label>
+                    <label for="confirmar-senha">Confirmar senha <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <!-- [(ngModel)]="form.confirmSenha" -->
                     <p-password maxlength="150" placeholder="Digite novamente sua senha..." required />
                     <!-- [(ngModel)]="confirm_senha" -->
                 </div>
             </div>
-            @if(form.senha != form.confirmSenha){
+            <!-- @if(form.senha != form.confirmSenha){
             <span>As senhas digitadas não coincidem</span>
-            }
+            } -->
             <div class="botao-cadastrar">
                 <p-button (click)="salvar()" label="Cadastrar-se" severity="info" />
             </div>

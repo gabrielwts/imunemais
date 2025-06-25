@@ -1,5 +1,3 @@
 export class SenhaCadastro {
-    constructor(public senha: string, public id: number){}
+    constructor(public senha: string = ""){}
 }
-
-// Cadastrar a senha após cadastrar o usuário

@@ -20,7 +20,7 @@ class Usuario(Base):
 
 #     id = Column(Integer, primary_key=True, index=True)
 #     full_name = Column(String(150), nullable=False)
-#     numero_cpf = Column(String(14), ForeignKey("usuarios_cadastrados.cpf", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+#     numero_cpf = Column(String(14), ForeignKey("usuarios.cpf", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
 #     nome_vacina = Column(String(150), nullable=False)
 #     data_dose_tomada = Column(Date, nullable=False)
 #     tipo_dose = Column(String(50), nullable=False)
@@ -37,7 +37,6 @@ class Usuario(Base):
 #     descricao = Column(Text)
 #     faixa_etaria = Column(String(50), nullable=False)
 #     doses = Column(String(50), nullable=False)
-#     data_registro = Column(Date, nullable=False)
 
 
 # class RegisteredProfessional(Base):

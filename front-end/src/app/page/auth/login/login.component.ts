@@ -24,14 +24,15 @@ export class LoginComponent {
 
   logar(){
     this.usuarioService.AutenticacaoUsuario(this.form).subscribe({
-      next: usuarioResponse => {
-        alert("Usuário logado")
-        this.router.navigate(["/logado"])
-      },
-      error: erro => {
-        alert("Não foi possível realizar o login!")
-        console.error("Ocorreu um erro ao tentar logar: " + erro)
-      }
-  })
+      next: res => {
+      localStorage.setItem('token', res.access_token);
+      alert("Usuário logado com sucesso!");
+      this.router.navigate(["/logado"]);
+    },
+    error: erro => {
+      alert("Não foi possível realizar o login!");
+      console.error("Erro ao tentar logar: ", erro);
+    }
+  });
   }
 }

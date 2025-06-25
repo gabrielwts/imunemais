@@ -10,9 +10,7 @@ from fastapi.openapi.models import Response
 from fastapi.openapi.utils import status_code_ranges
 from pydantic import BaseModel, Field
 from starlette.middleware.cors import CORSMiddleware
-from src.api.v1.endpoints import usuario_controller
-from src.api.v1.endpoints import admin_controller
-
+from src.api.v1.endpoints import usuario_controller, admin_controller, autenticacao_controller
 
 
 # Cria as tabelas no banco de dados. Este comando verifica todos os modelos definidos em Base e cria as
@@ -27,6 +25,7 @@ def index():
 
 app.include_router(usuario_controller.router)
 app.include_router(admin_controller.router)
+app.include_router(autenticacao_controller.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app")
