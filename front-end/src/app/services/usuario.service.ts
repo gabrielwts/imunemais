@@ -7,6 +7,8 @@ import { AuthResponse } from '../models/auth-response';
 import { environment } from '../../environments/environment';
 import { SenhaCadastro } from '../models/senha-cadastro';
 import { EfetuarLogin } from '../models/efetuar-login';
+import { RecuperarSenhaCpf } from '../models/recuperar-senha-cpf';
+import { RecuperarSenhaResponse } from '../models/recuperar-senha-response';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +29,10 @@ export class UsuarioService {
   AutenticacaoUsuario(efetuarLogin: EfetuarLogin): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/v1/autenticacao`, efetuarLogin);
   }
+
+  RecuperarSenhaCpf(recuperarSenhaCpf: RecuperarSenhaCpf): Observable<RecuperarSenhaResponse> {
+    return this.http.post<RecuperarSenhaResponse>(`${environment.apiUrl}/v1/usuarios/recuperarsenha`, recuperarSenhaCpf)
+  }
+
 
 }

@@ -9,15 +9,15 @@
         <h2>Esqueci minha senha</h2>
         <p>Para redefinir sua senha, confirme seu telefone<br> e lhe enviaremos um código de segurança.</p>
 
-        <form class="form-radio" onsubmit="delayedSubmit(event)">
+        <form class="form-radio" > <!-- (ngSubmit)="enviar()" -->
           <div class="field-radio">
             <input type="radio" id="email" name="recoveryMethod" [(ngModel)]="opcaoSelecionada" value="email" required />
-            <label for="email">E-mail<br><span class="email_user"></span></label>
+            <label for="email">E-mail<br><span class="email_user">{{ this.email }}</span></label>
           </div>
 
           <div class="field-radio">
             <input type="radio" id="telefone" [(ngModel)]="opcaoSelecionada" value="telefone" name="recoveryMethod" required checked />
-            <label for="telefone">Telefone<br><span class="number_user"></span></label>
+            <label for="telefone">Telefone<br><span class="number_user">{{ this.telefone }}</span></label>
           </div>
 
           <p *ngIf="opcaoSelecionada" [routerLink]="['/sem-acesso', opcaoSelecionada]" class="link-info">Perdi acesso a este {{ opcaoSelecionada }}</p>

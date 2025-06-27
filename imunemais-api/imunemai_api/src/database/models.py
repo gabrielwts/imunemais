@@ -15,35 +15,34 @@ class Usuario(Base):
     password_hash = Column(String(150), nullable=True)
 
 
-# class UserVaccine(Base):
-#     __tablename__ = "user_vaccines"
+class UserVaccine(Base):
+    __tablename__ = "vacinas_do_usuario"
 
-#     id = Column(Integer, primary_key=True, index=True)
-#     full_name = Column(String(150), nullable=False)
-#     numero_cpf = Column(String(14), ForeignKey("usuarios.cpf", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
-#     nome_vacina = Column(String(150), nullable=False)
-#     data_dose_tomada = Column(Date, nullable=False)
-#     tipo_dose = Column(String(50), nullable=False)
-#     validacao = Column(String(25), nullable=False)
-#     profissional = Column(String(150), nullable=False)
-#     user_id = Column(Integer, nullable=True)  # Pode remover se não estiver sendo usado
-
-
-# class CartilhaVacina(Base):
-#     __tablename__ = "cartilha_vacinas"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     vacinas_nome = Column(String(150), nullable=False)
-#     descricao = Column(Text)
-#     faixa_etaria = Column(String(50), nullable=False)
-#     doses = Column(String(50), nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    full_name = Column(String(150), nullable=False)
+    numero_cpf = Column(String(14), ForeignKey("usuarios.cpf", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+    nome_vacina = Column(String(150), nullable=False)
+    tipo_dose = Column(String(50), nullable=False)
+    validacao = Column(String(25), nullable=False)
+    profissional = Column(String(150), nullable=False)
+    user_id = Column(Integer, nullable=True)  # Pode remover se não estiver sendo usado
 
 
-# class RegisteredProfessional(Base):
-#     __tablename__ = "registered_professionals"
+class CartilhaVacina(Base):
+    __tablename__ = "cartilha_vacinas"
 
-#     id = Column(Integer, primary_key=True, index=True)
-#     nome_pro = Column(String(150), nullable=False)
-#     usuario = Column(String(50), nullable=False)
-#     password_prof = Column(String(150), nullable=False)
-#     person_paper = Column(String(50), nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    vacinas_nome = Column(String(150), nullable=False)
+    descricao = Column(String(255), nullable=False)
+    faixa_etaria = Column(String(50), nullable=False)
+    doses = Column(String(50), nullable=False)
+
+
+class RegisteredProfessional(Base):
+    __tablename__ = "profissionais_registrados"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nome_pro = Column(String(150), nullable=False)
+    usuario = Column(String(50), nullable=False)
+    password_prof = Column(String(150), nullable=False)
+    cargo_prof = Column(String(50), nullable=False)

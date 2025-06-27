@@ -1,11 +1,12 @@
 from src.database.database import SessionLocal
 from fastapi import APIRouter, HTTPException, Depends
-from src.schemas.usuario_schemas import UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
+from src.schemas.usuario_schemas import CpfRecuperarSenha, UsuarioContatoMascarado, UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
 from src.auth.crypto import verificar_senha
 from src.database.models import Usuario
 from sqlalchemy.orm import Session
 from src.app import router
 from src.auth.crypto import gerar_hash_senha
+from src.auth.mascaradores import mascarar_email, mascarar_telefone
 
 # Dependência de sessão
 def get_db():
@@ -15,6 +16,7 @@ def get_db():
     finally:
         db.close()
 
+# Cadastrar usuário
 @router.post("/v1/usuarios")
 def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
     db_usuario = Usuario(
@@ -29,6 +31,7 @@ def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> Usua
     db.refresh(db_usuario)
     return UsuarioCreateResponse(id=db_usuario.id)
 
+# Cadastrar senha usuário
 @router.put("/v1/usuarios/senha")
 def criar_senha(id: int, usuarioSenha: UsuarioSetPassword, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
     db_usuario = db.query(Usuario).filter(Usuario.id == id).first()
@@ -45,6 +48,7 @@ def criar_senha(id: int, usuarioSenha: UsuarioSetPassword, db: Session = Depends
     db.refresh(db_usuario)
     return UsuarioCreateResponse(id=db_usuario.id)
 
+# Login do usuário
 @router.post("/v1/usuarios/login")
 def login(autenticar: LoginRequest, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
     usuario = db.query(Usuario).filter(Usuario.cpf == autenticar.cpf).first()
@@ -54,3 +58,16 @@ def login(autenticar: LoginRequest, db: Session = Depends(get_db)) -> UsuarioCre
     #     raise HTTPException(status_code=401, detail="Credenciais inválidas")
     #     # Gerar token, ou simplesmente retornar o usuário autenticado:
     return {"id": usuario.id}
+
+# Recuperar senha, entrada do cpf e return do telefone + email
+@router.post("/v1/usuarios/recuperarsenha", response_model=UsuarioContatoMascarado)
+def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.cpf == recuperar.cpf).first()
+    
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    return UsuarioContatoMascarado(
+        telefone=mascarar_telefone(usuario.telefone),
+        email=mascarar_email(usuario.email)
+    )

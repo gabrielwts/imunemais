@@ -15,7 +15,7 @@
                 <div class="senha-confirm">
                     <label for="confirmar-senha">Confirmar senha <span style="color: red;" title="Campo obrigatório">*</span></label>
                     <!-- [(ngModel)]="form.confirmSenha" -->
-                    <p-password maxlength="150" placeholder="Digite novamente sua senha..." required />
+                    <p-password maxlength="150" placeholder="Digite novamente sua senha..." required [(ngModel)]="confirmarSenha" />
                     <!-- [(ngModel)]="confirm_senha" -->
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <span>As senhas digitadas não coincidem</span>
             } -->
             <div class="botao-cadastrar">
-                <p-button (click)="salvar()" label="Cadastrar-se" severity="info" />
+                <p-button (click)="cadastrarSenha()" label="Cadastrar-se" severity="info" /><!-- (click)="salvar()" -->
             </div>
         </div>
     </div>

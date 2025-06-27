@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import date, datetime
 
 
-# ==== USUÁRIOS CADASTRADOS ====
+# ====== USUÁRIOS CADASTRADOS ====== #
 class UsuarioBase(BaseModel):
     nome_completo: str
     cpf: str
@@ -37,8 +37,15 @@ class UsuarioCreateResponse(BaseModel):
 class LoginRequest(BaseModel):
     cpf: str
     password_hash: str = Field(alias="senha")
+    
+class CpfRecuperarSenha(BaseModel):
+    cpf: str
+    
+class UsuarioContatoMascarado(BaseModel):
+    telefone: str
+    email: str
 
-# ==== VACINAS DO USUÁRIO ====
+# ====== VACINAS DO USUÁRIO ====== #
 class UserVaccineBase(BaseModel):
     full_name: str
     numero_cpf: str
@@ -62,7 +69,7 @@ class UserVaccine(UserVaccineBase):
     }
 
 
-# ==== CARTILHA DE VACINAS ====
+# ====== CARTILHA DE VACINAS ====== #
 class CartilhaVacinaBase(BaseModel):
     vacinas_nome: str
     descricao: Optional[str]
@@ -83,12 +90,12 @@ class CartilhaVacina(CartilhaVacinaBase):
     }
 
 
-# ==== PROFISSIONAIS REGISTRADOS ====
+# ====== PROFISSIONAIS REGISTRADOS ====== #
 class ProfissionalBase(BaseModel):
     nome_pro: str
     usuario: str
     password_prof: str
-    person_paper: str
+    cargo_prof: str
 
 
 class ProfissionalCreate(ProfissionalBase):

@@ -1,6 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import APIRouter, FastAPI
-from src.api.v1.endpoints import admin_controller
+# from src.api.v1.endpoints import admin_controller, autenticacao_controller, usuario_controller
 
 # Cria o roteador da API para o endpoint "/users" com a tag "users"
 router = APIRouter()
@@ -12,13 +12,13 @@ app = FastAPI(
 
 
 origins = [
-    "http://localhost:4200",  # front-end Angular
-    "http://127.0.0.1:4200"
+    "http://localhost:4200", 
+    "http://127.0.0.1:4200",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # ou ["*"] para permitir todos
+    allow_origins=origins,  # ou ["*"] para permitir todos ou =origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
