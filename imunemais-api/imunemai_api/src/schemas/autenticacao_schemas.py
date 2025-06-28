@@ -1,6 +1,7 @@
 from typing import Optional
 from datetime import date, datetime
 from pydantic.dataclasses import dataclass
+from pydantic import BaseModel
 
 
 # Base comum para criação e resposta de usuários
@@ -20,3 +21,16 @@ class TokenData:
     id: int
     usuario: str
     exp: Optional[datetime] = None
+    
+class UsuarioResumo(BaseModel):
+    id: int
+    nome: str
+    telefone: str
+    email: str
+    cpf: str
+    data_nascimento: date
+
+class TokenComUsuario(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    usuario: UsuarioResumo

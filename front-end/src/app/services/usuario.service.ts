@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { UsuarioCadastro } from '../models/usuario-cadastro';
 import { Observable } from 'rxjs';
 import { UsuarioCadastroResponse } from '../models/usuario-cadastro-response';
-import { AuthResponse } from '../models/auth-response';
+import { LoginResponse } from '../models/login-response';
 import { environment } from '../../environments/environment';
 import { SenhaCadastro } from '../models/senha-cadastro';
 import { EfetuarLogin } from '../models/efetuar-login';
@@ -27,8 +27,8 @@ export class UsuarioService {
     return this.http.post<UsuarioCadastroResponse>(`${this.apiUrl}/senha?id=${id}`, senhaCadastro);
   }
 
-  AutenticacaoUsuario(efetuarLogin: EfetuarLogin): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/v1/autenticacao`, efetuarLogin);
+  AutenticacaoUsuario(efetuarLogin: EfetuarLogin): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/v1/autenticacao`, efetuarLogin);
   }
 
   RecuperarSenhaCpf(recuperarSenhaCpf: RecuperarSenhaCpf): Observable<RecuperarSenhaResponse> {

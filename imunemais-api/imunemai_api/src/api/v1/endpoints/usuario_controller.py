@@ -2,7 +2,7 @@ from src.database.database import SessionLocal
 from fastapi import APIRouter, HTTPException, Depends
 from src.schemas.usuario_schemas import AtualizarDados, CpfRecuperarSenha, UsuarioContatoMascarado, UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
 from src.auth.crypto import verificar_senha
-from src.database.models import Usuario
+from src.database.models import Usuario, CartilhaVacina, UserVaccine
 from sqlalchemy.orm import Session
 from src.app import router
 from src.auth.crypto import gerar_hash_senha
@@ -29,6 +29,25 @@ def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> Usua
     db.add(db_usuario)
     db.commit()
     db.refresh(db_usuario)
+    
+    vacinas_cartilha = db.query(CartilhaVacina).all()
+
+    # Para cada vacina, cria um registro pendente para o novo usuário
+    
+    for vacina in vacinas_cartilha:
+        nova_vacina_usuario = UserVaccine(
+            full_name=usuario.nome_completo,
+            numero_cpf=usuario.cpf,
+            nome_vacina=vacina.vacinas_nome,
+            tipo_dose=vacina.doses,
+            validacao="PENDENTE",
+        )
+        db.add(nova_vacina_usuario)
+        
+    db.add(nova_vacina_usuario)
+    db.commit()
+    db.refresh(nova_vacina_usuario)
+    
     return UsuarioCreateResponse(id=db_usuario.id)
 
 # Cadastrar senha usuário

@@ -57,7 +57,6 @@ class UserVaccineBase(BaseModel):
     data_dose_tomada: date
     tipo_dose: str
     validacao: str
-    profissional: str
 
 
 class UserVaccineCreate(UserVaccineBase):

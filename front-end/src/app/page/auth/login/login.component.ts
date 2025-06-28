@@ -26,7 +26,10 @@ export class LoginComponent {
     this.usuarioService.AutenticacaoUsuario(this.form).subscribe({
       next: res => {
       localStorage.setItem('token', res.access_token);
+      localStorage.setItem('usuario', JSON.stringify(res.usuario));
+
       alert("Usuário logado com sucesso!");
+      
       this.router.navigate(["/logado"]);
     },
     error: erro => {
