@@ -1,6 +1,6 @@
 from src.database.database import SessionLocal
 from fastapi import APIRouter, HTTPException, Depends
-from src.schemas.usuario_schemas import CpfRecuperarSenha, UsuarioContatoMascarado, UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
+from src.schemas.usuario_schemas import AtualizarDados, CpfRecuperarSenha, UsuarioContatoMascarado, UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
 from src.auth.crypto import verificar_senha
 from src.database.models import Usuario
 from sqlalchemy.orm import Session
@@ -32,32 +32,34 @@ def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> Usua
     return UsuarioCreateResponse(id=db_usuario.id)
 
 # Cadastrar senha usuário
-@router.put("/v1/usuarios/senha")
+@router.post("/v1/usuarios/senha")
 def criar_senha(id: int, usuarioSenha: UsuarioSetPassword, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
     db_usuario = db.query(Usuario).filter(Usuario.id == id).first()
     if not db_usuario:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
-    # Gerar o hash da senha recebida
-    senha_hash = gerar_hash_senha(usuarioSenha.senha)
+    if not usuarioSenha.password_hash or len(usuarioSenha.password_hash) < 6:
+        raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
 
-    # Salvar no banco
+    senha_hash = gerar_hash_senha(usuarioSenha.password_hash)
     db_usuario.password_hash = senha_hash
+
     db.add(db_usuario)
     db.commit()
     db.refresh(db_usuario)
+
     return UsuarioCreateResponse(id=db_usuario.id)
 
-# Login do usuário
-@router.post("/v1/usuarios/login")
-def login(autenticar: LoginRequest, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
-    usuario = db.query(Usuario).filter(Usuario.cpf == autenticar.cpf).first()
+# # Login do usuário
+# @router.post("/v1/usuarios/login")
+# def login(autenticar: LoginRequest, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
+#     usuario = db.query(Usuario).filter(Usuario.cpf == autenticar.cpf).first()
     
     
-    # if not usuario or not verificar_senha(autenticar.password_hash, usuario.password_hash):
-    #     raise HTTPException(status_code=401, detail="Credenciais inválidas")
-    #     # Gerar token, ou simplesmente retornar o usuário autenticado:
-    return {"id": usuario.id}
+#     # if not usuario or not verificar_senha(autenticar.password_hash, usuario.password_hash):
+#     #     raise HTTPException(status_code=401, detail="Credenciais inválidas")
+#     #     # Gerar token, ou simplesmente retornar o usuário autenticado:
+#     return {"id": usuario.id}
 
 # Recuperar senha, entrada do cpf e return do telefone + email
 @router.post("/v1/usuarios/recuperarsenha", response_model=UsuarioContatoMascarado)
@@ -71,3 +73,18 @@ def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db))
         telefone=mascarar_telefone(usuario.telefone),
         email=mascarar_email(usuario.email)
     )
+    
+# Atualizar e-mail e telefone do usuário (profile)
+@router.put("/v1/usuarios/atualizardados")
+def atualizar_dados(atualizar: AtualizarDados, db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.id == id).first()
+    
+    if atualizar.email:
+        usuario.email = atualizar.email
+    if atualizar.telefone:
+        usuario.telefone = atualizar.telefone
+        
+    db.commit()
+    db.refresh(usuario)
+
+    return {"mensagem": "Dados de contato atualizados com sucesso"}

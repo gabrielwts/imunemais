@@ -23,8 +23,8 @@ class UserVaccine(Base):
     numero_cpf = Column(String(14), ForeignKey("usuarios.cpf", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     nome_vacina = Column(String(150), nullable=False)
     tipo_dose = Column(String(50), nullable=False)
-    validacao = Column(String(25), nullable=False)
-    profissional = Column(String(150), nullable=False)
+    validacao = Column(String(25), nullable=False) # valores que vai receber: PENDENTE e REALIZADA
+    profissional = Column(String(150), nullable=False) # Aqui seria o nome do enfermeiro que validou
     user_id = Column(Integer, nullable=True)  # Pode remover se não estiver sendo usado
 
 

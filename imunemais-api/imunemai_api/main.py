@@ -29,3 +29,5 @@ app.include_router(autenticacao_controller.router)
 
 if __name__ == "__main__":
     uvicorn.run("main:app")
+    
+    

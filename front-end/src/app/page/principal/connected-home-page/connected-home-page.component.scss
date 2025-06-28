@@ -111,11 +111,20 @@ header {
 }
 
 .card-announcement-one {
-    background-color: #FFF;
+    display: flex;
+    background: linear-gradient(135deg, #3f4397, #111be0);
     height: 300px;
     width: 420px;
     border-radius: 2%;
     position: relative;
+    justify-content: center;
+
+    img {
+        margin-top: 10px;
+        height: 280px;
+        width: auto;
+        justify-content: center;
+    }
 }
 
 .announcement-card-two {

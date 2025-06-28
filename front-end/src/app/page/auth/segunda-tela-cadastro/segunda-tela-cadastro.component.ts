@@ -39,8 +39,8 @@ export class SegundaTelaCadastroComponent { // implements OnInit
       alert("As senhas não coincidem. Por favor, verifique.");
       return;
     }
-    console.log('Senha:', this.form.senha);
-    console.log('Confirmação:', this.confirmarSenha);
+    // console.log('Senha:', this.form.senha);
+    // console.log('Confirmação:', this.confirmarSenha);
 
     this.usuarioService.cadastrarSenha(this.id, this.form).subscribe({
       next: () => {

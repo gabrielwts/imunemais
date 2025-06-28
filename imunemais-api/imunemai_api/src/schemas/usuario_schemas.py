@@ -44,6 +44,10 @@ class CpfRecuperarSenha(BaseModel):
 class UsuarioContatoMascarado(BaseModel):
     telefone: str
     email: str
+    
+class AtualizarDados(BaseModel):
+    telefone: str
+    email: str
 
 # ====== VACINAS DO USUÁRIO ====== #
 class UserVaccineBase(BaseModel):

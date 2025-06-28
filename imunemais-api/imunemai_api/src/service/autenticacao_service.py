@@ -10,8 +10,9 @@ from sqlalchemy.orm import Session
 from src.app import router
 from src.database.database import SessionLocal
 from src.database.models import Usuario
-from src.schemas.usuario_schemas import UsuarioCreate, UsuarioBase, UsuarioCreateResponse
+from src.schemas.usuario_schemas import UsuarioCreate
 from src.schemas.autenticacao_schemas import AutenticacaoLogin, Token, TokenData
+from src.auth.crypto import gerar_hash_senha, verificar_senha
 from sqlalchemy.exc import IntegrityError
 
 
@@ -21,23 +22,13 @@ SECRET_KEY = os.getenv("SECRET_KEY")  # Substitua por uma chave secreta segura
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/v1/autenticacao")
 
-# def generate_token(usuario):
-#     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-#     access_token = create_access_token(
-#         data={"sub": usuario.usuario, "id": usuario.id}, expires_delta=access_token_expires
-#     )
-
-#     return access_token, access_token_expires
-
 def generate_token(usuario):
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    payload = {
-        "sub": str(usuario.id),
-        "cpf": usuario.cpf,
-        "exp": expire
-    }
-    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-    return token
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": usuario.cpf, "id": usuario.id}, expires_delta=access_token_expires
+    )
+
+    return access_token, access_token_expires
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()

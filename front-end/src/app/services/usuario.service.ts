@@ -9,6 +9,7 @@ import { SenhaCadastro } from '../models/senha-cadastro';
 import { EfetuarLogin } from '../models/efetuar-login';
 import { RecuperarSenhaCpf } from '../models/recuperar-senha-cpf';
 import { RecuperarSenhaResponse } from '../models/recuperar-senha-response';
+import { AlterarDadosPaciente } from '../models/alterar-dados-paciente';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class UsuarioService {
   }
 
   cadastrarSenha(id: number, senhaCadastro: SenhaCadastro) : Observable<UsuarioCadastroResponse>{
-    return this.http.put<UsuarioCadastroResponse>(`${this.apiUrl}/senha?id=${id}`, senhaCadastro);
+    return this.http.post<UsuarioCadastroResponse>(`${this.apiUrl}/senha?id=${id}`, senhaCadastro);
   }
 
   AutenticacaoUsuario(efetuarLogin: EfetuarLogin): Observable<AuthResponse> {
@@ -32,6 +33,10 @@ export class UsuarioService {
 
   RecuperarSenhaCpf(recuperarSenhaCpf: RecuperarSenhaCpf): Observable<RecuperarSenhaResponse> {
     return this.http.post<RecuperarSenhaResponse>(`${environment.apiUrl}/v1/usuarios/recuperarsenha`, recuperarSenhaCpf)
+  }
+
+  AtualizarDados(alterarDadosPaciente: AlterarDadosPaciente): Observable<{ mensagem: string }> {
+    return this.http.put<{ mensagem: string }>(`${environment.apiUrl}/v1/usuarios/atualizardados`, alterarDadosPaciente)
   }
 
 
