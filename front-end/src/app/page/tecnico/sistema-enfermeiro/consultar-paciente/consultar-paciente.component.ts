@@ -4,33 +4,75 @@ import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-consultar-paciente',
   imports: [ButtonModule, SelectButtonModule, FormsModule, InputMaskModule, InputTextModule],
   templateUrl: './consultar-paciente.component.html',
-  styleUrl: './consultar-paciente.component.scss'
+  styleUrls: ['./consultar-paciente.component.scss']
 })
 export class ConsultarPacienteComponent {
   podeEditar: boolean = false;
 
-  alternarEdicao() {
-    this.podeEditar = !this.podeEditar;
-  }
+  cpfDigitado: string = '';
+  paciente: any = null;
+  vacinas: any[] = [];
 
+  value: boolean = true;
   stateOptions = [
     { label: 'Histórico', value: true },
     { label: 'Pendentes', value: false }
   ];
 
-  value: boolean = true;
+  constructor(private http: HttpClient) {}
 
-  // Função para buscar dados conforme a opção selecionada
-  buscarDados() {
-    if (this.value == true) {
-      console.log("Buscando dados de Histórico..."); // Buscar vacinas realizada
-    } else {
-      console.log("Buscando dados de Pendentes..."); // Buscar vacinas pendentes
+  alternarEdicao() {
+    this.podeEditar = !this.podeEditar;
+  }
+
+  buscarPacientePorCpf() {
+    if (!this.cpfDigitado || this.cpfDigitado.trim() === '') {
+      alert('Por favor, digite um CPF válido');
+      return;
     }
+
+    this.paciente = null;
+    this.vacinas = [];
+
+    const cpfSemMascara = this.cpfDigitado.replace(/\D/g, '');
+
+    this.http.get(`http://localhost:8000/enfermeiros/paciente/${cpfSemMascara}`).subscribe({
+      next: (res: any) => {
+        this.paciente = res;
+        this.buscarDados();
+      },
+      error: () => {
+        alert('Paciente não encontrado no banco de dados.');
+        this.paciente = null;
+        this.vacinas = [];
+      }
+    });
+  }
+
+  buscarDados() {
+    if (!this.paciente) return;
+
+    const cpf = this.paciente.cpf.replace(/\D/g, '');
+
+    const statusFiltro = this.value ? 'REALIZADA' : 'PENDENTE';
+
+    this.http.get<any[]>(`http://localhost:8000/enfermeiros/paciente/${cpf}/vacinas?status=${statusFiltro}`)
+      .subscribe(res => this.vacinas = res);
+  }
+
+  validarVacina(vacina: any, realizar: boolean) {
+    this.http.put(`http://localhost:8000/enfermeiros/vacina/${vacina.id}/validar`, { realizada: realizar })
+      .subscribe({
+        next: () => {
+          vacina.status = realizar ? 'REALIZADA' : 'PENDENTE';
+        },
+        error: () => alert('Erro ao atualizar o status da vacina')
+      });
   }
 }

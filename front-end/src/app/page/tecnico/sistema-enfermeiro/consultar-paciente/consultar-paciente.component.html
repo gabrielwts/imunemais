@@ -1,69 +1,67 @@
 <main class="main-conten">
+  <div class="form-container">
+    <div class="left-form">
+      <label for="cpf">CPF</label>
+      <p-inputmask id="cpf" mask="999.999.999-99" placeholder="Insira o número de CPF.." [(ngModel)]="cpfDigitado"></p-inputmask>
+      <button (click)="buscarPacientePorCpf()">Buscar Paciente</button>
 
-    <div class="form-container">
-        <div class="left-form">
-            <label for="cpf">CPF</label>
-            <p-inputmask id="cpf" mask="999.999.999-99" placeholder="Insira o número de CPF.."></p-inputmask>
+      <label for="nome">Nome</label>
+      <input id="nome" [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente?.nome" />
 
-            <label for="nome">Nome</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.nome" -->
+      <label for="data">Data de Nascimento</label>
+      <input id="data" [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente?.dataNascimento" />
 
-            <label for="data">Data de Nascimento</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.dataNascimento" -->
+      <label for="telefone">Telefone</label>
+      <input id="telefone" [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente?.telefone" />
 
-            <label for="telefone">Telefone</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.telefone" -->
-
-            <label for="email">E-mail</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.email" -->
-        </div>
-
-        <div class="right-photo">
-
-            <img id="fotoUsuario" src="" alt="Foto do Usuário" class="foto-usuario">
-                    
-            @if (this.podeEditar) {
-                <p-button label="Salvar alterações" (click)="alternarEdicao()" severity="success" />
-            } @else {
-                <p-button label="Alterar Dados" severity="contrast" (click)="alternarEdicao()"/>
-            }
-        </div>
+      <label for="email">E-mail</label>
+      <input id="email" [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente?.email" />
     </div>
 
-    <div class="tabs">
-        <div class="id-leftbar"><span>Histórico de Vacinas</span></div>
-        <div class="id-rightbar"><p-selectbutton [options]="stateOptions" [(ngModel)]="value" (ngModelChange)="buscarDados()" optionLabel="label" optionValue="value" aria-labelledby="basic" /></div>
-    </div>
+    <div class="right-photo">
+      <img id="fotoUsuario" [src]="paciente?.fotoUrl || ''" alt="Foto do Usuário" class="foto-usuario" />
 
-    <div id="historico" class="vacina-tab" style="display: block;">
-        <div class="vacina-item"> <!-- Template da vacina, cada uma vai ser nessa estilização -->
-            <div class="vacina-img"><img src="/vaccine-valid.png" alt="Vacina"></div> <!-- /vaccine-valid.png = valida | vaccine-pending.png = pendente --> 
-            <div>
-                <strong></strong><!-- nome da vacina -->
-                <p></p><!-- descrição da vacina -->
-                <small></small><!-- tipo dose da vacina -->
-            </div>
-                    
-            <div class="icons"> <!-- botões de validação -->
-                <img src="/validate-green.png" alt="validar"> <!-- Validar -->
-                <img src="/invalidate-red.png" alt="invalidar"> <!-- Retirar validação -->
-            </div>
-        </div>
+      <p-button *ngIf="podeEditar" label="Salvar alterações" (click)="alternarEdicao()" severity="success"></p-button>
+      <p-button *ngIf="!podeEditar" label="Alterar Dados" severity="contrast" (click)="alternarEdicao()"></p-button>
     </div>
+  </div>
 
-    <div id="pendentes" class="vacina-tab" style="display: block;">
-        <div class="vacina-item"> <!-- Template da vacina, cada uma vai ser nessa estilização -->
-            <div class="vacina-img"><img src="/vaccine-valid.png" alt="Vacina"></div> <!-- /vaccine-valid.png = valida | vaccine-pending.png = pendente --> 
-            <div>
-                <strong></strong><!-- nome da vacina -->
-                <p></p><!-- descrição da vacina -->
-                <small></small><!-- tipo dose da vacina -->
-            </div>
-                    
-            <div class="icons"> <!-- botões de validação -->
-                <img src="/validate-green.png" alt="validar"> <!-- Validar -->
-                <img src="/invalidate-red.png" alt="invalidar"> <!-- Retirar validação -->
-            </div>
-        </div>
+  <div class="tabs">
+    <div class="id-leftbar"><span>Histórico de Vacinas</span></div>
+    <div class="id-rightbar">
+      <p-selectbutton [options]="stateOptions" [(ngModel)]="value" (ngModelChange)="buscarDados()" optionLabel="label" optionValue="value" aria-labelledby="basic"></p-selectbutton>
     </div>
+  </div>
+
+  <div id="historico" class="vacina-tab" *ngIf="value === true">
+    <div *ngFor="let vacina of vacinas" class="vacina-item">
+      <div class="vacina-img">
+        <img [src]="vacina.status === 'REALIZADA' ? '/vaccine-valid.png' : '/vaccine-pending.png'" alt="Vacina" />
+      </div>
+      <div>
+        <strong>{{ vacina.nome }}</strong>
+        <p>{{ vacina.descricao }}</p>
+        <small>Dose: {{ vacina.dose }}</small>
+      </div>
+      <div class="icons">
+        <img src="/invalidate-red.png" alt="invalidar" (click)="validarVacina(vacina, false)" style="cursor:pointer" *ngIf="vacina.status === 'REALIZADA'" />
+      </div>
+    </div>
+  </div>
+
+  <div id="pendentes" class="vacina-tab" *ngIf="value === false">
+    <div *ngFor="let vacina of vacinas" class="vacina-item">
+      <div class="vacina-img">
+        <img [src]="vacina.status === 'PENDENTE' ? '/vaccine-pending.png' : '/vaccine-valid.png'" alt="Vacina" />
+      </div>
+      <div>
+        <strong>{{ vacina.nome }}</strong>
+        <p>{{ vacina.descricao }}</p>
+        <small>Dose: {{ vacina.dose }}</small>
+      </div>
+      <div class="icons">
+        <img src="/validate-green.png" alt="validar" (click)="validarVacina(vacina, true)" style="cursor:pointer" *ngIf="vacina.status === 'PENDENTE'" />
+      </div>
+    </div>
+  </div>
 </main>
