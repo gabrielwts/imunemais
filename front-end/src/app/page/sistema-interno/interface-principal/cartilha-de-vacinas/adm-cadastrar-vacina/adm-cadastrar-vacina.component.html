@@ -1,24 +1,16 @@
-<div class="cadastrar-vacina-box">
-    <p>Registrar vacina</p>
-    <div class="form">
-        <div class="inputs-info">
-            <label>Nome</label>
-            <input type="text" pInputText placeholder="Digite o nome da vacina.." />
-        </div>
-        <div class="inputs-info">
-            <label>Descrição</label>
-            <input type="text" pInputText placeholder="Digite a descrição da vacina.." />
-        </div>
-        <div class="inputs-info">
-            <label>Faixa Etária</label>
-            <p-select [options]="ageRanges" [(ngModel)]="selectedAgeRange" optionLabel="name" placeholder="Selecione a faixa etária" class="w-full md:w-56" />
-        </div>
-        <div class="inputs-info">
-            <label>Dose</label>
-            <input type="text" pInputText placeholder="Digite o tipo de dose da vacina.." />
-        </div>
-    </div>
-    <div class="button">
-        <p-button label="Registrar vacina" severity="success" />
-    </div>
+<div class="adm-cadastrar-vacina-container">
+  <h2>Cadastrar Vacina</h2>
+
+  <label>Nome da Vacina</label>
+  <input type="text" [(ngModel)]="vacinaNome" placeholder="Nome da vacina" />
+
+  <label>Faixa Etária</label>
+  <p-dropdown
+    [options]="ageRanges"
+    [(ngModel)]="selectedAgeRange"
+    optionLabel="name"
+    placeholder="Selecione a faixa etária"
+  ></p-dropdown>
+
+  <button (click)="cadastrarVacina()">Cadastrar Vacina</button>
 </div>

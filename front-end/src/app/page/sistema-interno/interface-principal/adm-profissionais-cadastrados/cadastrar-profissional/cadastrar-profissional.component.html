@@ -1,31 +1,22 @@
-<div class="form-container">
-  <div class="top">
-    <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
-  </div>
+<div class="cadastrar-profissional-container">
+  <h2>Cadastrar Profissional</h2>
 
-  <div class="left-form">
-    <div class="form-row">
-      <label>Nome</label>
-      <input type="text" pInputText placeholder="Digite o nome completo.." />
-    </div>
+  <label>Nome</label>
+  <input type="text" [(ngModel)]="nome" placeholder="Nome completo" />
 
-    <div class="form-row">
-      <label>Usuário</label>
-      <input type="text" pInputText placeholder="Digite o nome de usuário.." />
-    </div>
+  <label>Email</label>
+  <input type="email" [(ngModel)]="email" placeholder="Email" />
 
-    <div class="form-row">
-      <label>Senha</label>
-      <input type="text" pInputText placeholder="Digite uma senha.." />
-    </div>
+  <label>Senha</label>
+  <input type="password" [(ngModel)]="senha" placeholder="Senha" />
 
-    <div class="form-row">
-      <label>Cargo</label>
-      <p-select [options]="userTypes" [(ngModel)]="selecteduserType" optionLabel="name" placeholder="Selecione o cargo" class="w-full md:w-56" />
-    </div>
-  </div>
+  <label>Tipo de Usuário</label>
+  <p-dropdown
+    [options]="userTypes"
+    [(ngModel)]="selectedUserType"
+    optionLabel="name"
+    placeholder="Selecione o tipo"
+  ></p-dropdown>
 
-  <div class="buttons">
-    <p-button label="Registrar usuário" severity="success" />
-  </div>
+  <button (click)="cadastrar()">Cadastrar</button>
 </div>

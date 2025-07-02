@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, Query
-from imunemai_api.src.database import models
-from imunemai_api.src.database.database import get_db
+from src.database import models
+from src.database.database import get_db
 from sqlalchemy.orm import Session
 from fastapi import Depends
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/enfermeiros", tags=["Enfermeiros"])
 
@@ -53,11 +54,14 @@ def atualizar_paciente(cpf: str, nome: str, db: Session = Depends(get_db)):
     return {"mensagem": "Paciente atualizado"}
 
 # 8. PUT - Validar/Desvalidar vacina
+class ValidarVacinaSchema(BaseModel):
+    realizada: bool
+
 @router.put("/vacina/{id}/validar")
-def validar_vacina(id: int, realizada: bool, db: Session = Depends(get_db)):
+def validar_vacina(id: int, dados: ValidarVacinaSchema, db: Session = Depends(get_db)):
     vacina = db.query(models.Vacina).filter_by(id=id).first()
     if not vacina:
         raise HTTPException(status_code=404, detail="Vacina não encontrada")
-    vacina.status = "REALIZADA" if realizada else "PENDENTE"
+    vacina.status = "REALIZADA" if dados.realizada else "PENDENTE"
     db.commit()
-    return {"mensagem": f"Vacina marcada como {'REALIZADA' if realizada else 'PENDENTE'}"}
+    return {"mensagem": f"Vacina marcada como {'REALIZADA' if dados.realizada else 'PENDENTE'}"}

@@ -1,15 +1,21 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule } from '@angular/common';
+
+interface Usuario {
+  nome: string;
+  tipo: string;
+}
 
 @Component({
   selector: 'app-usuarios-cadastrados',
-  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './usuarios-cadastrados.component.html',
-  styleUrl: './usuarios-cadastrados.component.scss'
+  styleUrls: ['./usuarios-cadastrados.component.css']
 })
 export class UsuariosCadastradosComponent {
-
+  usuarios: Usuario[] = [
+    { nome: 'João', tipo: 'Enfermeiro' },
+    { nome: 'Maria', tipo: 'Administrador' }
+  ];
 }

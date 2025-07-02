@@ -1,28 +1,52 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule, Select } from 'primeng/select';
+import { DropdownModule } from 'primeng/dropdown'; // se estiver usando PrimeNG, ajuste se for outro
 
-interface userType {
+interface UserType {
   name: string;
+  code: string;
 }
 
 @Component({
   selector: 'app-cadastrar-profissional',
-  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, DropdownModule],
   templateUrl: './cadastrar-profissional.component.html',
-  styleUrl: './cadastrar-profissional.component.scss'
+  styleUrls: ['./cadastrar-profissional.component.css']
 })
 export class CadastrarProfissionalComponent {
-  userTypes: userType[] = [];         // Lista de opções
-  selecteduserType: userType | null = null; // Item selecionado
+  userTypes: UserType[] = [
+    { name: 'Administrador', code: 'admin' },
+    { name: 'Enfermeiro', code: 'enfermeiro' }
+  ];
 
-  ngOnInit() {
-    this.userTypes = [
-      { name: 'Administrador' },
-      { name: 'Profissional' },
-    ];
+  selectedUserType?: UserType;
+
+  nome = '';
+  email = '';
+  senha = '';
+
+  cadastrar() {
+    if (!this.nome || !this.email || !this.senha || !this.selectedUserType) {
+      alert('Preencha todos os campos!');
+      return;
+    }
+    // Aqui a lógica de cadastro, ex: chamada API
+    console.log('Cadastrando profissional:', {
+      nome: this.nome,
+      email: this.email,
+      senha: this.senha,
+      tipo: this.selectedUserType.code
+    });
+    alert('Profissional cadastrado com sucesso!');
+    this.limparCampos();
+  }
+
+  limparCampos() {
+    this.nome = '';
+    this.email = '';
+    this.senha = '';
+    this.selectedUserType = undefined;
   }
 }

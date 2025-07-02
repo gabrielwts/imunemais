@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { HttpClient } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-consultar-paciente',
   imports: [ButtonModule, SelectButtonModule, FormsModule, InputMaskModule, InputTextModule],

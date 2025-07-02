@@ -1,39 +1,40 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule, Select } from 'primeng/select';
-import { AdmCadastrarVacinaComponent } from './adm-cadastrar-vacina/adm-cadastrar-vacina.component';
-
-interface AgeRange {
-  name: string;
-}
 
 @Component({
   selector: 'app-cartilha-de-vacinas',
-  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, Select, AdmCadastrarVacinaComponent],
   templateUrl: './cartilha-de-vacinas.component.html',
-  styleUrl: './cartilha-de-vacinas.component.scss'
+  standalone: true,
+  imports: [FormsModule, ButtonModule, DropdownModule, InputTextModule],
 })
 export class CartilhaDeVacinasComponent {
+  ageRanges = [
+    { name: '0 a 5 anos', code: '0-5' },
+    { name: '6 a 12 anos', code: '6-12' },
+    { name: '13 a 18 anos', code: '13-18' },
+    { name: 'Adulto', code: 'adult' },
+    { name: 'Idoso', code: 'elderly' }
+  ];
+
+  selectedAgeRange: any = null;
+  searchTerm: string = '';
   cadastrarVac: boolean = false;
 
+  vacinas = [
+    // Aqui você pode carregar vacinas do backend e filtrar
+    { nome: 'Vacina A', descricao: 'Descrição A', dose: 'Dose 1', faixaEtaria: 'adult' },
+    { nome: 'Vacina B', descricao: 'Descrição B', dose: 'Dose 2', faixaEtaria: '0-5' },
+  ];
+
   cadastrarVacina() {
-    this.cadastrarVac = !this.cadastrarVac;
+    this.cadastrarVac = true;
   }
 
-  // SELECIONAR VACINAS POR FAIXA ETÁRIA
-  ageRanges: AgeRange[] = [];         // Lista de opções
-  selectedAgeRange: AgeRange | null = null; // Item selecionado
-
-  ngOnInit() {
-    this.ageRanges = [
-      { name: 'Adolescente' },
-      { name: 'Adulto', },
-      { name: 'Criança' },
-      { name: 'Gestante' },
-      { name: 'Idoso' }
-    ];
+  filtrarVacinas() {
+    const termo = this.searchTerm.toLowerCase();
+    return this.vacinas.filter(v => v.nome.toLowerCase().includes(termo));
   }
 }

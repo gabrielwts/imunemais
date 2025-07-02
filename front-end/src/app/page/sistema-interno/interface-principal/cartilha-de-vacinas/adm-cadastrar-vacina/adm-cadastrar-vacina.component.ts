@@ -1,33 +1,45 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule, Select } from 'primeng/select';
+import { DropdownModule } from 'primeng/dropdown';
 
 interface AgeRange {
   name: string;
+  code: string;
 }
 
 @Component({
   selector: 'app-adm-cadastrar-vacina',
-  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, Select],
+  standalone: true,
+  imports: [CommonModule, FormsModule, DropdownModule],
   templateUrl: './adm-cadastrar-vacina.component.html',
-  styleUrl: './adm-cadastrar-vacina.component.scss'
+  styleUrls: ['./adm-cadastrar-vacina.component.css']
 })
 export class AdmCadastrarVacinaComponent {
+  ageRanges: AgeRange[] = [
+    { name: '0-5 anos', code: '0-5' },
+    { name: '6-12 anos', code: '6-12' },
+    { name: '13-18 anos', code: '13-18' },
+    { name: 'Adulto', code: 'adulto' }
+  ];
 
-  // SELECIONAR VACINAS POR FAIXA ETÁRIA
-  ageRanges: AgeRange[] = [];         // Lista de opções
-  selectedAgeRange: AgeRange | null = null; // Item selecionado
+  selectedAgeRange?: AgeRange;
 
-  ngOnInit() {
-    this.ageRanges = [
-      { name: 'Adolescente' },
-      { name: 'Adulto', },
-      { name: 'Criança' },
-      { name: 'Gestante' },
-      { name: 'Idoso' }
-    ];
+  vacinaNome = '';
+
+  cadastrarVacina() {
+    if (!this.vacinaNome || !this.selectedAgeRange) {
+      alert('Preencha todos os campos!');
+      return;
+    }
+    // Chamada API para salvar vacina
+    console.log('Vacina cadastrada:', this.vacinaNome, this.selectedAgeRange);
+    alert('Vacina cadastrada com sucesso!');
+    this.limparCampos();
+  }
+
+  limparCampos() {
+    this.vacinaNome = '';
+    this.selectedAgeRange = undefined;
   }
 }
