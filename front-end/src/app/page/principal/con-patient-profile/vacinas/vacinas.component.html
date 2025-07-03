@@ -2,16 +2,32 @@
     <div class="id-leftbar">
         <span>Histórico de Vacinas</span>
     </div>
-
-    <div class="id-rightbar">
-        <p-selectbutton [options]="stateOptions" [(ngModel)]="value" (ngModelChange)="buscarDados()" optionLabel="label" optionValue="value" aria-labelledby="basic" />
-    </div>
+    
+    <p-selectbutton 
+        [options]="stateOptions" 
+        [(ngModel)]="value" 
+        (onChange)="onFiltroChange()"
+        optionLabel="label"
+        optionValue="value"
+        aria-labelledby="basic">
+    </p-selectbutton>
 </div>
 
 <div class="cartela-vacinas-user">
+
     <div class="vaccine">
-        <img src="vaccine-valid.png" alt="Vacina" class="icon-vaccine">
-        <p>Hepatite B</p>
-        <span>3 doses, de acordo com a situação vacinal</span>
+        <ul *ngIf="vacinasFiltradas.length > 0">
+            <li *ngFor="let vacina of vacinasFiltradas" class="vaccine-item">
+                <img [src]="vacina.validacao === 'REALIZADA' ? '/vaccine-valid.png' : '/vaccine-pending.png'" alt="Vacina" class="icon-vaccine"/>
+
+                <div class="vaccine-info">
+                    <p>{{ vacina.nome_vacina }}</p>
+                    <span>{{ vacina.descricao_vacina }}</span><br>
+                    <span class="dose">{{ vacina.tipo_dose }}</span>
+                </div>
+            </li>
+        </ul>
     </div>
+
+    <p *ngIf="vacinasFiltradas.length === 0">Nenhuma vacina encontrada.</p>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
@@ -13,7 +13,13 @@ import { UsuarioService } from '../../../../services/usuario.service';
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
-export class PerfilComponent {
+export class PerfilComponent implements OnInit {
+  nome: string = "";
+  cpf: string = "";
+  data_nascimento: string = "";
+  telefone: string = "";
+  email: string = "";
+  
   form!: AlterarDadosPaciente;
   alterarInfo: boolean = true;
 
@@ -45,19 +51,21 @@ export class PerfilComponent {
   })
   }
 
-  //   usuarioLogado: AlterarDadosPaciente = { email: '', telefone: '' };
-  // form: AlterarDadosPaciente = { email: '', telefone: '' };
+  ngOnInit() {
+  
+    const usuarioData: string | null = localStorage.getItem('usuario');
 
-  // ngOnInit() {
-  //   const token = localStorage.getItem('token');
-  //   this.http.get<AlterarDadosPaciente>(`${environment.apiUrl}/v1/usuarios/me`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`
-  //     }
-  //   }).subscribe(dados => {
-  //     this.usuarioLogado = dados;
-  //     this.form = { ...dados }; // inicializa o formulário
-  //   });
-  // }
+    if (usuarioData) {
+      const usuario = JSON.parse(usuarioData);
+      this.nome = usuario.nome || 'Visitante';
+      this.cpf = usuario.cpf
+      this.data_nascimento = usuario.data_nascimento
+      this.telefone = usuario.telefone
+      this.email = usuario.email
+    } else {
+      console.warn("Usuário não encontrado no localStorage.");
+      this.nome = 'Visitante';
+    }
+  }
 
 }

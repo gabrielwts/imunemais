@@ -39,5 +39,8 @@ export class UsuarioService {
     return this.http.put<{ mensagem: string }>(`${environment.apiUrl}/v1/usuarios/atualizardados`, alterarDadosPaciente)
   }
 
+  getVacinasPorCpf(cpf: string): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/v1/paciente/vacinas?cpf=${cpf}`);
+  }
 
 }

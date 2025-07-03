@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
+from typing import Optional, List
 from datetime import date, datetime
 
 
@@ -54,16 +54,22 @@ class UserVaccineBase(BaseModel):
     full_name: str
     numero_cpf: str
     nome_vacina: str
+    descricao_vacina: str
     data_dose_tomada: date
     tipo_dose: str
     validacao: str
-
+    
+class ListaUserVacinaResponse(BaseModel):
+    nome_vacina: str
+    tipo_dose: str
+    descricao_vacina: str
+    numero_cpf: str
+    validacao: str
 
 class UserVaccineCreate(UserVaccineBase):
     user_id: Optional[int]
 
-
-class UserVaccine(UserVaccineBase):
+class UserVaccines(UserVaccineBase):
     id: int
     user_id: Optional[int]
 

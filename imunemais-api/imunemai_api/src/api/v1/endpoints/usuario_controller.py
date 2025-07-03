@@ -39,6 +39,7 @@ def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> Usua
             full_name=usuario.nome_completo,
             numero_cpf=usuario.cpf,
             nome_vacina=vacina.vacinas_nome,
+            descricao_vacina=vacina.descricao,
             tipo_dose=vacina.doses,
             validacao="PENDENTE",
         )
@@ -69,17 +70,6 @@ def criar_senha(id: int, usuarioSenha: UsuarioSetPassword, db: Session = Depends
 
     return UsuarioCreateResponse(id=db_usuario.id)
 
-# # Login do usuário
-# @router.post("/v1/usuarios/login")
-# def login(autenticar: LoginRequest, db: Session = Depends(get_db)) -> UsuarioCreateResponse:
-#     usuario = db.query(Usuario).filter(Usuario.cpf == autenticar.cpf).first()
-    
-    
-#     # if not usuario or not verificar_senha(autenticar.password_hash, usuario.password_hash):
-#     #     raise HTTPException(status_code=401, detail="Credenciais inválidas")
-#     #     # Gerar token, ou simplesmente retornar o usuário autenticado:
-#     return {"id": usuario.id}
-
 # Recuperar senha, entrada do cpf e return do telefone + email
 @router.post("/v1/usuarios/recuperarsenha", response_model=UsuarioContatoMascarado)
 def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db)):
@@ -97,11 +87,6 @@ def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db))
 @router.put("/v1/usuarios/atualizardados")
 def atualizar_dados(atualizar: AtualizarDados, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.id == id).first()
-    
-    if atualizar.email:
-        usuario.email = atualizar.email
-    if atualizar.telefone:
-        usuario.telefone = atualizar.telefone
         
     db.commit()
     db.refresh(usuario)

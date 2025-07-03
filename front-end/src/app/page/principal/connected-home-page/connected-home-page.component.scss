@@ -45,6 +45,11 @@ header {
         gap: 30px;
         text-decoration: underline;
         cursor: pointer;
+
+        a {
+            text-decoration: underline;
+            color: black;
+        }
     }
 }
   
@@ -77,8 +82,10 @@ header {
         background-color: #2C2C2C;
     }
 
-    a {
+    img {
         cursor: pointer;
+        height: 13px;
+        width: auto;
     }
 
     :host ::ng-deep .meu-avatar {
@@ -143,6 +150,39 @@ header {
     top: 95px;
     left: 50%;
     transform: translateX(-50%);
+
+    h3 {
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+
+    .pendentes-card {
+        padding: 1rem;
+    }
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    .icon-vaccine {
+        width: 50px;
+        height: 50px;
+        margin-right: 1rem;
+    }
+
+    .vaccine-info {
+        .descricao {
+            font-size: 13px;
+        }
+
+        .dose {
+            font-size: 12px;
+        }
+    }
 }
 
 .poster-card-img {

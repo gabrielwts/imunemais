@@ -6,7 +6,7 @@
         <span class="logo">imune+</span>
         <div class="list-Options">
           <ul>
-            <li>Suas Vacinas</li>
+            <li><a href="/profile">Suas Vacinas</a></li>
           </ul>
         </div>
       </div>
@@ -14,14 +14,14 @@
       <div class="navbar-right">
         <img src="/default-icon.jpg" alt="Foto de perfil" class="profile-user-icon">
         <span class="user-name-val"> {{ nome }} </span>
-        <a class="pi pi-chevron-down" (click)="mostrarCard()"></a>
+        <img src="/arrowsz.png" alt="arrow" (click)="mostrarCard()">
       </div>
 
     </nav>
 
     <div class="cardUserProfile">
       @if(dadosUsuario === true) {
-        <app-profile-card></app-profile-card>
+      <app-profile-card></app-profile-card>
       }
     </div>
 
@@ -31,7 +31,23 @@
     <div class="card-announcement-one">
       <img src="/vacina_sempre_brasil.png" alt="vacinabrasil_campanha">
     </div>
-    <div class="announcement-card-two"></div>
+
+    <div class="announcement-card-two">
+
+      <div *ngIf="vacinasPendentes.length > 0" class="pendentes-card">
+        <h3>Vacinas Pendentes</h3>
+        <ul>
+          <li *ngFor="let vacina of vacinasPendentes">
+            <img src="/vaccine-pending.png" alt="Vacina Pendente" class="icon-vaccine" />
+            <div class="vaccine-info">
+              <p>{{ vacina.nome_vacina }}</p>
+              <span class="descricao">{{ vacina.descricao_vacina }}</span><br>
+              <span class="dose">{{ vacina.tipo_dose }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <div class="card-poster">

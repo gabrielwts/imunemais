@@ -33,10 +33,14 @@
 
 .cartela-vacinas-user .vaccine {
     width: 100%;
-    margin-left: 250px;
-    padding-top: 40px;
+    margin-left: 200px;
+    padding-top: 30px;
     padding-left: 50px;
     display: flex;
+
+    ul {
+        list-style-type: none;
+    }
 
     p {
         padding-left: 15px;
@@ -44,5 +48,27 @@
 
     span {
         padding-left: 15px;
+    }
+
+    .dose{
+        font-size: 12px;
+        font-weight: bold;
+    }
+}
+
+.vaccine-item {
+  display: flex;
+  align-items: flex-start; /* alinha pela parte de cima */
+  gap: 1rem; /* espaçamento entre imagem e texto */
+  margin-bottom: 1rem;
+  padding: 1rem;
+
+    .icon-vaccine {
+        width: 50px;
+        height: 50px;
+    }
+
+    .vaccine-info {
+        flex: 1;
     }
 }
