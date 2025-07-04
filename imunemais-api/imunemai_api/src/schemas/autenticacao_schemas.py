@@ -10,6 +10,11 @@ from pydantic import BaseModel
 class AutenticacaoLogin:
     cpf: str
     senha: str
+    
+@dataclass
+class AdmAutenticacaoLogin:
+    usuario: str
+    senha: str
 
 @dataclass
 class Token:
@@ -37,3 +42,17 @@ class TokenComUsuario(BaseModel):
     access_token: str
     token_type: str = "bearer"
     usuario: UsuarioComVacinas
+    
+
+class AdmUsuarioDados(BaseModel):
+    id: int
+    nome: str
+    
+    usuario: str
+    profissional: str
+    
+class AdmComToken(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    usuario: AdmUsuarioDados
+

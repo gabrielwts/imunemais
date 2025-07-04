@@ -3,16 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-interface LoginAdminRequest {
-  username: string;
-  password: string;
-}
-
-interface LoginAdminResponse {
-  token?: string;  // ou qualquer resposta que seu backend retorne
-  message?: string;
-  success: boolean;
-}
 
 @Injectable({
   providedIn: 'root'

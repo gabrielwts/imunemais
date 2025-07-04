@@ -1,20 +1,74 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Depends, Query, status, Response
 from src.database import models
-from src.database.database import get_db
+from src.app import router
+from src.database.database import SessionLocal
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from pydantic import BaseModel
+from src.database.models import Usuario, RegisteredProfessional
+from src.schemas.autenticacao_schemas import AdmAutenticacaoLogin, Token, AdmComToken
+from src.schemas.funcionario_schemas import ProfissionalBase, FuncionarioCreateResponse
+from src.auth.crypto import gerar_hash_senha, verificar_senha
+from src.service.autenticacao_service import generate_token
 
-router = APIRouter(prefix="/enfermeiros", tags=["Enfermeiros"])
+# Dependência de sessão
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+ADMIN_USER = "00000000000"
+ADMIN_SENHA = "admingps123"
+
+@router.post("/v1/adm/cadastro")
+def criar_usuario(adm_usuario: ProfissionalBase, db: Session = Depends(get_db)) -> FuncionarioCreateResponse:
+    db_usuario = RegisteredProfessional(
+        nome_pro=adm_usuario.nome_pro,
+        usuario=adm_usuario.usuario,
+        password_prof=adm_usuario.password_prof,
+        cargo_prof=adm_usuario.cargo_prof,
+    )
+    
+    # if not ProfissionalBase.password_prof or len(ProfissionalBase.password_prof) < 6:
+    #     raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
+
+    # senha_hash = gerar_hash_senha(ProfissionalBase.password_prof)
+    # db_usuario.password_prof = senha_hash
+    db.add(db_usuario)
+    db.commit()
+    db.refresh(db_usuario)
+    
+    return FuncionarioCreateResponse(id=db_usuario.id)
 
 # 1. POST - Login
-@router.post("/login")
-def login(nome: str, cpf: str, db: Session = Depends(get_db)):
-    user = db.query(models.Usuario).filter_by(nome=nome, cpf=cpf).first()
-    if not user:
-        raise HTTPException(status_code=401, detail="Credenciais inválidas")
-    return {"mensagem": "Login realizado com sucesso", "usuario": user.nome}
-
+@router.post("/v1/adm/autenticacao", response_model=AdmComToken)
+def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
+    adm_usuario = db.query(RegisteredProfessional).filter(RegisteredProfessional.usuario == form.usuario).first()
+    if not adm_usuario:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Login ou senha inválidos",
+        )  
+    if not verificar_senha(senha_plana=form.senha, senha_hash=adm_usuario.password_prof):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Login ou senha inválidos",
+        )
+    access_token, access_token_expires = generate_token(adm_usuario)   
+    
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "usuario": {
+            "id": adm_usuario.id,
+            "nome": adm_usuario.nome_pro,
+            "usuario": adm_usuario.usuario,
+            "profissional": adm_usuario.cargo_prof
+        }
+    }
+    
 # 2. GET - Consultar paciente por CPF
 @router.get("/paciente/{cpf}")
 def consultar_paciente(cpf: str, db: Session = Depends(get_db)):

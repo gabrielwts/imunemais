@@ -15,6 +15,7 @@ import { InterfacePrincipalComponent } from './page/sistema-interno/interface-pr
 import { CadastrarProfissionalComponent } from './page/sistema-interno/interface-principal/adm-profissionais-cadastrados/cadastrar-profissional/cadastrar-profissional.component';
 import { AdmCadastrarVacinaComponent } from './page/sistema-interno/interface-principal/cartilha-de-vacinas/adm-cadastrar-vacina/adm-cadastrar-vacina.component';
 import { ConsultarPacienteComponent } from './page/sistema-interno/interface-principal/consultar-paciente/consultar-paciente.component';
+import { LoginInternoComponent } from './page/sistema-interno/login-interno/login-interno.component';
 
 
 export const routes: Routes = [
@@ -71,12 +72,18 @@ export const routes: Routes = [
         path: "profile",
         component: ConPatientProfileComponent
     },
+    
+    // Sistema dos adms e enfermeiros
+    {
+        path: "sistema-interno-professionals", // Sistema inteiro de enfermeiro + ADM
+        component: InterfacePrincipalComponent
+    },
 
     // TESTE DESENVOLVIMENTO
     {
-        path: "zzdesenvolvimento", // Sistema inteiro de enfermeiro + ADM
-        component: InterfacePrincipalComponent
-    }, 
+        path: "loginadmdesen",
+        component: LoginInternoComponent
+    },
     {
         path: "ttdesenvolvimento", //Cadastrar Funcionário/ADM 
         component: CadastrarProfissionalComponent

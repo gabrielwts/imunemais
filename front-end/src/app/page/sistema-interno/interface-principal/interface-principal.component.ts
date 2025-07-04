@@ -1,56 +1,49 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-
-import { ConsultarPacienteComponent } from '../src/app/page/sistema-interno/interface-principal/consultar-paciente.component';
-import { UsuariosCadastradosComponent } from '../usuarios-cadastrados/usuarios-cadastrados.component';
-import { CartilhaDeVacinasComponent } from '../cartilha-de-vacinas/cartilha-de-vacinas.component';
-import { AdmProfissionaisCadastradosComponent } from '../adm-profissionais-cadastrados/adm-profissionais-cadastrados.component';
+import { FormsModule } from '@angular/forms';
+import { CartilhaDeVacinasComponent } from './cartilha-de-vacinas/cartilha-de-vacinas.component';
+import { ConsultarPacienteComponent } from './consultar-paciente/consultar-paciente.component';
+import { UsuariosCadastradosComponent } from './usuarios-cadastrados/usuarios-cadastrados.component';
+import { AdmProfissionaisCadastradosComponent } from "./adm-profissionais-cadastrados/adm-profissionais-cadastrados.component";
 
 @Component({
   selector: 'app-interface-principal',
-  standalone: true,
+  imports: [FormsModule, CommonModule, ConsultarPacienteComponent, UsuariosCadastradosComponent, CartilhaDeVacinasComponent, UsuariosCadastradosComponent, AdmProfissionaisCadastradosComponent],
   templateUrl: './interface-principal.component.html',
-  styleUrls: ['./interface-principal.component.css'],
-  imports: [
-    ConsultarPacienteComponent,
-    UsuariosCadastradosComponent,
-    CartilhaDeVacinasComponent,
-    AdmProfissionaisCadastradosComponent,
-  ],
+  styleUrl: './interface-principal.component.scss'
 })
+
 export class InterfacePrincipalComponent {
-  pacienteDados = false;
-  pacientesLista = false;
-  vacinasLista = false;
-  funcinariosLista = false;
-
-  constructor() {
-    this.mostrarPaciente();
-  }
-
-  private resetarTelas() {
-    this.pacienteDados = false;
+  pacienteDados: boolean = true;
+  mostrarPaciente () {
+    this.pacienteDados = true;
     this.pacientesLista = false;
     this.vacinasLista = false;
     this.funcinariosLista = false;
+    console.log("Acessou perfil")
   }
-
-  mostrarPaciente() {
-    this.resetarTelas();
-    this.pacienteDados = true;
-  }
-
-  mostrarUsuarios() {
-    this.resetarTelas();
+  pacientesLista: boolean = false;
+  mostrarUsuarios () {
+    this.pacienteDados = false;
     this.pacientesLista = true;
+    this.vacinasLista = false;
+    this.funcinariosLista = false;
+    console.log("Acessou usuários cadastrados")
   }
-
-  mostrarVacinas() {
-    this.resetarTelas();
+  vacinasLista: boolean = false;
+  mostrarVacinas () {
+    this.pacienteDados = false;
+    this.pacientesLista = false;
     this.vacinasLista = true;
+    this.funcinariosLista = false;
+    console.log("Acessou lista de vacinas")
   }
-
-  mostrarFuncionarios() {
-    this.resetarTelas();
+  funcinariosLista: boolean = false;
+  mostrarFuncionarios () {
+    this.pacienteDados = false;
+    this.pacientesLista = false;
+    this.vacinasLista = false;
     this.funcinariosLista = true;
+    console.log("Acessou funcionários cadastrados")
   }
 }

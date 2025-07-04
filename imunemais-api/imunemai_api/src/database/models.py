@@ -36,6 +36,16 @@ class CartilhaVacina(Base):
     descricao = Column(String(255), nullable=False)
     faixa_etaria = Column(String(50), nullable=False)
     doses = Column(String(150), nullable=False)
+    
+# class Vacina(Base):
+#     __tablename__ = "vacinas"
+
+#     id = Column(Integer, primary_key=True, index=True)
+#     nome = Column(String)
+#     descricao = Column(String)
+#     faixa_etaria = Column(String)
+#     dose = Column(String)
+#     status = Column(String, default="PENDENTE")
 
 
 class RegisteredProfessional(Base):
@@ -46,23 +56,13 @@ class RegisteredProfessional(Base):
     usuario = Column(String(50), nullable=False)
     password_prof = Column(String(150), nullable=False)
     cargo_prof = Column(String(50), nullable=False)
+    
+# class Funcionario(Base):
+#     __tablename__ = "funcionarios"
 
-class Vacina(Base):
-    __tablename__ = "vacinas"
-
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String)
-    descricao = Column(String)
-    faixa_etaria = Column(String)
-    dose = Column(String)
-    status = Column(String, default="PENDENTE")
-
-class Funcionario(Base):
-    __tablename__ = "funcionarios"
-
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, nullable=False)
-    usuario = Column(String, unique=True, nullable=False)
-    senha = Column(String, nullable=False)
-    cargo = Column(String, nullable=False)
+#     id = Column(Integer, primary_key=True, index=True)
+#     nome = Column(String, nullable=False)
+#     usuario = Column(String, unique=True, nullable=False)
+#     senha = Column(String, nullable=False)
+#     cargo = Column(String, nullable=False)
 

@@ -77,6 +77,9 @@ class UserVaccines(UserVaccineBase):
     "from_attributes": True
     }
 
+class LoginAdminRequest(BaseModel):
+    cpf: str
+    senha: str
 
 # ====== CARTILHA DE VACINAS ====== #
 class CartilhaVacinaBase(BaseModel):
@@ -97,27 +100,3 @@ class CartilhaVacina(CartilhaVacinaBase):
     model_config = {
     "from_attributes": True
     }
-
-
-# ====== PROFISSIONAIS REGISTRADOS ====== #
-class ProfissionalBase(BaseModel):
-    nome_pro: str
-    usuario: str
-    password_prof: str
-    cargo_prof: str
-
-
-class ProfissionalCreate(ProfissionalBase):
-    pass
-
-
-class Profissional(ProfissionalBase):
-    id: int
-
-    model_config = {
-    "from_attributes": True
-    }
-
-class LoginAdminRequest(BaseModel):
-    cpf: str
-    senha: str

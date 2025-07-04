@@ -9,12 +9,12 @@
                 <h2>Login</h2>
                 <form action="tela-enfermeiro.htm" method="get">
                 <label for="usuario">Usuário</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário...">
+                <input [(ngModel)]="form.usuario" type="text" id="usuario" name="usuario" placeholder="Digite seu usuário...">
 
                 <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha" placeholder="Digite sua senha...">
+                <input [(ngModel)]="form.senha" type="password" id="senha" name="senha" placeholder="Digite sua senha...">
 
-                <button type="submit">Login</button>
+                <button (click)="logar()">Login</button>
                 </form>
             </div>
         </div>

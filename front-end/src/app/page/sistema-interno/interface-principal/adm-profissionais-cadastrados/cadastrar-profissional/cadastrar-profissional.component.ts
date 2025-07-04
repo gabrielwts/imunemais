@@ -1,52 +1,53 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown'; // se estiver usando PrimeNG, ajuste se for outro
+import { ButtonModule } from 'primeng/button';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule, Select } from 'primeng/select';
+import { EnfermeirosService } from '../../../../../services/enfermeiros.service';
+import { Route, Router } from '@angular/router';
+import { AdmEnfermeirosCadatro } from '../../../../../models/adm_models/adm-enfermeiros-cadatro';
+import { CommonModule } from '@angular/common';
+import { DropdownModule } from 'primeng/dropdown';
 
-interface UserType {
+interface userType {
   name: string;
-  code: string;
 }
 
 @Component({
   selector: 'app-cadastrar-profissional',
-  standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule],
+  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, CommonModule, DropdownModule],
   templateUrl: './cadastrar-profissional.component.html',
-  styleUrls: ['./cadastrar-profissional.component.css']
+  styleUrl: './cadastrar-profissional.component.scss'
 })
-export class CadastrarProfissionalComponent {
-  userTypes: UserType[] = [
-    { name: 'Administrador', code: 'admin' },
-    { name: 'Enfermeiro', code: 'enfermeiro' }
-  ];
+export class CadastrarProfissionalComponent implements OnInit {
+  userTypes: userType[] = [];         // Lista de opções
+  selecteduserType: userType | null = null; // Item selecionado
 
-  selectedUserType?: UserType;
-
-  nome = '';
-  email = '';
-  senha = '';
-
-  cadastrar() {
-    if (!this.nome || !this.email || !this.senha || !this.selectedUserType) {
-      alert('Preencha todos os campos!');
-      return;
-    }
-    // Aqui a lógica de cadastro, ex: chamada API
-    console.log('Cadastrando profissional:', {
-      nome: this.nome,
-      email: this.email,
-      senha: this.senha,
-      tipo: this.selectedUserType.code
-    });
-    alert('Profissional cadastrado com sucesso!');
-    this.limparCampos();
+  ngOnInit() {
+    this.userTypes = [
+      { name: 'Administrador' },
+      { name: 'Profissional' },
+    ];
   }
 
-  limparCampos() {
-    this.nome = '';
-    this.email = '';
-    this.senha = '';
-    this.selectedUserType = undefined;
+  form: AdmEnfermeirosCadatro;
+
+  constructor(private professionalService: EnfermeirosService, private router: Router){
+    this.form = new AdmEnfermeirosCadatro();
+  }
+
+  salvar(){console.log("Dados do formulário:", this.form);
+    this.professionalService.cadastrar(this.form).subscribe({
+      next: professionalService => {
+        alert("Usuário cadastrado com sucesso")
+        // this.router.navigate(["/cadastro/senha"], {state: { id: professionalService.id }})
+      },
+      error: erro => {
+        alert("Não foi possível cadastrar")
+        console.error("Erro ao tentar cadastrar:", erro);
+        console.error("Detalhe do erro:", erro.error);
+      }
+  })
   }
 }
