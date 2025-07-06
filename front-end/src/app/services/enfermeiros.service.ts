@@ -23,4 +23,8 @@ export class EnfermeirosService {
   AutenticacaoUsuario(efetuarLogin: AdmEfetuarLogin): Observable<AdmLoginResponse> {
     return this.http.post<AdmLoginResponse>(`${environment.apiUrl}/v1/adm/autenticacao`, efetuarLogin);
   }
+
+  getUsuariosPorCpf(cpf: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/v1/interno/paciente/dados?cpf=${cpf}`);
+  }
 }

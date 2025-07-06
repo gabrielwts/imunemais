@@ -41,7 +41,7 @@
         } @else {
             <div class="alterInfo"> 
                 <p>Telefone</p>
-                <p-inputmask mask="(99) 9-9999-9999" placeholder="Digite seu novo número.."  /><!-- [(ngModel)]="form.telefone" -->
+                <p-inputmask mask="(99) 99999-9999" placeholder="Digite seu novo número.." [(ngModel)]="form.telefone"  />
             </div>
         }
                 
@@ -53,7 +53,7 @@
         } @else {
             <div class="alterInfo">
                 <p>E-mail</p>
-                <input type="text" class="email" pInputText placeholder="Digite seu novo e-mail.."  /><!-- [(ngModel)]="form.email" -->
+                <input type="text" class="email" pInputText placeholder="Digite seu novo e-mail.." [(ngModel)]="form.email"  />
             </div>
         }
     </div>

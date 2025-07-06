@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 from datetime import date, datetime
+from sqlalchemy import Date
 
 
 # ====== USUÁRIOS CADASTRADOS ====== #
@@ -45,10 +46,18 @@ class UsuarioContatoMascarado(BaseModel):
     telefone: str
     email: str
     
-class AtualizarDados(BaseModel):
+class AtualizarDadosComCpf(BaseModel):
+    cpf: str
+    telefone: Optional[str] = None
+    email: Optional[EmailStr] = None
+    
+class ListaUserDados(BaseModel):
+    cpf: str
+    nome_completo: str
+    data_nascimento: date
     telefone: str
-    email: str
-
+    email: str  
+    
 # ====== VACINAS DO USUÁRIO ====== #
 class UserVaccineBase(BaseModel):
     full_name: str
@@ -80,6 +89,14 @@ class UserVaccines(UserVaccineBase):
 class LoginAdminRequest(BaseModel):
     cpf: str
     senha: str
+
+    
+# ====== ENFERMEIRO/ADM FUNÇÕES ====== #
+
+class PacienteCompleto(BaseModel):
+    dados_pessoais: ListaUserDados
+    vacinas: List[ListaUserVacinaResponse]
+
 
 # ====== CARTILHA DE VACINAS ====== #
 class CartilhaVacinaBase(BaseModel):

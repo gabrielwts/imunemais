@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ButtonModule } from 'primeng/button';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile-card',
@@ -16,6 +17,8 @@ export class ProfileCardComponent implements OnInit {
   data_nascimento: string = "";
   telefone: string = "";
   email: string = "";
+// 
+  constructor(private router: Router) {}
 
   ngOnInit() {
   
@@ -32,5 +35,10 @@ export class ProfileCardComponent implements OnInit {
       console.warn("Usuário não encontrado no localStorage.");
       this.nome = 'Visitante';
     }
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }

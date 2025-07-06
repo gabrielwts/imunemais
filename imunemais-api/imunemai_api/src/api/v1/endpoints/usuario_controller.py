@@ -1,6 +1,6 @@
 from src.database.database import SessionLocal
 from fastapi import APIRouter, HTTPException, Depends
-from src.schemas.usuario_schemas import AtualizarDados, CpfRecuperarSenha, UsuarioContatoMascarado, UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
+from src.schemas.usuario_schemas import AtualizarDadosComCpf, CpfRecuperarSenha, UsuarioContatoMascarado, UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
 from src.auth.crypto import verificar_senha
 from src.database.models import Usuario, CartilhaVacina, UserVaccine
 from sqlalchemy.orm import Session
@@ -85,9 +85,18 @@ def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db))
     
 # Atualizar e-mail e telefone do usuário (profile)
 @router.put("/v1/usuarios/atualizardados")
-def atualizar_dados(atualizar: AtualizarDados, db: Session = Depends(get_db)):
-    usuario = db.query(Usuario).filter(Usuario.id == id).first()
-        
+def atualizar_dados(atualizar: AtualizarDadosComCpf, db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.cpf == atualizar.cpf).first()
+    
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    if atualizar.telefone is not None:
+        usuario.telefone = atualizar.telefone
+
+    if atualizar.email is not None:
+        usuario.email = atualizar.email
+
     db.commit()
     db.refresh(usuario)
 

@@ -13,7 +13,6 @@ import { SemAcessoEmailComponent } from './page/auth/recuperacao-senha/sem-acess
 import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-acesso-telefone/sem-acesso-telefone.component';
 import { InterfacePrincipalComponent } from './page/sistema-interno/interface-principal/interface-principal.component';
 import { CadastrarProfissionalComponent } from './page/sistema-interno/interface-principal/adm-profissionais-cadastrados/cadastrar-profissional/cadastrar-profissional.component';
-import { AdmCadastrarVacinaComponent } from './page/sistema-interno/interface-principal/cartilha-de-vacinas/adm-cadastrar-vacina/adm-cadastrar-vacina.component';
 import { ConsultarPacienteComponent } from './page/sistema-interno/interface-principal/consultar-paciente/consultar-paciente.component';
 import { LoginInternoComponent } from './page/sistema-interno/login-interno/login-interno.component';
 
@@ -87,10 +86,6 @@ export const routes: Routes = [
     {
         path: "ttdesenvolvimento", //Cadastrar Funcionário/ADM 
         component: CadastrarProfissionalComponent
-    },
-    {
-        path: "desenvolvimento200",
-        component: AdmCadastrarVacinaComponent
     },
     {
         path: "consultarpaciente",

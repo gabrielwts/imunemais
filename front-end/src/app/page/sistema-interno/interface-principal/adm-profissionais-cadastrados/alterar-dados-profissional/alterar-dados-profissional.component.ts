@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { CommonModule } from '@angular/common';
 
 interface userType {
   name: string;
@@ -11,7 +12,7 @@ interface userType {
 
 @Component({
   selector: 'app-alterar-dados-profissional',
-  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule],
+  imports: [InputTextModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, CommonModule],
   templateUrl: './alterar-dados-profissional.component.html',
   styleUrl: './alterar-dados-profissional.component.scss'
 })

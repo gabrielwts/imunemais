@@ -27,7 +27,7 @@
                 <img src="/white-vaccine-icon.png" alt="Vaccine">
                 <a class="your-vaccines" (click)="mostrarVacinas()">Vacinas</a>
             </div>
-            <div>
+            <div *ngIf="cargo === 'Administrador'">
                 <img src="/clipboard-funcionarios.png" alt="Vaccine">
                 <a class="your-vaccines" (click)="mostrarFuncionarios()">Funcionários</a>
             </div>

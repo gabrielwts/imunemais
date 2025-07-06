@@ -5,11 +5,13 @@ from src.database.database import SessionLocal
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from pydantic import BaseModel
-from src.database.models import Usuario, RegisteredProfessional
+from src.database.models import UserVaccine, Usuario, RegisteredProfessional
 from src.schemas.autenticacao_schemas import AdmAutenticacaoLogin, Token, AdmComToken
 from src.schemas.funcionario_schemas import ProfissionalBase, FuncionarioCreateResponse
+from src.schemas.usuario_schemas import ListaUserDados, ListaUserVacinaResponse, PacienteCompleto
+
 from src.auth.crypto import gerar_hash_senha, verificar_senha
-from src.service.autenticacao_service import generate_token
+from src.service.adm_autenticacao_service import generate_token
 
 # Dependência de sessão
 def get_db():
@@ -27,15 +29,15 @@ def criar_usuario(adm_usuario: ProfissionalBase, db: Session = Depends(get_db)) 
     db_usuario = RegisteredProfessional(
         nome_pro=adm_usuario.nome_pro,
         usuario=adm_usuario.usuario,
-        password_prof=adm_usuario.password_prof,
         cargo_prof=adm_usuario.cargo_prof,
     )
     
-    # if not ProfissionalBase.password_prof or len(ProfissionalBase.password_prof) < 6:
-    #     raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
+    if not adm_usuario.password_prof or len(adm_usuario.password_prof) < 6:
+        raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
 
-    # senha_hash = gerar_hash_senha(ProfissionalBase.password_prof)
-    # db_usuario.password_prof = senha_hash
+    senha_hash = gerar_hash_senha(adm_usuario.password_prof)
+    db_usuario.password_prof = senha_hash
+    
     db.add(db_usuario)
     db.commit()
     db.refresh(db_usuario)
@@ -69,13 +71,52 @@ def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
         }
     }
     
+# # 2. GET - Consultar paciente por CPF
+# @router.get("/v1/interno/paciente/dados", response_model=list[ListaUserDados])
+# def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
+#     user = db.query(Usuario).filter(Usuario.cpf == cpf).all()
+#     if not user:
+#         raise HTTPException(status_code=404, detail="Paciente não encontrado")
+    
+#     return [
+#         ListaUserDados(
+#             cpf=u.cpf,
+#             nome_completo=u.nome_completo,
+#             data_nascimento=u.data_nascimento,
+#             telefone=u.telefone,
+#             email=u.email
+#         )
+#         for u in user
+#     ]
+
 # 2. GET - Consultar paciente por CPF
-@router.get("/paciente/{cpf}")
+@router.get("/v1/interno/paciente/dados", response_model=PacienteCompleto)
 def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
-    user = db.query(models.Usuario).filter_by(cpf=cpf).first()
+    user = db.query(Usuario).filter(Usuario.cpf == cpf).first()
     if not user:
         raise HTTPException(status_code=404, detail="Paciente não encontrado")
-    return user
+
+    vacinas = db.query(UserVaccine).filter(UserVaccine.numero_cpf == cpf).all()
+
+    return PacienteCompleto(
+        dados_pessoais=ListaUserDados(
+            cpf=user.cpf,
+            nome_completo=user.nome_completo,
+            data_nascimento=user.data_nascimento,
+            telefone=user.telefone,
+            email=user.email
+        ),
+        vacinas=[
+            ListaUserVacinaResponse(
+                nome_vacina=v.nome_vacina,
+                tipo_dose=v.tipo_dose,
+                descricao_vacina=v.descricao_vacina,
+                numero_cpf=v.numero_cpf,
+                validacao=v.validacao
+            ) for v in vacinas
+        ]
+    )
+    
 
 # 3. GET - Todos os usuários
 @router.get("/usuarios")

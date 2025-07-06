@@ -3,19 +3,19 @@
     <div class="form-container">
         <div class="left-form">
             <label for="cpf">CPF</label>
-            <p-inputmask id="cpf" mask="999.999.999-99" placeholder="Insira o número de CPF.."></p-inputmask>
+            <p-inputmask (keydown.enter)="buscarDadosPaciente()" id="cpf" mask="999.999.999-99" placeholder="Insira o número de CPF.." [(ngModel)]="paciente.cpf" name="cpf"></p-inputmask>
 
             <label for="nome">Nome</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.nome" -->
+            <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.nome_completo" name="nome" />
 
             <label for="data">Data de Nascimento</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.dataNascimento" -->
+            <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.data_nascimento" name="data"/>
 
             <label for="telefone">Telefone</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.telefone" -->
+            <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.telefone" name="telefone"/>
 
             <label for="email">E-mail</label>
-            <input [readonly]="!podeEditar" class="input-info"/> <!-- [(ngModel)]="paciente.email" -->
+            <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.email" name="email"/>
         </div>
 
         <div class="right-photo">
@@ -32,16 +32,16 @@
 
     <div class="tabs">
         <div class="id-leftbar"><span>Histórico de Vacinas</span></div>
-        <div class="id-rightbar"><p-selectbutton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value" aria-labelledby="basic" /></div><!-- (ngModelChange)="buscarDados()" -->
+        <div class="id-rightbar"><p-selectbutton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value" aria-labelledby="basic" /></div>
     </div>
 
-    <div id="historico" class="vacina-tab" style="display: block;">
-        <div class="vacina-item"> <!-- Template da vacina, cada uma vai ser nessa estilização -->
-            <div class="vacina-img"><img src="/vaccine-valid.png" alt="Vacina"></div> <!-- /vaccine-valid.png = valida | vaccine-pending.png = pendente --> 
+    <div class="vacina-tab" style="display: block;">
+        <div class="vacina-item" *ngFor="let vacina of vacinasFiltradas"> <!-- Template da vacina, cada uma vai ser nessa estilização -->
+            <div class="vacina-img"><img [src]="value ? '/vaccine-valid.png' : '/vaccine-pending.png'" alt="Vacina" /></div> 
             <div>
-                <strong></strong><!-- nome da vacina -->
-                <p></p><!-- descrição da vacina -->
-                <small></small><!-- tipo dose da vacina -->
+                <strong>{{ vacina.nome_vacina }}</strong>
+                <p>{{ vacina.descricao_vacina }}</p>
+                <small>{{ vacina.tipo_dose }}</small>
             </div>
                     
             <div class="icons"> <!-- botões de validação -->
@@ -50,23 +50,6 @@
             </div>
         </div>
     </div>
-
-    <div id="pendentes" class="vacina-tab" style="display: block;">
-        <div class="vacina-item"> <!-- Template da vacina, cada uma vai ser nessa estilização -->
-            <div class="vacina-img"><img src="/vaccine-valid.png" alt="Vacina"></div> <!-- /vaccine-valid.png = valida | vaccine-pending.png = pendente --> 
-            <div>
-                <strong></strong><!-- nome da vacina -->
-                <p></p><!-- descrição da vacina -->
-                <small></small><!-- tipo dose da vacina -->
-            </div>
-                    
-            <div class="icons"> <!-- botões de validação -->
-                <p-button icon="pi pi-check" [rounded]="true" (click)="confirmValidarVacina()" /> <!-- Validar -->
-                <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="confirmRemoverVacina()" /> <!-- Retirar validação -->
-            </div>
-        </div>
-    </div>
-
     
 
     @if(validarVacina === true) {

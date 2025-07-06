@@ -1,3 +1,7 @@
 export class AlterarDadosPaciente {
-    constructor (public telefone: string = "", public email: string = ""){}
+  constructor(
+    public cpf?: string,
+    public telefone?: string,
+    public email?: string
+  ) {}
 }

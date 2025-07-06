@@ -39,6 +39,7 @@ header {
 .cartilha-vacina {
     background-color: #F0F0F0;
 
+
     .vacina {
         display: flex;
         align-items: center;
@@ -75,5 +76,49 @@ header {
                 display: flex;
             }
         }
+    }
+}
+
+
+.cadastrar-vacina-box {
+    height: 360px;
+    width: 700px;
+    border-radius: 8px;
+    background-color: #fff;
+    padding-top: 25px;
+    margin-top: 70px;
+    margin-left: 20%;
+    position: fixed;
+    z-index: 1000;
+
+    justify-content: center;
+    align-items: center;
+
+    p {
+        margin-left: 25px;
+        margin-bottom: 25px;
+    }
+
+    .form {
+        flex-direction: column;
+        display: flex;
+        gap: 20px;
+        max-width: 700px;
+
+        .inputs-info {
+            margin-left: 45px;
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            align-items: center;
+            width: 600px;
+            gap: 10px;
+        }
+    }
+
+    .button {
+        margin-top: 30px;
+        margin-right: 25px;
+        display: flex;
+        justify-content: flex-end;
     }
 }

@@ -1,10 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { EnfermeirosService } from '../../../../services/enfermeiros.service';
+import { Router } from '@angular/router';
+import { title } from 'process';
+
 
 @Component({
   selector: 'app-consultar-paciente',
@@ -13,14 +17,71 @@ import { SelectButtonModule } from 'primeng/selectbutton';
   styleUrl: './consultar-paciente.component.scss'
 })
 
-export class ConsultarPacienteComponent {
+export class ConsultarPacienteComponent implements OnInit {
+  paciente = {
+    cpf: '',
+    nome_completo: '',
+    data_nascimento: '',
+    telefone: '',
+    email: ''
+  };
+
+  stateOptions = [
+    { label: 'Histórico', value: true },
+    { label: 'Pendentes', value: false }
+  ];
+
+  value: boolean = true;
+
   podeEditar: boolean = false;
   validarVacina: boolean = false;
   removerValidacaoVacina: boolean = false;
 
+  constructor(private enfermeiroService: EnfermeirosService, router: Router) {}
+
+  buscarDadosPaciente() {
+    const cpfLimpo = this.paciente.cpf;
+    console.log('Buscando CPF:', cpfLimpo);
+
+    if (cpfLimpo) {
+      this.enfermeiroService.getUsuariosPorCpf(cpfLimpo).subscribe({
+        next: (res) => {
+          console.log('Resposta do backend:', res);
+
+          if (res && res.dados_pessoais) {
+            const dados = res;
+
+            this.paciente.nome_completo = dados.dados_pessoais.nome_completo;
+            this.paciente.data_nascimento = dados.dados_pessoais.data_nascimento;
+            this.paciente.telefone = dados.dados_pessoais.telefone;
+            this.paciente.email = dados.dados_pessoais.email;
+
+            this.vacinasListagem = dados.vacinas || [];
+          } else {
+            alert('Paciente não encontrado');
+          }
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Erro ao buscar paciente');
+        }
+      });
+    }
+  }
+
   cpfDigitado: string = '';
-  paciente: any = null;
-  vacinas: any[] = [];
+  vacinasListagem: any[] = []; 
+
+  get vacinasFiltradas(): any[] {
+  return this.vacinasListagem.filter(v => {
+    const validacao = v.validacao === true || v.validacao === 'true';
+    return this.value ? validacao : !validacao;
+  });
+}
+  
+  ngOnInit(): void {
+    console.log("ConsultarPacienteComponent carregado");
+  }
 
   confirmValidarVacina () {
     this.validarVacina = !this.validarVacina;
@@ -30,62 +91,9 @@ export class ConsultarPacienteComponent {
     this.removerValidacaoVacina = !this.removerValidacaoVacina;
   }
 
-  // validarVacina(vacina: any, realizar: boolean) {
-  //   this.http.put(`http://localhost:8000/enfermeiros/vacina/${vacina.id}/validar`, { realizada: realizar })
-  //     .subscribe({
-  //       next: () => {
-  //         vacina.status = realizar ? 'REALIZADA' : 'PENDENTE';
-  //       },
-  //       error: () => alert('Erro ao atualizar o status da vacina')
-  //     });
-  // }
-
   alternarEdicao() {
     this.podeEditar = !this.podeEditar;
   }
 
-  stateOptions = [
-    { label: 'Histórico', value: true },
-    { label: 'Pendentes', value: false }
-  ];
 
-  value: boolean = true;
-
-  // Função para buscar dados conforme a opção selecionada
-  // buscarDados() {
-  //   if (!this.paciente) return;
-
-  //   const cpf = this.paciente.cpf.replace(/\D/g, '');
-
-  //   const statusFiltro = this.value ? 'REALIZADA' : 'PENDENTE';
-
-  //   this.http.get<any[]>(`http://localhost:8000/enfermeiros/paciente/${cpf}/vacinas?status=${statusFiltro}`)
-  //     .subscribe(res => this.vacinas = res);
-  // }
-
-  // constructor(private http: HttpClient) {}
-
-  // buscarPacientePorCpf() {
-  //   if (!this.cpfDigitado || this.cpfDigitado.trim() === '') {
-  //     alert('Por favor, digite um CPF válido');
-  //     return;
-  //   }
-
-  //   this.paciente = null;
-  //   this.vacinas = [];
-
-  //   const cpfSemMascara = this.cpfDigitado.replace(/\D/g, '');
-
-  //   this.http.get(`http://localhost:8000/enfermeiros/paciente/${cpfSemMascara}`).subscribe({
-  //     next: (res: any) => {
-  //       this.paciente = res;
-  //       this.buscarDados();
-  //     },
-  //     error: () => {
-  //       alert('Paciente não encontrado no banco de dados.');
-  //       this.paciente = null;
-  //       this.vacinas = [];
-  //     }
-  //   });
-  // }
 }
