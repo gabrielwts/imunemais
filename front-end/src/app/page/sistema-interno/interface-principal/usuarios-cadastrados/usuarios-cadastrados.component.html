@@ -13,15 +13,15 @@
         </div>
     </header>
 
-    <div class="registered-patients">
+    <div class="registered-patients" *ngFor="let paciente of pacientes">
 
         <div class="patient">
             <div class="right-info">
-                <strong class="name"></strong>
+                <strong class="name"> {{ paciente.nome_completo }} </strong>
             </div>
 
             <div class="left-info">
-                <p class="cpf"></p>
+                <p class="cpf"> {{ paciente.cpf }} </p>
                 <p-button label="Acessar" severity="contrast" />
             </div>
         </div>

@@ -46,10 +46,25 @@ class UsuarioContatoMascarado(BaseModel):
     telefone: str
     email: str
     
-class AtualizarDadosComCpf(BaseModel):
+class AtualizarDadosComCpf(BaseModel): # Função tela profile dos pacientes
     cpf: str
     telefone: Optional[str] = None
     email: Optional[EmailStr] = None
+    
+class AtualizarDadosPaciente(BaseModel): # Função tela consultar dados
+    cpf: Optional[str] = None
+    nome_completo: Optional[str] = None
+    data_nascimento: Optional[date] = None
+    telefone: Optional[str] = None
+    email: Optional[EmailStr] = None
+    
+class ListaTodosPacientesCadastrados(BaseModel):
+    nome_completo: str
+    cpf: str
+    
+    class Config:
+        orm_mode = True
+    
     
 class ListaUserDados(BaseModel):
     cpf: str
@@ -117,3 +132,12 @@ class CartilhaVacina(CartilhaVacinaBase):
     model_config = {
     "from_attributes": True
     }
+
+class ListaTodasVacinasCadastradas(BaseModel):
+    vacinas_nome: str
+    descricao: str
+    faixa_etaria: str
+    doses: str
+    
+    class Config:
+        orm_mode = True

@@ -1,13 +1,15 @@
+from typing import List
 from fastapi import APIRouter, HTTPException, Depends, Query, status, Response
 from src.database import models
 from src.app import router
 from src.database.database import SessionLocal
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from src.database.models import UserVaccine, Usuario, RegisteredProfessional
+from src.database.models import CartilhaVacina, UserVaccine, Usuario, RegisteredProfessional
 from src.schemas.autenticacao_schemas import AdmAutenticacaoLogin, Token, AdmComToken
 from src.schemas.funcionario_schemas import ProfissionalBase, FuncionarioCreateResponse
-from src.schemas.usuario_schemas import ListaUserDados, ListaUserVacinaResponse, PacienteCompleto
+from src.schemas.usuario_schemas import AtualizarDadosPaciente, ListaTodasVacinasCadastradas, ListaTodosPacientesCadastrados, ListaUserDados, ListaUserVacinaResponse, PacienteCompleto
+
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from src.service.adm_autenticacao_service import generate_token
 
@@ -68,7 +70,8 @@ def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
         }
     }
 
-@router.get("/v1/paciente/{cpf}", response_model=PacienteCompleto)
+# Consultar paciente por CPF
+@router.get("/v1/interno/paciente/dados", response_model=PacienteCompleto)
 def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
     user = db.query(Usuario).filter(Usuario.cpf == cpf).first()
     if not user:
@@ -94,14 +97,56 @@ def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
             ) for v in vacinas
         ]
     )
+    
+# Atualizar dados do paciente na tela de consultar pacientes
+@router.put("/v1/interno/paciente/atualizardados")
+def atualizar_dados(atualizar: AtualizarDadosPaciente, db: Session = Depends(get_db)):
+    usuario = db.query(Usuario).filter(Usuario.cpf == atualizar.cpf).first()
+    
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
-@router.get("/v1/usuarios")
+    cpf_antigo = usuario.cpf
+
+    if atualizar.cpf is not None:
+        usuario.cpf = atualizar.cpf
+
+    if atualizar.nome_completo is not None:
+        usuario.nome_completo = atualizar.nome_completo
+
+    if atualizar.data_nascimento is not None:
+        usuario.data_nascimento = atualizar.data_nascimento
+
+    if atualizar.telefone is not None:
+        usuario.telefone = atualizar.telefone
+
+    if atualizar.email is not None:
+        usuario.email = atualizar.email
+
+    vacinas_do_usuario = db.query(UserVaccine).filter(UserVaccine.numero_cpf == cpf_antigo).all()
+
+    for vacina in vacinas_do_usuario:
+        if atualizar.cpf is not None:
+            vacina.numero_cpf = atualizar.cpf
+        if atualizar.nome_completo is not None:
+            vacina.full_name = atualizar.nome_completo
+
+    db.commit()
+    db.refresh(usuario)
+
+    return {"mensagem": "Dados atualizados com sucesso"}
+
+
+# Listar todos os usuários
+@router.get("/v1/interno/lista/pacientes/cadastrados", response_model=List[ListaTodosPacientesCadastrados])
 def listar_usuarios(db: Session = Depends(get_db)):
-    return db.query(models.Usuario).all()
+    return db.query(Usuario.nome_completo, Usuario.cpf).all()
 
-@router.get("/v1/vacinas")
+# Listar todas as vacinas
+@router.get("/v1/interno/lista/vacinas/cadastradas", response_model=List[ListaTodasVacinasCadastradas])
 def listar_vacinas(db: Session = Depends(get_db)):
-    return db.query(models.Vacina).all()
+    return db.query(CartilhaVacina.vacinas_nome, CartilhaVacina.descricao, CartilhaVacina.faixa_etaria, CartilhaVacina.doses).all()
+
 
 @router.get("/v1/vacinas/nome")
 def buscar_vacina_nome(busca: str = Query(...), db: Session = Depends(get_db)):

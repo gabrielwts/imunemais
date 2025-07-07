@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-interface-principal',
   standalone: true,
-  imports: [FormsModule, CommonModule, ConsultarPacienteComponent, UsuariosCadastradosComponent, CartilhaDeVacinasComponent, UsuariosCadastradosComponent, AdmProfissionaisCadastradosComponent],
+  imports: [FormsModule, CommonModule, ConsultarPacienteComponent, CartilhaDeVacinasComponent, UsuariosCadastradosComponent, AdmProfissionaisCadastradosComponent],
   templateUrl: './interface-principal.component.html',
   styleUrl: './interface-principal.component.scss'
 })

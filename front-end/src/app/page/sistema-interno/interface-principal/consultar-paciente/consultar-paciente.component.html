@@ -3,7 +3,7 @@
     <div class="form-container">
         <div class="left-form">
             <label for="cpf">CPF</label>
-            <p-inputmask (keydown.enter)="buscarDadosPaciente()" id="cpf" mask="999.999.999-99" placeholder="Insira o número de CPF.." [(ngModel)]="paciente.cpf" name="cpf"></p-inputmask>
+            <p-inputmask (ngModelChange)="aoDigitarCpf($event)" (keydown.enter)="buscarDadosPaciente()" id="cpf" mask="999.999.999-99" placeholder="Insira o número de CPF.." [(ngModel)]="paciente.cpf" name="cpf"></p-inputmask>
 
             <label for="nome">Nome</label>
             <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.nome_completo" name="nome" />
@@ -23,9 +23,9 @@
             <img id="fotoUsuario" src="" alt="Foto do Usuário" class="foto-usuario">
                     
             @if (this.podeEditar) {
-                <p-button label="Salvar alterações" (click)="alternarEdicao()" severity="success" />
+                <p-button label="Salvar alterações" (click)="salvarAlteracoes()" severity="success" />
             } @else {
-                <p-button label="Alterar Dados" severity="contrast" (click)="alternarEdicao()"/>
+                <p-button label="Alterar Dados" (click)="alternarEdicao()" severity="contrast" />
             }
         </div>
     </div>

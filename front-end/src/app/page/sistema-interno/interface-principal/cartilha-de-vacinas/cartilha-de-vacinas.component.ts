@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule, Select } from 'primeng/select';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { EnfermeirosService } from '../../../../services/enfermeiros.service';
 
 interface AgeRange {
   name: string;
@@ -21,6 +22,9 @@ export class CartilhaDeVacinasComponent implements OnInit {
   cadastrarVac: boolean = false;
   cargo: string = '';
   usuario: string = "";
+  vacinas: { vacinas_nome: string, descricao: string, faixa_etaria: string, doses: string }[] = [];
+  
+  constructor(private enfermeiroService: EnfermeirosService, private router: Router) {}
   
   cadastrarVacina() {
     this.cadastrarVac = !this.cadastrarVac;
@@ -28,18 +32,30 @@ export class CartilhaDeVacinasComponent implements OnInit {
 
   ageRanges: AgeRange[] = []; 
   selectedAgeRange: AgeRange | null = null;
-
-  
-  
-    constructor(private router: Router) {}
+  vacinasFiltradas: typeof this.vacinas = [];
+  filtroPesquisa: string = '';
   
   ngOnInit() {
     const usuario = localStorage.getItem('usuario');
-      if (usuario) {
-        const dados = JSON.parse(usuario);
-        this.cargo = dados.profissional; // aqui pega "Profissional"
-        console.log('Cargo:', this.cargo);
+    if (usuario) {
+      const dados = JSON.parse(usuario);
+      this.cargo = dados.profissional; // aqui pega "Profissional"
+      console.log('Cargo:', this.cargo);
+    }
+
+    this.enfermeiroService.getTodasAsVacinasCadastradas().subscribe({
+      next: (dados) => {
+        this.vacinas = dados;
+      },
+      error: (erro) => {
+        console.error('Erro ao buscar pacientes:', erro);
       }
+    });
+
+    this.enfermeiroService.getTodasAsVacinasCadastradas().subscribe(data => {
+      this.vacinas = data;
+      this.vacinasFiltradas = data;
+    });
 
     this.ageRanges = [
       { name: 'Adolescente' },
@@ -49,4 +65,27 @@ export class CartilhaDeVacinasComponent implements OnInit {
       { name: 'Idoso' }
     ];
   }
+
+  filtrarPorFaixaEtaria() {
+    if (this.selectedAgeRange) {
+      this.vacinasFiltradas = this.vacinas.filter(
+        vacina => vacina.faixa_etaria === this.selectedAgeRange?.name
+      );
+    } else {
+      this.vacinasFiltradas = this.vacinas;
+    }
+  }
+
+  filtrarVacinas() {
+    const faixaSelecionada = this.selectedAgeRange?.name?.toLowerCase() || '';
+    const termoBusca = this.filtroPesquisa.trim().toLowerCase();
+
+    this.vacinasFiltradas = this.vacinas.filter(vacina => {
+      const nomeMatch = vacina.vacinas_nome.toLowerCase().includes(termoBusca);
+      const faixaMatch = faixaSelecionada ? vacina.faixa_etaria.toLowerCase() === faixaSelecionada : true;
+      return nomeMatch && faixaMatch;
+    });
+  }
+
+
 }
