@@ -29,7 +29,7 @@ def login_admin(dados: LoginAdminRequest):
     
     raise HTTPException(status_code=401, detail="Credenciais inválidas")
 
-@router.post("/vacinas")
+@router.post("v1/vacinas")
 def criar_vacina(vacina: VacinaCreate, db: Session = Depends(get_db)):
     nova = models.Vacina(**vacina.dict())
     db.add(nova)
@@ -42,14 +42,6 @@ class VacinaCreate(BaseModel):
     descricao: str
     faixa_etaria: str
     dose: str
-
-@router.post("/vacinas")
-def criar_vacina(vacina: VacinaCreate, db: Session = Depends(get_db)):
-    nova = models.Vacina(**vacina.dict())
-    db.add(nova)
-    db.commit()
-    db.refresh(nova)
-    return {"mensagem": "Vacina cadastrada com sucesso", "vacina": nova}
 
 # @router.post("/funcionarios", response_model=FuncionarioRead)
 # def criar_funcionario(dados: FuncionarioCreate, db: Session = Depends(get_db)):
@@ -76,7 +68,7 @@ def criar_vacina(vacina: VacinaCreate, db: Session = Depends(get_db)):
 #     db.commit()
 #     return {"mensagem": "Funcionário atualizado com sucesso."}
 
-@router.delete("/funcionarios/{id}")
+@router.delete("v1/funcionarios/{id}")
 def deletar_funcionario(id: int, db: Session = Depends(get_db)):
     funcionario = db.query(models.Funcionario).filter_by(id=id).first()
     if not funcionario:

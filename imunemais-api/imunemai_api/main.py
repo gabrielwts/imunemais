@@ -28,6 +28,10 @@ app.include_router(admin_controller.router)
 app.include_router(autenticacao_controller.router)
 app.include_router(enfermeiro_controller.router)
 
+for route in app.routes:
+    print(route.path)
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app")
     

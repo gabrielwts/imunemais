@@ -3,13 +3,11 @@ from src.database import models
 from src.app import router
 from src.database.database import SessionLocal
 from sqlalchemy.orm import Session
-from fastapi import Depends
 from pydantic import BaseModel
 from src.database.models import UserVaccine, Usuario, RegisteredProfessional
 from src.schemas.autenticacao_schemas import AdmAutenticacaoLogin, Token, AdmComToken
 from src.schemas.funcionario_schemas import ProfissionalBase, FuncionarioCreateResponse
 from src.schemas.usuario_schemas import ListaUserDados, ListaUserVacinaResponse, PacienteCompleto
-
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from src.service.adm_autenticacao_service import generate_token
 
@@ -31,20 +29,19 @@ def criar_usuario(adm_usuario: ProfissionalBase, db: Session = Depends(get_db)) 
         usuario=adm_usuario.usuario,
         cargo_prof=adm_usuario.cargo_prof,
     )
-    
+
     if not adm_usuario.password_prof or len(adm_usuario.password_prof) < 6:
         raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
 
     senha_hash = gerar_hash_senha(adm_usuario.password_prof)
     db_usuario.password_prof = senha_hash
-    
+
     db.add(db_usuario)
     db.commit()
     db.refresh(db_usuario)
-    
+
     return FuncionarioCreateResponse(id=db_usuario.id)
 
-# 1. POST - Login
 @router.post("/v1/adm/autenticacao", response_model=AdmComToken)
 def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
     adm_usuario = db.query(RegisteredProfessional).filter(RegisteredProfessional.usuario == form.usuario).first()
@@ -52,14 +49,14 @@ def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Login ou senha inválidos",
-        )  
+        )
     if not verificar_senha(senha_plana=form.senha, senha_hash=adm_usuario.password_prof):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Login ou senha inválidos",
         )
-    access_token, access_token_expires = generate_token(adm_usuario)   
-    
+    access_token, access_token_expires = generate_token(adm_usuario)
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -70,27 +67,8 @@ def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
             "profissional": adm_usuario.cargo_prof
         }
     }
-    
-# # 2. GET - Consultar paciente por CPF
-# @router.get("/v1/interno/paciente/dados", response_model=list[ListaUserDados])
-# def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
-#     user = db.query(Usuario).filter(Usuario.cpf == cpf).all()
-#     if not user:
-#         raise HTTPException(status_code=404, detail="Paciente não encontrado")
-    
-#     return [
-#         ListaUserDados(
-#             cpf=u.cpf,
-#             nome_completo=u.nome_completo,
-#             data_nascimento=u.data_nascimento,
-#             telefone=u.telefone,
-#             email=u.email
-#         )
-#         for u in user
-#     ]
 
-# 2. GET - Consultar paciente por CPF
-@router.get("/v1/interno/paciente/dados", response_model=PacienteCompleto)
+@router.get("/v1/paciente/{cpf}", response_model=PacienteCompleto)
 def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
     user = db.query(Usuario).filter(Usuario.cpf == cpf).first()
     if not user:
@@ -116,30 +94,24 @@ def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
             ) for v in vacinas
         ]
     )
-    
 
-# 3. GET - Todos os usuários
-@router.get("/usuarios")
+@router.get("/v1/usuarios")
 def listar_usuarios(db: Session = Depends(get_db)):
     return db.query(models.Usuario).all()
 
-# 4. GET - Todas vacinas
-@router.get("/vacinas")
+@router.get("/v1/vacinas")
 def listar_vacinas(db: Session = Depends(get_db)):
     return db.query(models.Vacina).all()
 
-# 5. GET - Vacinas por nome (barra de pesquisa)
-@router.get("/vacinas/nome")
+@router.get("/v1/vacinas/nome")
 def buscar_vacina_nome(busca: str = Query(...), db: Session = Depends(get_db)):
     return db.query(models.Vacina).filter(models.Vacina.nome.ilike(f"%{busca}%")).all()
 
-# 6. GET - Vacinas por faixa etária
-@router.get("/vacinas/faixa-etaria")
+@router.get("/v1/vacinas/faixa-etaria")
 def buscar_vacina_faixa(faixa: str = Query(...), db: Session = Depends(get_db)):
     return db.query(models.Vacina).filter(models.Vacina.faixa_etaria == faixa).all()
 
-# 7. PUT - Atualizar paciente
-@router.put("/paciente/{cpf}")
+@router.put("/v1/paciente/{cpf}")
 def atualizar_paciente(cpf: str, nome: str, db: Session = Depends(get_db)):
     user = db.query(models.Usuario).filter_by(cpf=cpf).first()
     if not user:
@@ -148,11 +120,10 @@ def atualizar_paciente(cpf: str, nome: str, db: Session = Depends(get_db)):
     db.commit()
     return {"mensagem": "Paciente atualizado"}
 
-# 8. PUT - Validar/Desvalidar vacina
 class ValidarVacinaSchema(BaseModel):
     realizada: bool
 
-@router.put("/vacina/{id}/validar")
+@router.put("/v1/vacina/{id}/validar")
 def validar_vacina(id: int, dados: ValidarVacinaSchema, db: Session = Depends(get_db)):
     vacina = db.query(models.Vacina).filter_by(id=id).first()
     if not vacina:

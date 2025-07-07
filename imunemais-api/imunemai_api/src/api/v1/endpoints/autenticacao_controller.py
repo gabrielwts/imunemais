@@ -20,21 +20,45 @@ def get_db():
     finally:
         db.close()
 
+@router.post("/v1/teste-senha")
+def teste_senha(cpf: str, senha: str, db: Session = Depends(get_db)):
+    user = db.query(Usuario).filter(Usuario.cpf == cpf).first()
+    if not user:
+        return {"status": "CPF não encontrado"}
+    ok = verificar_senha(senha, user.password_hash)
+    return {"senha_valida": ok}
+
 @router.post("/v1/autenticacao", response_model=TokenComUsuario)
 def login_usuario(form: AutenticacaoLogin, db: Session = Depends(get_db)):
+    print("---- INÍCIO LOGIN ----")
+    print(f"CPF recebido: {form.cpf}")
+    print(f"Senha recebida: {form.senha}")
+
     usuario = db.query(Usuario).filter(Usuario.cpf == form.cpf).first()
+
     if not usuario:
+        print("Usuário não encontrado no banco.")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Login ou senha inválidos",
+            detail="Login ou senha inválidos"
         )
+
+    print(f"Usuário encontrado: {usuario.nome_completo}")
+    print(f"Hash armazenado: {usuario.password_hash}")
+
     if not verificar_senha(senha_plana=form.senha, senha_hash=usuario.password_hash):
+        print("Senha inválida (não bate com o hash).")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Login ou senha inválidos",
+            detail="Login ou senha inválidos"
         )
-    access_token, access_token_expires = generate_token(usuario)   
-    
+
+    print("Senha válida. Gerando token...")
+    access_token, access_token_expires = generate_token(usuario)
+
+    print("Token gerado com sucesso!")
+    print("---- FIM LOGIN ----\n")
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -66,3 +90,11 @@ def listar_vacinas(cpf: str, db: Session = Depends(get_db)):
         )
         for v in vacinas
     ]
+
+@router.post("v1/teste-senha")
+def teste_senha(cpf: str, senha: str, db: Session = Depends(get_db)):
+    user = db.query(Usuario).filter(Usuario.cpf == cpf).first()
+    if not user:
+        return {"status": "CPF não encontrado"}
+    ok = verificar_senha(senha, user.password_hash)
+    return {"senha_valida": ok}
