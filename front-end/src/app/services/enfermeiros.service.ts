@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { AdmEnfermeirosCadatro } from '../models/adm_models/adm-enfermeiros-cadatro';
 import { AdmEnfermeirosCadastroResponse } from '../models/adm_models/adm-enfermeiros-cadastro-response';
 import { AdmAlterarDadosPaciente } from '../models/adm_models/adm-alterar-dados-paciente';
+import { AdmEnfermeirosStatusVacina } from '../models/adm_models/adm-enfermeiros-status-vacina';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,9 @@ export class EnfermeirosService {
 
   getTodasAsVacinasCadastradas(): Observable<{ vacinas_nome: string, descricao: string, faixa_etaria: string, doses: string }[]> {
     return this.http.get<{ vacinas_nome: string, descricao: string, faixa_etaria: string, doses: string }[]>(`${environment.apiUrl}/v1/interno/lista/vacinas/cadastradas`);
+  }
+
+  atualizarStatusVacina(admEnfermeirosStatusVacina: AdmEnfermeirosStatusVacina): Observable<{ mensagem: string }> {
+    return this.http.put<{ mensagem: string }>(`${environment.apiUrl}/v1/interno/paciente/validacao/vacina`, admEnfermeirosStatusVacina)
   }
 }

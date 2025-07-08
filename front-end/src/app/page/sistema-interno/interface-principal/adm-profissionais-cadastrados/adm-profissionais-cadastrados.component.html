@@ -14,15 +14,15 @@
         </div>
     </header>
 
-    <div class="registered-professionals">
+    <div class="registered-professionals" *ngFor="let funcionario of funcionarios">
 
         <div class="professionals">
             <div class="right-info">
-                <strong class="name"></strong>
+                <strong class="name"> {{ funcionario.nome_pro }} </strong>
             </div>
 
             <div class="job-info">
-                <p class="role"></p>
+                <p class="role"> {{ funcionario.cargo_prof }} </p>
             </div>
 
             <div class="left-info">

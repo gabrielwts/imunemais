@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -7,6 +7,8 @@ import { SelectModule, Select } from 'primeng/select';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EnfermeirosService } from '../../../../services/enfermeiros.service';
+import { LoginAdminService } from '../../../../services/admin.service';
+import { AdmCadastrarVacina } from '../../../../models/adm_models/adm-cadastrar-vacina';
 
 interface AgeRange {
   name: string;
@@ -19,19 +21,31 @@ interface AgeRange {
   styleUrl: './cartilha-de-vacinas.component.scss'
 })
 export class CartilhaDeVacinasComponent implements OnInit {
+  form!: AdmCadastrarVacina;
   cadastrarVac: boolean = false;
   cargo: string = '';
   usuario: string = "";
   vacinas: { vacinas_nome: string, descricao: string, faixa_etaria: string, doses: string }[] = [];
+  botaoDesativado = false;
   
-  constructor(private enfermeiroService: EnfermeirosService, private router: Router) {}
+  constructor(private enfermeiroService: EnfermeirosService, private adminService: LoginAdminService, private router: Router) {
+    this.form = new AdmCadastrarVacina();
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscape(event: KeyboardEvent) {
+    if (this.cadastrarVac) {
+      this.cadastrarVac = false;
+    }
+  }
   
   cadastrarVacina() {
     this.cadastrarVac = !this.cadastrarVac;
   }
 
-  ageRanges: AgeRange[] = []; 
+  ageRanges: AgeRange[] = [];
   selectedAgeRange: AgeRange | null = null;
+  selectedInputAgeRange: AgeRange | null = null;
   vacinasFiltradas: typeof this.vacinas = [];
   filtroPesquisa: string = '';
   
@@ -86,6 +100,23 @@ export class CartilhaDeVacinasComponent implements OnInit {
       return nomeMatch && faixaMatch;
     });
   }
-
+  
+  salvar(){
+    this.botaoDesativado = true;
+    this.adminService.cadastrar(this.form).subscribe({
+      next: adminService => {
+        alert("Vacina cadastrado com sucesso")
+        this.form = new AdmCadastrarVacina();
+      },
+      error: erro => {
+        alert("Não foi possível cadastrar")
+        console.error("Erro ao tentar cadastrar:", erro);
+        console.error("Detalhe do erro:", erro.error);
+      }
+    })
+    setTimeout(() => {
+      this.botaoDesativado = false; // libera novamente após 3s
+    }, 3000);
+  }
 
 }

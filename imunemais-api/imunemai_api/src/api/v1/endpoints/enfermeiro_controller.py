@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from src.database.models import CartilhaVacina, UserVaccine, Usuario, RegisteredProfessional
 from src.schemas.autenticacao_schemas import AdmAutenticacaoLogin, Token, AdmComToken
 from src.schemas.funcionario_schemas import ProfissionalBase, FuncionarioCreateResponse
-from src.schemas.usuario_schemas import AtualizarDadosPaciente, ListaTodasVacinasCadastradas, ListaTodosPacientesCadastrados, ListaUserDados, ListaUserVacinaResponse, PacienteCompleto
+from src.schemas.usuario_schemas import AtualizarDadosPaciente, AtualizarStatusVacinas, ListaTodasVacinasCadastradas, ListaTodosPacientesCadastrados, ListaUserDados, ListaUserVacinaResponse, PacienteCompleto
 
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from src.service.adm_autenticacao_service import generate_token
@@ -147,32 +147,15 @@ def listar_usuarios(db: Session = Depends(get_db)):
 def listar_vacinas(db: Session = Depends(get_db)):
     return db.query(CartilhaVacina.vacinas_nome, CartilhaVacina.descricao, CartilhaVacina.faixa_etaria, CartilhaVacina.doses).all()
 
+# Validar a vacina do usuário
+@router.put("/v1/interno/paciente/validacao/vacina")
+def atualizar_status_vacina(atualizar: AtualizarStatusVacinas, db: Session = Depends(get_db)):
+    vacina = db.query(UserVaccine).filter(UserVaccine.numero_cpf == atualizar.numero_cpf, UserVaccine.nome_vacina == atualizar.nome_vacina).first()
 
-@router.get("/v1/vacinas/nome")
-def buscar_vacina_nome(busca: str = Query(...), db: Session = Depends(get_db)):
-    return db.query(models.Vacina).filter(models.Vacina.nome.ilike(f"%{busca}%")).all()
-
-@router.get("/v1/vacinas/faixa-etaria")
-def buscar_vacina_faixa(faixa: str = Query(...), db: Session = Depends(get_db)):
-    return db.query(models.Vacina).filter(models.Vacina.faixa_etaria == faixa).all()
-
-@router.put("/v1/paciente/{cpf}")
-def atualizar_paciente(cpf: str, nome: str, db: Session = Depends(get_db)):
-    user = db.query(models.Usuario).filter_by(cpf=cpf).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="Paciente não encontrado")
-    user.nome = nome
-    db.commit()
-    return {"mensagem": "Paciente atualizado"}
-
-class ValidarVacinaSchema(BaseModel):
-    realizada: bool
-
-@router.put("/v1/vacina/{id}/validar")
-def validar_vacina(id: int, dados: ValidarVacinaSchema, db: Session = Depends(get_db)):
-    vacina = db.query(models.Vacina).filter_by(id=id).first()
     if not vacina:
         raise HTTPException(status_code=404, detail="Vacina não encontrada")
-    vacina.status = "REALIZADA" if dados.realizada else "PENDENTE"
+
+    vacina.validacao = atualizar.validacao
     db.commit()
-    return {"mensagem": f"Vacina marcada como {'REALIZADA' if dados.realizada else 'PENDENTE'}"}
+
+    return {"mensagem": "Status da vacina atualizado com sucesso"}

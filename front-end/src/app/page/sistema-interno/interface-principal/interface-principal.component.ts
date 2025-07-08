@@ -28,7 +28,8 @@ export class InterfacePrincipalComponent implements OnInit {
     const usuario = localStorage.getItem('usuario');
     if (usuario) {
       const dados = JSON.parse(usuario);
-      this.cargo = dados.profissional; // aqui pega "Profissional"
+      this.cargo = dados.profissional; 
+      this.nome = dados.nome;
       console.log('Cargo:', this.cargo);
     }
   }

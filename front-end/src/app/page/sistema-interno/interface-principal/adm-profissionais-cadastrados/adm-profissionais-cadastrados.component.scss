@@ -67,3 +67,70 @@ header {
         }
     }
 }
+
+
+// CADASTRAR PROFISSIONAL
+
+.form-container {
+  height: 425px;
+  width: 490px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: #fff;
+  align-items: center;
+  margin-left: 25%;
+}
+
+.foto-usuario {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  object-fit: cover;
+  justify-self: center;
+}
+
+.left-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+  margin-left: 5px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 70px 350px; /* label 100px, input ocupa o resto */
+  align-items: center;
+
+}
+
+::ng-deep .senha-ps input {
+  height: 35px;
+  max-width: 350px;
+  width: 100%;
+}
+
+.form-row input {
+  height: 35px;
+  max-width: 350px;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+
+
+.buttons {
+  display: flex;
+  justify-content: space-between; /* empurra os itens para as extremidades */
+  align-items: center; /* alinha verticalmente (opcional) */
+  width: 100%; /* ocupa toda a largura disponível */
+
+  ::ng-deep p-button button {
+    height: 29px;
+    font-size: 14px;
+  }
+}

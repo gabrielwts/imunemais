@@ -89,6 +89,11 @@ class ListaUserVacinaResponse(BaseModel):
     descricao_vacina: str
     numero_cpf: str
     validacao: str
+    
+class AtualizarStatusVacinas(BaseModel):
+    nome_vacina: str
+    numero_cpf: str
+    validacao: str
 
 class UserVaccineCreate(UserVaccineBase):
     user_id: Optional[int]

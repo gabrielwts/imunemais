@@ -4,23 +4,23 @@
         <div class="form">
             <div class="inputs-info">
                 <label>Nome</label>
-                <input type="text" pInputText placeholder="Digite o nome da vacina.." />
+                <input type="text" pInputText placeholder="Digite o nome da vacina.." [(ngModel)]="form.vacinas_nome" />
             </div>
             <div class="inputs-info">
                 <label>Descrição</label>
-                <input type="text" pInputText placeholder="Digite a descrição da vacina.." />
+                <input type="text" pInputText placeholder="Digite a descrição da vacina.." [(ngModel)]="form.descricao" />
             </div>
             <div class="inputs-info">
                 <label>Faixa Etária</label>
-                <p-select [options]="ageRanges" [(ngModel)]="selectedAgeRange" optionLabel="name" placeholder="Selecione a faixa etária" class="w-full md:w-56" />
+                <p-select [options]="ageRanges" [(ngModel)]="form.faixa_etaria" optionValue="name" optionLabel="name" placeholder="Selecione a faixa etária" class="w-full md:w-56"></p-select>
             </div>
             <div class="inputs-info">
                 <label>Dose</label>
-                <input type="text" pInputText placeholder="Digite o tipo de dose da vacina.." />
+                <input type="text" pInputText placeholder="Digite o tipo de dose da vacina.." [(ngModel)]="form.doses" />
             </div>
         </div>
         <div class="button">
-            <p-button label="Registrar vacina" severity="success" />
+            <p-button label="Registrar vacina" (click)="salvar()" [disabled]="botaoDesativado" severity="success" />
         </div>
     </div>
 }

@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { EnfermeirosService } from '../../../../services/enfermeiros.service';
 import { Router } from '@angular/router';
+import { AdmEnfermeirosStatusVacina } from '../../../../models/adm_models/adm-enfermeiros-status-vacina';
 
 
 @Component({
@@ -68,8 +69,55 @@ export class ConsultarPacienteComponent implements OnInit {
     }
   }
 
+  validarVacinaSelecionada() {
+    if (!this.vacinaSelecionada || !this.paciente.cpf) return;
+
+    const payload = new AdmEnfermeirosStatusVacina(
+      this.paciente.cpf,
+      this.vacinaSelecionada.nome_vacina,
+      'REALIZADA'
+    );
+
+    this.enfermeiroService.atualizarStatusVacina(payload).subscribe({
+      next: (res) => {
+        console.log(res.mensagem);
+        alert('Vacina validada com sucesso!');
+        this.validarVacina = false;
+        this.vacinaSelecionada.validacao = 'true'; // atualiza visualmente
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Erro ao validar vacina');
+      }
+    });
+  }
+
+  removerValidacaoVacinaSelecionada() {
+    if (!this.vacinaSelecionada || !this.paciente.cpf) return;
+
+    const payload = new AdmEnfermeirosStatusVacina(
+      this.paciente.cpf,
+      this.vacinaSelecionada.nome_vacina,
+      'PENDENTE'
+    );
+
+    this.enfermeiroService.atualizarStatusVacina(payload).subscribe({
+      next: (res) => {
+        console.log(res.mensagem);
+        alert('Validação da vacina removida com sucesso!');
+        this.removerValidacaoVacina = false;
+        this.vacinaSelecionada.validacao = 'false'; // atualiza visualmente
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Erro ao remover validação');
+      }
+    });
+  }
+
   cpfDigitado: string = '';
-  vacinasListagem: any[] = []; 
+  vacinasListagem: any[] = [];
+  vacinaSelecionada: any = null;
 
   get vacinasFiltradas(): any[] {
   return this.vacinasListagem.filter(v => {
@@ -82,12 +130,14 @@ export class ConsultarPacienteComponent implements OnInit {
     console.log("ConsultarPacienteComponent carregado");
   }
 
-  confirmValidarVacina () {
+  confirmValidarVacina (vacina: any) {
     this.validarVacina = !this.validarVacina;
+    this.vacinaSelecionada = vacina;
   }
 
-  confirmRemoverVacina () {
+  confirmRemoverVacina (vacina: any) {
     this.removerValidacaoVacina = !this.removerValidacaoVacina;
+    this.vacinaSelecionada = vacina;
   }
 
   aoDigitarCpf(valor: string) {
