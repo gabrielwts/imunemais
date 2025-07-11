@@ -32,6 +32,13 @@
   display: grid;
   grid-template-columns: 70px 350px; /* label 100px, input ocupa o resto */
   align-items: center;
+
+}
+
+::ng-deep .senha-ps input {
+  height: 35px;
+  max-width: 350px;
+  width: 100%;
 }
 
 .form-row input {
@@ -40,6 +47,8 @@
   padding: 5px;
   border: 1px solid #ccc;
 }
+
+
 
 .buttons {
   display: flex;

@@ -3,12 +3,13 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 from src.schemas.usuario_schemas import LoginAdminRequest
 from src.schemas.vacina_schema import VacinaCreate
-from src.schemas.funcionario_schemas import ListaTodosFuncionariosCadastrados, VacinaCadastro
+from src.schemas.funcionario_schemas import AtualizarDados, DeletarFuncionario, ListaTodosFuncionariosCadastrados, VacinaCadastro
 from fastapi import APIRouter, Depends, HTTPException
 from src.database.database import SessionLocal
 from sqlalchemy.orm import Session
 from src.app import router
 from src.database import models
+from src.auth.crypto import gerar_hash_senha
 from src.database.models import CartilhaVacina, RegisteredProfessional, UserVaccine, Usuario
 # from src.schemas.funcionario_schemas import FuncionarioCreate
 from pydantic import BaseModel
@@ -21,7 +22,7 @@ def get_db():
     finally:
         db.close()
         
-# Admin fixo (você pode mudar isso depois)
+# Admin fixo 
 ADMIN_USER = "00000000000"
 ADMIN_SENHA = "admingps123"
 
@@ -63,32 +64,48 @@ def criar_usuario(vacina: VacinaCadastro, db: Session = Depends(get_db)):
 def listar_funcionarios(db: Session = Depends(get_db)):
     return db.query(RegisteredProfessional.nome_pro, RegisteredProfessional.usuario, RegisteredProfessional.password_prof, RegisteredProfessional.cargo_prof).all()
 
-@router.post("/v1/admin/login")
-def login_admin(dados: LoginAdminRequest):
-    if dados.cpf == ADMIN_USER and dados.senha == ADMIN_SENHA:
-        return {"mensagem": "Login realizado com sucesso", "perfil": "admin"}
-    
-    raise HTTPException(status_code=401, detail="Credenciais inválidas")
-
-@router.post("v1/vacinas")
-def criar_vacina(vacina: VacinaCreate, db: Session = Depends(get_db)):
-    nova = models.Vacina(**vacina.dict())
-    db.add(nova)
-    db.commit()
-    db.refresh(nova)
-    return {"mensagem": "Vacina cadastrada com sucesso", "vacina": nova}
-
 class VacinaCreate(BaseModel):
     nome: str
     descricao: str
     faixa_etaria: str
     dose: str
 
-@router.delete("v1/funcionarios/{id}")
-def deletar_funcionario(id: int, db: Session = Depends(get_db)):
-    funcionario = db.query(models.Funcionario).filter_by(id=id).first()
+# Deletar funcionário
+@router.delete("/v1/adm/funcionario/deletar")
+def deletar_funcionario(usuario: str, db: Session = Depends(get_db)):
+    funcionario = db.query(RegisteredProfessional).filter_by(usuario=usuario).first()
+    
     if not funcionario:
         raise HTTPException(status_code=404, detail="Funcionário não encontrado.")
+
     db.delete(funcionario)
     db.commit()
     return {"mensagem": "Funcionário deletado com sucesso."}
+
+# Atualizar dados dos funcionários
+@router.put("/v1/adm/funcionario/alterar")
+def atualizar_dados(atualizar: AtualizarDados, db: Session = Depends(get_db)):
+    usuario = db.query(RegisteredProfessional).filter_by(usuario=atualizar.usuario_original).first()
+    
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    if atualizar.nome_pro is not None:
+        usuario.nome_pro = atualizar.nome_pro
+
+    if atualizar.usuario is not None:
+        usuario.usuario = atualizar.usuario
+        
+    if atualizar.password_prof is not None:
+        if len(atualizar.password_prof) < 6:
+            raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
+        usuario.password_prof = gerar_hash_senha(atualizar.password_prof)
+        
+    if atualizar.cargo_prof is not None:
+        usuario.cargo_prof = atualizar.cargo_prof
+
+    db.commit()
+    db.refresh(usuario)
+
+    return {"mensagem": "Dados atualizados com sucesso"}
+

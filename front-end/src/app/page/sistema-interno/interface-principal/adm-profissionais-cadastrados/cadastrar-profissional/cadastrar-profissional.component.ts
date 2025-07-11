@@ -20,34 +20,34 @@ interface userType {
   templateUrl: './cadastrar-profissional.component.html',
   styleUrl: './cadastrar-profissional.component.scss'
 })
-export class CadastrarProfissionalComponent implements OnInit {
-  userTypes: userType[] = [];         // Lista de opções
-  selecteduserType: userType | null = null; // Item selecionado
+export class CadastrarProfissionalComponent { // implements OnInit
+  // userTypes: userType[] = [];         // Lista de opções
+  // selecteduserType: userType | null = null; // Item selecionado
 
-  ngOnInit() {
-    this.userTypes = [
-      { name: 'Administrador' },
-      { name: 'Profissional' },
-    ];
-  }
+  // ngOnInit() {
+  //   this.userTypes = [
+  //     { name: 'Administrador' },
+  //     { name: 'Profissional' },
+  //   ];
+  // }
 
-  form: AdmEnfermeirosCadatro;
+  // form: AdmEnfermeirosCadatro;
 
-  constructor(private professionalService: EnfermeirosService, private router: Router){
-    this.form = new AdmEnfermeirosCadatro();
-  }
+  // constructor(private professionalService: EnfermeirosService, private router: Router){
+  //   this.form = new AdmEnfermeirosCadatro();
+  // }
 
-  salvar(){console.log("Dados do formulário:", this.form);
-    this.professionalService.cadastrar(this.form).subscribe({
-      next: professionalService => {
-        alert("Usuário cadastrado com sucesso")
-        // this.router.navigate(["/cadastro/senha"], {state: { id: professionalService.id }})
-      },
-      error: erro => {
-        alert("Não foi possível cadastrar")
-        console.error("Erro ao tentar cadastrar:", erro);
-        console.error("Detalhe do erro:", erro.error);
-      }
-  })
-  }
+  // salvar(){console.log("Dados do formulário:", this.form);
+  //   this.professionalService.cadastrar(this.form).subscribe({
+  //     next: professionalService => {
+  //       alert("Usuário cadastrado com sucesso")
+  //       // this.router.navigate(["/cadastro/senha"], {state: { id: professionalService.id }})
+  //     },
+  //     error: erro => {
+  //       alert("Não foi possível cadastrar")
+  //       console.error("Erro ao tentar cadastrar:", erro);
+  //       console.error("Detalhe do erro:", erro.error);
+  //     }
+  // })
+  // }
 }

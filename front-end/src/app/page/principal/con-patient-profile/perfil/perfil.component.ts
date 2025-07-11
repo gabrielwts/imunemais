@@ -33,7 +33,7 @@ export class PerfilComponent implements OnInit {
 
   salvarAlteracao() {
     this.alterarDados();
-    this.alterarInfo = true; // esconde os inputs depois de salvar
+    this.alterarInfo = true; 
   }
 
   // Alterar dados

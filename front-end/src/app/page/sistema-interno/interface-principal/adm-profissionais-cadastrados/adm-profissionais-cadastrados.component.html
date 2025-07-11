@@ -1,3 +1,74 @@
+@if(cadastrar === true) {
+        <div class="form-container">
+        <div class="top">
+            <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
+        </div>
+
+            <div class="left-form">
+                <div class="form-row">
+                <label>Nome</label>
+                <input type="text" pInputText placeholder="Digite o nome completo.." [(ngModel)]="form.nome_pro" />
+                </div>
+
+                <div class="form-row">
+                <label>Usuário</label>
+                <input type="text" pInputText placeholder="Digite o nome de usuário.." [(ngModel)]="form.usuario" />
+                </div>
+
+                <div class="form-row">
+                <label>Senha</label>
+                <input type="text" pInputText placeholder="Digite uma senha.." [(ngModel)]="form.password_prof" />
+                </div>
+
+                <div class="form-row">
+                <label>Cargo</label>
+                <p-select [options]="userTypes" [(ngModel)]="form.cargo_prof" optionLabel="name" optionValue="name"placeholder="Selecione o cargo" class="w-full md:w-56" /></div>
+            </div>
+
+            <div class="buttons">
+                <p-button (click)="salvar()" [disabled]="botaoDesativado" label="Registrar usuário" severity="success" />
+            </div>
+        </div>
+    }
+@else {}
+
+@if(alterarPerfil == true){
+        <div class="form-container">
+            <div class="top">
+                <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
+            </div>
+
+            <div class="left-form">
+                <div class="form-row">
+                    <label>Nome</label>
+                    <input type="text" pInputText placeholder="Digite o nome completo.." [(ngModel)]="form.nome_pro" />
+                </div>
+
+                <div class="form-row">
+                    <label>Usuário</label>
+                    <input type="text" pInputText placeholder="Digite o nome de usuário.." [(ngModel)]="form.usuario" />
+                </div>
+
+                <div class="form-row">
+                    <label>Senha</label>
+                    <p-password  type="text" [feedback]="false" placeholder="Digite uma senha.." [(ngModel)]="form.password_prof" />
+                </div>
+
+                <div class="form-row">
+                    <label>Cargo</label>
+                    <p-select [options]="userTypes" [(ngModel)]="form.cargo_prof" optionValue="name" optionLabel="name" placeholder="Selecione o cargo" class="w-full md:w-56" />
+                </div>
+            </div>
+
+            <div class="buttons">
+                <p-button label="Remover perfil" variant="outlined" severity="danger" (click)="removerFuncionario()" />
+                <p-button label="Alterar dados" severity="success" (click)="alterarDadosFuncionario()" [disabled]="!formAlterado()" />
+            </div>
+        </div>
+    }
+@else {}
+
+
 <div class="container">
     <header>
         <div class="navbar-right">
@@ -8,13 +79,13 @@
             <span>Pesquisar</span>
 
             <p-floatlabel variant="in">
-                <input pInputText id="in_label" autocomplete="off" /><!-- [(ngModel)]="value2" -->
-                <label for="in_label">Procure por um usuário...</label>
+                <input pInputText id="in_label" [(ngModel)]="filtroPesquisa" (input)="filtrarFuncionarios()" />
+                <label for="in_label">Procure por um funcionário...</label>
             </p-floatlabel>
         </div>
     </header>
 
-    <div class="registered-professionals" *ngFor="let funcionario of funcionarios">
+    <div class="registered-professionals" *ngFor="let funcionario of funcionariosFiltrados">
 
         <div class="professionals">
             <div class="right-info">
@@ -26,19 +97,9 @@
             </div>
 
             <div class="left-info">
-                <p class="cpf"></p>
-                <p-button label="Acessar" (click)="alterarUserProfile()" severity="contrast" />
+                <p-button label="Acessar" (click)="alterarUserProfile(funcionario)" severity="contrast" />
             </div>
         </div>
     </div>
 
-    @if(cadastrar === true) {
-        <app-cadastrar-profissional></app-cadastrar-profissional>
-    }
-    @else {}
-
-    @if(alterarPerfil == true){
-        <app-alterar-dados-profissional></app-alterar-dados-profissional>
-    }
-    @else {}
 </div>

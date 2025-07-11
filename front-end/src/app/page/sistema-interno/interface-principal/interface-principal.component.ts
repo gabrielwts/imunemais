@@ -32,6 +32,10 @@ export class InterfacePrincipalComponent implements OnInit {
       this.nome = dados.nome;
       console.log('Cargo:', this.cargo);
     }
+
+    window.addEventListener('abrirConsultaPaciente', () => {
+      this.mostrarPaciente(); 
+    });
   }
   
   mostrarPaciente () {
@@ -64,5 +68,10 @@ export class InterfacePrincipalComponent implements OnInit {
     this.vacinasLista = false;
     this.funcinariosLista = true;
     console.log("Acessou funcionários cadastrados")
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/login-sistema-interno']);
   }
 }

@@ -1,5 +1,5 @@
 * {
-    margin: 0;
+  margin: 0;
 }
 
 header {
@@ -10,7 +10,7 @@ header {
     align-items: center;
 
     .navbar-right {
-        margin-left: 20px;
+      margin-left: 20px;
     }
 
     .navbar-left{
@@ -55,21 +55,21 @@ header {
             gap: 30px;
             padding: 0 25px 0 20px;
             height: 36px;
+            width: 150px;
             border-left: 1px solid #B7B7B7;
+            justify-content: center;
         }
 
         .left-info {
             display: flex;
             align-items: center;
-            gap: 30px;
             padding: 0 25px 0 20px;
-            border-left: 1px solid #B7B7B7;
+            // border-left: 1px solid #B7B7B7;
         }
     }
 }
 
-
-// CADASTRAR PROFISSIONAL
+// CADASTRAR FUNCIONÁRIO
 
 .form-container {
   height: 425px;
@@ -81,7 +81,10 @@ header {
   border-radius: 8px;
   background-color: #fff;
   align-items: center;
-  margin-left: 25%;
+  position: fixed;
+  margin-left: 22%;
+  margin-top: 50px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.4);
 }
 
 .foto-usuario {
@@ -105,13 +108,6 @@ header {
   display: grid;
   grid-template-columns: 70px 350px; /* label 100px, input ocupa o resto */
   align-items: center;
-
-}
-
-::ng-deep .senha-ps input {
-  height: 35px;
-  max-width: 350px;
-  width: 100%;
 }
 
 .form-row input {
@@ -121,7 +117,13 @@ header {
   border: 1px solid #ccc;
 }
 
-
+.form-row ::ng-deep p-password input {
+  height: 35px;
+  width: 350px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
 .buttons {
   display: flex;

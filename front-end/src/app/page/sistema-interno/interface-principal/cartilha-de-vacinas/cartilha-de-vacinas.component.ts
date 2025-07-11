@@ -107,6 +107,10 @@ export class CartilhaDeVacinasComponent implements OnInit {
       next: adminService => {
         alert("Vacina cadastrado com sucesso")
         this.form = new AdmCadastrarVacina();
+        this.enfermeiroService.getTodasAsVacinasCadastradas().subscribe(data => {
+          this.vacinas = data;
+          this.vacinasFiltradas = data; // mantém o filtro atualizado também
+        });
       },
       error: erro => {
         alert("Não foi possível cadastrar")

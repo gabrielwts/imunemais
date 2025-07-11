@@ -7,13 +7,13 @@
             <span>Pesquisar</span>
 
             <p-floatlabel variant="in">
-                <input pInputText id="in_label" autocomplete="off" /><!-- [(ngModel)]="value2" -->
+                <input pInputText id="in_label" [(ngModel)]="filtroPesquisa" (input)="filtrarPaciente()" autocomplete="off" />
                 <label for="in_label">Procure por um usuário...</label>
             </p-floatlabel>
         </div>
     </header>
 
-    <div class="registered-patients" *ngFor="let paciente of pacientes">
+    <div class="registered-patients" *ngFor="let paciente of pacientesFiltrados">
 
         <div class="patient">
             <div class="right-info">
@@ -22,7 +22,7 @@
 
             <div class="left-info">
                 <p class="cpf"> {{ paciente.cpf }} </p>
-                <p-button label="Acessar" severity="contrast" />
+                <p-button label="Acessar" severity="contrast" (click)="acessarPaciente(paciente.cpf)" />
             </div>
         </div>
     </div>

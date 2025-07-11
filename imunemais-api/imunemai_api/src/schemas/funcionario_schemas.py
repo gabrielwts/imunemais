@@ -39,4 +39,21 @@ class ListaTodosFuncionariosCadastrados(BaseModel):
     
     class Config:
         orm_mode = True
-        
+
+
+class DeletarFuncionario(BaseModel):
+    nome_pro: str
+    usuario: str
+    password_prof: str
+    cargo_prof: str
+
+
+class AtualizarDados(BaseModel):
+    usuario_original: str
+    
+    nome_pro: Optional[str] = None
+    usuario: Optional[str] = None
+    password_prof: Optional[str] = None
+    cargo_prof: Optional[str] = None
+    
+    

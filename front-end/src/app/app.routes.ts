@@ -80,7 +80,7 @@ export const routes: Routes = [
 
     // TESTE DESENVOLVIMENTO
     {
-        path: "loginadmdesen",
+        path: "login-sistema-interno",
         component: LoginInternoComponent
     },
     {

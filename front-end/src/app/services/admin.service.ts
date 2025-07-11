@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AdmCadastrarVacina } from '../models/adm_models/adm-cadastrar-vacina';
+import { AdmAlterarDadosFuncionario } from '../models/adm_models/adm-alterar-dados-funcionario';
 
 
 @Injectable({
@@ -21,6 +22,14 @@ export class LoginAdminService {
 
   getTodosFuncionariosCadastrados(): Observable<{ nome_pro: string, usuario:string, password_prof: string, cargo_prof: string }[]> {
     return this.http.get<{ nome_pro: string, usuario:string, password_prof: string, cargo_prof: string }[]>(`${environment.apiUrl}/v1/adm/lista/funcionários/cadastrados`);
+  }
+
+  deletarFuncionarioCadastrado(usuario: string): Observable<{ mensagem: string }[]> {
+    return this.http.delete<{ mensagem: string }[]>(`${environment.apiUrl}/v1/adm/funcionario/deletar?usuario=${usuario}`);
+  }
+
+  atualizarFuncionario(alterarDadosFuncionario: AdmAlterarDadosFuncionario): Observable<{ mensagem: string }> {
+    return this.http.put<{ mensagem: string }>(`${environment.apiUrl}/v1/adm/funcionario/alterar`, alterarDadosFuncionario)
   }
 
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -8,6 +8,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { EnfermeirosService } from '../../../../services/enfermeiros.service';
 import { Router } from '@angular/router';
 import { AdmEnfermeirosStatusVacina } from '../../../../models/adm_models/adm-enfermeiros-status-vacina';
+import { DataTransferService } from '../../../../services/compartilhado/data-transfer.service';
 
 
 @Component({
@@ -37,7 +38,18 @@ export class ConsultarPacienteComponent implements OnInit {
   validarVacina: boolean = false;
   removerValidacaoVacina: boolean = false;
 
-  constructor(private enfermeiroService: EnfermeirosService, router: Router) {}
+  constructor(private enfermeiroService: EnfermeirosService, private dataTransfer: DataTransferService, router: Router) {}
+
+  @HostListener('document:keydown.escape', ['$event'])
+    handleEscape(event: KeyboardEvent) {
+      if (this.validarVacina) {
+        this.validarVacina = false;
+      }
+
+      if (this.removerValidacaoVacina) {
+        this.removerValidacaoVacina = false;
+      }
+    }
 
   buscarDadosPaciente() {
     const cpfLimpo = this.paciente.cpf;
@@ -83,7 +95,9 @@ export class ConsultarPacienteComponent implements OnInit {
         console.log(res.mensagem);
         alert('Vacina validada com sucesso!');
         this.validarVacina = false;
-        this.vacinaSelecionada.validacao = 'true'; // atualiza visualmente
+        this.vacinaSelecionada.validacao = 'true';
+        this.buscarDadosPaciente();
+        this.value = true;
       },
       error: (err) => {
         console.error(err);
@@ -106,7 +120,10 @@ export class ConsultarPacienteComponent implements OnInit {
         console.log(res.mensagem);
         alert('Validação da vacina removida com sucesso!');
         this.removerValidacaoVacina = false;
-        this.vacinaSelecionada.validacao = 'false'; // atualiza visualmente
+        this.vacinaSelecionada.validacao = 'false';
+
+        this.buscarDadosPaciente();
+        this.value = false;
       },
       error: (err) => {
         console.error(err);
@@ -120,14 +137,20 @@ export class ConsultarPacienteComponent implements OnInit {
   vacinaSelecionada: any = null;
 
   get vacinasFiltradas(): any[] {
-  return this.vacinasListagem.filter(v => {
-    const validacao = v.validacao === true || v.validacao === 'true';
-    return this.value ? validacao : !validacao;
-  });
-}
+    return this.vacinasListagem.filter(v => {
+      return this.value
+        ? v.validacao === 'REALIZADA'
+        : v.validacao === 'PENDENTE';
+    });
+  }
   
   ngOnInit(): void {
-    console.log("ConsultarPacienteComponent carregado");
+    const cpfTransferido = this.dataTransfer.getCpf();
+    if (cpfTransferido) {
+      this.paciente.cpf = cpfTransferido;
+      this.buscarDadosPaciente();
+      this.dataTransfer.limparCpf();
+    }
   }
 
   confirmValidarVacina (vacina: any) {

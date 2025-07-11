@@ -20,14 +20,6 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/v1/teste-senha")
-def teste_senha(cpf: str, senha: str, db: Session = Depends(get_db)):
-    user = db.query(Usuario).filter(Usuario.cpf == cpf).first()
-    if not user:
-        return {"status": "CPF não encontrado"}
-    ok = verificar_senha(senha, user.password_hash)
-    return {"senha_valida": ok}
-
 @router.post("/v1/autenticacao", response_model=TokenComUsuario)
 def login_usuario(form: AutenticacaoLogin, db: Session = Depends(get_db)):
     print("---- INÍCIO LOGIN ----")
@@ -90,6 +82,16 @@ def listar_vacinas(cpf: str, db: Session = Depends(get_db)):
         )
         for v in vacinas
     ]
+
+# Rotas testes
+
+@router.post("/v1/teste-senha")
+def teste_senha(cpf: str, senha: str, db: Session = Depends(get_db)):
+    user = db.query(Usuario).filter(Usuario.cpf == cpf).first()
+    if not user:
+        return {"status": "CPF não encontrado"}
+    ok = verificar_senha(senha, user.password_hash)
+    return {"senha_valida": ok}
 
 @router.post("v1/teste-senha")
 def teste_senha(cpf: str, senha: str, db: Session = Depends(get_db)):
