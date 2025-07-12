@@ -11,8 +11,7 @@ class AutenticacaoLogin:
     cpf: str
     senha: str
     
-@dataclass
-class AdmAutenticacaoLogin:
+class AdmAutenticacaoLogin(BaseModel):
     usuario: str
     senha: str
 
@@ -47,7 +46,6 @@ class TokenComUsuario(BaseModel):
 class AdmUsuarioDados(BaseModel):
     id: int
     nome: str
-    
     usuario: str
     profissional: str
     

@@ -22,9 +22,6 @@ def get_db():
 
 @router.post("/v1/autenticacao", response_model=TokenComUsuario)
 def login_usuario(form: AutenticacaoLogin, db: Session = Depends(get_db)):
-    print("---- INÍCIO LOGIN ----")
-    print(f"CPF recebido: {form.cpf}")
-    print(f"Senha recebida: {form.senha}")
 
     usuario = db.query(Usuario).filter(Usuario.cpf == form.cpf).first()
 

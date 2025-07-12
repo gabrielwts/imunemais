@@ -52,7 +52,9 @@ class AtualizarDadosComCpf(BaseModel): # Função tela profile dos pacientes
     email: Optional[EmailStr] = None
     
 class AtualizarDadosPaciente(BaseModel): # Função tela consultar dados
-    cpf: Optional[str] = None
+    cpf_original: str
+    
+    cpf_novo: Optional[str] = None
     nome_completo: Optional[str] = None
     data_nascimento: Optional[date] = None
     telefone: Optional[str] = None

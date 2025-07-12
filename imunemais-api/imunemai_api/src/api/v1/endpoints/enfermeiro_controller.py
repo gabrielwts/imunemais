@@ -50,12 +50,12 @@ def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
     if not adm_usuario:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Login ou senha inválidos",
+            detail="Login inválido",
         )
     if not verificar_senha(senha_plana=form.senha, senha_hash=adm_usuario.password_prof):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Login ou senha inválidos",
+            detail="Senha inválida",
         )
     access_token, access_token_expires = generate_token(adm_usuario)
 
@@ -101,15 +101,15 @@ def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
 # Atualizar dados do paciente na tela de consultar pacientes
 @router.put("/v1/interno/paciente/atualizardados")
 def atualizar_dados(atualizar: AtualizarDadosPaciente, db: Session = Depends(get_db)):
-    usuario = db.query(Usuario).filter(Usuario.cpf == atualizar.cpf).first()
+    usuario = db.query(Usuario).filter_by(cpf=atualizar.cpf_original).first()
     
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
     cpf_antigo = usuario.cpf
 
-    if atualizar.cpf is not None:
-        usuario.cpf = atualizar.cpf
+    if atualizar.cpf_novo is not None:
+        usuario.cpf = atualizar.cpf_novo
 
     if atualizar.nome_completo is not None:
         usuario.nome_completo = atualizar.nome_completo
@@ -125,11 +125,13 @@ def atualizar_dados(atualizar: AtualizarDadosPaciente, db: Session = Depends(get
 
     vacinas_do_usuario = db.query(UserVaccine).filter(UserVaccine.numero_cpf == cpf_antigo).all()
 
+    if atualizar.nome_completo is not None:
+        vacinas_do_usuario = db.query(UserVaccine).filter(
+            UserVaccine.numero_cpf == usuario.cpf  # já atualizado!
+        ).all()
+
     for vacina in vacinas_do_usuario:
-        if atualizar.cpf is not None:
-            vacina.numero_cpf = atualizar.cpf
-        if atualizar.nome_completo is not None:
-            vacina.full_name = atualizar.nome_completo
+        vacina.full_name = atualizar.nome_completo
 
     db.commit()
     db.refresh(usuario)

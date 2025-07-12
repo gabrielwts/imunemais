@@ -100,4 +100,10 @@ def atualizar_dados(atualizar: AtualizarDadosComCpf, db: Session = Depends(get_d
     db.commit()
     db.refresh(usuario)
 
-    return {"mensagem": "Dados de contato atualizados com sucesso"}
+    return {
+        "cpf": usuario.cpf,
+        "nome": usuario.nome_completo,
+        "data_nascimento": usuario.data_nascimento,
+        "telefone": usuario.telefone,
+        "email": usuario.email
+    }
