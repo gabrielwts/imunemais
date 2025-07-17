@@ -1,17 +1,21 @@
+<p-toast position="bottom-right"></p-toast>
+
 <main class="main-conten">
 
     <!-- VALIDAÇÃO / REMOVER -->
 
     @if(validarVacina === true) {
-        <div class="validar-vacina-box">
-            <div class="info">
-                <span>Validação de vacina</span>
-                <small class="info-vacina">{{ vacinaSelecionada?.nome_vacina }}</small>
-            </div>
+        <div class="container-validar-vacina-box">
+            <div class="validar-vacina-box">
+                <div class="info">
+                    <span>Validação de vacina</span>
+                    <small class="info-vacina">{{ vacinaSelecionada?.nome_vacina }}</small>
+                </div>
 
-            <div class="buttons"> 
-                <p-button label="Validar" (click)="validarVacinaSelecionada()" severity="success" class="validarButton" />
-                <p-button label="Cancelar" (click)="validarVacina = false" severity="danger" class="removerButton" />
+                <div class="buttons"> 
+                    <p-button label="Validar" (click)="validarVacinaSelecionada()" severity="success" class="validarButton" />
+                    <p-button label="Cancelar" (click)="validarVacina = false" severity="danger" class="removerButton" />
+                </div>
             </div>
         </div>
     }
@@ -19,22 +23,22 @@
     }
 
     @if(removerValidacaoVacina === true) {
-        <div class="remover-vacina-box">
-            <div class="info">
-                <span>Retirar validação de vacina</span>
-                <small class="info-vacina">{{ vacinaSelecionada?.nome_vacina }}</small>
-            </div>
+        <div class="container-validar-vacina-box">
+            <div class="remover-vacina-box">
+                <div class="info">
+                    <span>Retirar validação de vacina</span>
+                    <small class="info-vacina">{{ vacinaSelecionada?.nome_vacina }}</small>
+                </div>
 
-            <div class="buttons-rmv">
-                <p-button label="Remover validação" (click)="removerValidacaoVacinaSelecionada()" [raised]="true" severity="danger" class="removerButton" />
-                <p-button label="Cancelar" (click)="removerValidacaoVacina = false" severity="secondary" class="cancelaButton" />
+                <div class="buttons-rmv">
+                    <p-button label="Remover validação" (click)="removerValidacaoVacinaSelecionada()" [raised]="true" severity="danger" class="removerButton" />
+                    <p-button label="Cancelar" (click)="removerValidacaoVacina = false" severity="secondary" class="cancelaButton" />
+                </div>
             </div>
         </div>
     }
     @else {
     }
-
-    <!--  -->
 
     <div class="form-container">
         <div class="left-form">
@@ -45,10 +49,10 @@
             <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.nome_completo" name="nome" />
 
             <label for="data">Data de Nascimento</label>
-            <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.data_nascimento" name="data"/>
+            <p-inputmask mask="99/99/9999" [readonly]="!podeEditar" [(ngModel)]="paciente.data_nascimento" name="data"/>
 
             <label for="telefone">Telefone</label>
-            <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.telefone" name="telefone"/>
+            <p-inputmask mask="(99) 99999-9999" [readonly]="!podeEditar" [(ngModel)]="paciente.telefone" name="telefone"/>
 
             <label for="email">E-mail</label>
             <input [readonly]="!podeEditar" class="input-info" [(ngModel)]="paciente.email" name="email"/>

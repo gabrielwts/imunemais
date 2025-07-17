@@ -1,38 +1,20 @@
+<p-toast position="bottom-right" [baseZIndex]="10000"></p-toast>
+
+<p-toast position="bottom-center" key="confirm" (onClose)="onReject()" [baseZIndex]="9999">
+  <ng-template let-message pTemplate="message">
+        <div class="flex flex-col items-start flex-auto">
+        <div class="font-medium text-lg my-2">{{ message.detail }}</div>
+        <br>
+        <div class="flex gap-2 mt-2">
+            <p-button label="Confirmar" severity="danger" size="small" (click)="onConfirmDelete()" />
+            <p-button label="Cancelar" severity="secondary" size="small" (click)="onReject()" />
+        </div>
+        </div>
+  </ng-template>
+</p-toast>
+
 @if(cadastrar === true) {
-        <div class="form-container">
-        <div class="top">
-            <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
-        </div>
-
-            <div class="left-form">
-                <div class="form-row">
-                <label>Nome</label>
-                <input type="text" pInputText placeholder="Digite o nome completo.." [(ngModel)]="form.nome_pro" />
-                </div>
-
-                <div class="form-row">
-                <label>Usuário</label>
-                <input type="text" pInputText placeholder="Digite o nome de usuário.." [(ngModel)]="form.usuario" />
-                </div>
-
-                <div class="form-row">
-                <label>Senha</label>
-                <input type="text" pInputText placeholder="Digite uma senha.." [(ngModel)]="form.password_prof" />
-                </div>
-
-                <div class="form-row">
-                <label>Cargo</label>
-                <p-select [options]="userTypes" [(ngModel)]="form.cargo_prof" optionLabel="name" optionValue="name"placeholder="Selecione o cargo" class="w-full md:w-56" /></div>
-            </div>
-
-            <div class="buttons">
-                <p-button (click)="salvar()" [disabled]="botaoDesativado" label="Registrar usuário" severity="success" />
-            </div>
-        </div>
-    }
-@else {}
-
-@if(alterarPerfil == true){
+    <div class="overlay-fundo" *ngIf="cadastrar || alterarPerfil">
         <div class="form-container">
             <div class="top">
                 <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
@@ -40,31 +22,68 @@
 
             <div class="left-form">
                 <div class="form-row">
-                    <label>Nome</label>
-                    <input type="text" pInputText placeholder="Digite o nome completo.." [(ngModel)]="form.nome_pro" />
+                <label>Nome <span style="color: red;" title="Campo obrigatório">*</span></label>
+                <input type="text" pInputText placeholder="Digite o nome completo.." [(ngModel)]="formCadastrar.nome_pro" />
                 </div>
 
                 <div class="form-row">
-                    <label>Usuário</label>
-                    <input type="text" pInputText placeholder="Digite o nome de usuário.." [(ngModel)]="form.usuario" />
+                <label>Usuário <span style="color: red;" title="Campo obrigatório">*</span></label>
+                <input type="text" pInputText placeholder="Digite o nome de usuário.." [(ngModel)]="formCadastrar.usuario" />
                 </div>
 
                 <div class="form-row">
-                    <label>Senha</label>
-                    <p-password  type="text" [feedback]="false" placeholder="Digite uma senha.." [(ngModel)]="form.password_prof" />
+                <label>Senha <span style="color: red;" title="Campo obrigatório">*</span></label>
+                <p-password type="text" placeholder="Digite uma senha.." [(ngModel)]="formCadastrar.password_prof" />
                 </div>
 
                 <div class="form-row">
-                    <label>Cargo</label>
-                    <p-select [options]="userTypes" [(ngModel)]="form.cargo_prof" optionValue="name" optionLabel="name" placeholder="Selecione o cargo" class="w-full md:w-56" />
+                <label>Cargo <span style="color: red;" title="Campo obrigatório">*</span></label>
+                <p-select [options]="userTypes" [(ngModel)]="formCadastrar.cargo_prof" optionLabel="name" optionValue="name"placeholder="Selecione o cargo" class="w-full md:w-56" /></div>
+            </div>
+
+            <div class="buttons">
+                <p-button (click)="salvar()" [disabled]="botaoDesativado" label="Registrar usuário" severity="success" />
+            </div>
+        </div>
+    </div>
+    }
+@else {}
+
+@if(alterarPerfil == true){
+    <div class="overlay-fundo">
+        <div class="form-container">
+            <div class="top">
+                <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
+            </div>
+
+            <div class="left-form">
+                <div class="form-row">
+                    <label>Nome <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <input type="text" pInputText placeholder="Digite o nome completo.." [(ngModel)]="formEditar.nome_pro" />
+                </div>
+
+                <div class="form-row">
+                    <label>Usuário <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <input type="text" pInputText placeholder="Digite o nome de usuário.." [(ngModel)]="formEditar.usuario" />
+                </div>
+
+                <div class="form-row">
+                    <label>Senha <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <p-password  type="text" [feedback]="false" placeholder="Digite uma senha.." [(ngModel)]="formEditar.password_prof" />
+                </div>
+
+                <div class="form-row">
+                    <label>Cargo <span style="color: red;" title="Campo obrigatório">*</span></label>
+                    <p-select [options]="userTypes" [(ngModel)]="formEditar.cargo_prof" optionValue="name" optionLabel="name" placeholder="Selecione o cargo" class="w-full md:w-56" />
                 </div>
             </div>
 
             <div class="buttons">
-                <p-button label="Remover perfil" variant="outlined" severity="danger" (click)="removerFuncionario()" />
+                <p-button label="Remover perfil" variant="outlined" severity="danger" (click)="showDeleteConfirm()" />
                 <p-button label="Alterar dados" severity="success" (click)="alterarDadosFuncionario()" [disabled]="!formAlterado()" />
             </div>
         </div>
+    </div>
     }
 @else {}
 

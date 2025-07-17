@@ -4,10 +4,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ButtonModule } from 'primeng/button';
 import { Route, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-profile-card',
-  imports: [ButtonModule, AvatarModule, AvatarGroupModule, RouterModule],
+  imports: [ DatePipe, ButtonModule, AvatarModule, AvatarGroupModule, RouterModule],
   templateUrl: './profile-card.component.html',
   styleUrl: './profile-card.component.scss'
 })

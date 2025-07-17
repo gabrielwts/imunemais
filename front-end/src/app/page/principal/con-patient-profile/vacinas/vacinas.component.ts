@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { UsuarioService } from '../../../../services/usuario.service';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   standalone: true,
   selector: 'app-vacinas',
-  imports: [ButtonModule, SelectButtonModule, FormsModule, CommonModule],
+  imports: [ DialogModule, ButtonModule, SelectButtonModule, FormsModule, CommonModule],
   templateUrl: './vacinas.component.html',
   styleUrl: './vacinas.component.scss'
 })
@@ -33,11 +34,11 @@ export class VacinasComponent implements OnInit {
     const usuario = localStorage.getItem('usuario');
     const cpf = usuario ? JSON.parse(usuario).cpf : null;
 
-    console.log('CPF usado na requisição:', cpf);
+    // console.log('CPF usado na requisição:', cpf);
     if (cpf) {
       this.vacinaService.getVacinasPorCpf(cpf).subscribe((res) => {
         this.vacinas = res;
-        console.log('Vacinas recebidas:', this.vacinas);
+        // console.log('Vacinas recebidas:', this.vacinas);
         localStorage.setItem('vacinas', JSON.stringify(res));
       });
     }
@@ -50,7 +51,7 @@ export class VacinasComponent implements OnInit {
   }
 
   onFiltroChange() {
-    console.log('Filtro alterado para:', this.value);
+    // console.log('Filtro alterado para:', this.value);
   }
 
 }

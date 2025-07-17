@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PerfilComponent } from './perfil/perfil.component';
 import 'primeicons/primeicons.css';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -19,17 +19,17 @@ export class ConPatientProfileComponent implements OnInit {
   telefone: string = "";
   email: string = "";
 
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
   perfilDados: boolean = true;
   mostrarPerfil () {
     this.perfilDados = true;
     this.vacinasLista = false;
-    console.log("Fechou vacinas, acessou perfil")
   }
   vacinasLista: boolean = false;
   mostrarVacinas() {
     this.vacinasLista = true;
     this.perfilDados = false;
-    console.log("Fechou perfil, acessou vacinas"); 
   }
 
   ngOnInit() {
@@ -46,6 +46,14 @@ export class ConPatientProfileComponent implements OnInit {
     } else {
       console.warn("Usuário não encontrado no localStorage.");
       this.nome = 'Visitante';
+    }
+
+    const state = history.state as { mostrarVacinas?: boolean };
+
+    if (state?.mostrarVacinas) {
+      this.mostrarVacinas();
+    } else {
+      this.mostrarPerfil();
     }
   }
 }

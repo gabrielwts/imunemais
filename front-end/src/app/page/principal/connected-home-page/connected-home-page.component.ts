@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { ProfileCardComponent } from './profile-card/profile-card.component';
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-connected-home-page',
   standalone: true,
-  imports: [ButtonModule, AvatarModule, AvatarGroupModule, ProfileCardComponent, FormsModule, CommonModule],
+  imports: [ RouterModule, ButtonModule, AvatarModule, AvatarGroupModule, ProfileCardComponent, FormsModule, CommonModule],
   templateUrl: './connected-home-page.component.html',
   styleUrl: './connected-home-page.component.scss'
 })
@@ -22,9 +22,13 @@ export class ConnectedHomePageComponent implements OnInit {
     this.dadosUsuario = !this.dadosUsuario;
   }
 
-  constructor(private vacinaService: UsuarioService){}
+  constructor(private vacinaService: UsuarioService, private router: Router){}
 
   nome: string = '';
+
+  irParaVacinas() {
+    this.router.navigateByUrl('/profile', { state: { mostrarVacinas: true } });
+  }
 
   ngOnInit() {
     const usuarioData: string | null = localStorage.getItem('usuario');

@@ -1,3 +1,5 @@
+<p-toast position="top-right"></p-toast>
+
 <div class="container">
 
     <div class="left">
@@ -10,7 +12,7 @@
             <div class="form-box">
                 <div>
                     <label for="nome">Nome <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <input pInputText class="nome" placeholder="Digite seu nome completo.." required [(ngModel)]="form.nome" /> <!-- declarar [(ngModel)]="value" -->
+                    <input pInputText class="nome" placeholder="Digite seu nome completo.." required [(ngModel)]="form.nome" />
                 </div>
             
                 <div>
@@ -20,21 +22,25 @@
             
                 <div>
                     <label for="data-nascimento">Data de Nascimento <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <p-datepicker class="data-nascimento" dateFormat="yy-mm-dd" placeholder="Selecione sua data de nascimento" required [(ngModel)]="form.dataNascimento" /> <!-- declarar [(ngModel)]="date" -->
+                    <p-datepicker class="data-nascimento" dateFormat="dd/mm/yy" placeholder="Selecione sua data de nascimento" required [(ngModel)]="form.dataNascimento" /> 
                 </div>
 
                 <div>
                     <label for="email">E-mail <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <input type="text" class="email" pInputText placeholder="Digite seu e-mail.."  [(ngModel)]="form.email" /> <!-- declarar [(ngModel)]="value" -->
+                    <input type="text" class="email" pInputText placeholder="Digite seu e-mail.."  [(ngModel)]="form.email" /> 
                 </div>
 
                 <div>
                     <label for="telefone">Telefone <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <p-inputmask mask="(99) 99999-9999" placeholder="(00) 90000-0000"  [(ngModel)]="form.telefone" /> <!-- declarar [(ngModel)]="value" -->
+                    <p-inputmask mask="(99) 99999-9999" placeholder="(00) 90000-0000" [(ngModel)]="form.telefone" (ngModelChange)="validarTelefone()" /> 
                 </div>
             </div>
             <div class="botao-cadastrar">
                 <button (click)="salvar()" class="register-button">Próximo</button>
+            </div>
+
+            <div *ngIf="telefoneInvalido" class="aviso-numero" style="color: red; font-size: 12px;">
+                O número de telefone deve começar com 9 após o DDD.
             </div>
         </div>
     </div>

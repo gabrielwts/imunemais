@@ -1,3 +1,5 @@
+<p-toast position="top-right"></p-toast>
+
 <div class="container">
     <div class="left">
         <a class="logo" href="/">imune+</a>
@@ -14,14 +16,10 @@
 
                 <div class="senha-confirm">
                     <label for="confirmar-senha">Confirmar senha <span style="color: red;" title="Campo obrigatório">*</span></label>
-                    <!-- [(ngModel)]="form.confirmSenha" -->
                     <p-password maxlength="150" placeholder="Digite novamente sua senha..." required [(ngModel)]="confirmarSenha" />
-                    <!-- [(ngModel)]="confirm_senha" -->
                 </div>
             </div>
-            <!-- @if(form.senha != form.confirmSenha){
-            <span>As senhas digitadas não coincidem</span>
-            } -->
+
             <div class="botao-cadastrar">
                 <p-button (click)="cadastrarSenha()" label="Cadastrar-se" severity="info" /><!-- (click)="salvar()" -->
             </div>

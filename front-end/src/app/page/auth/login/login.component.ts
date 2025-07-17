@@ -8,18 +8,30 @@ import { FormsModule } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario.service';
 import { error } from 'console';
 import { Route, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { RippleModule } from 'primeng/ripple';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
-  imports: [InputMaskModule, PasswordModule, ButtonModule, RouterLink, FormsModule],
+  imports: [InputMaskModule, PasswordModule, ButtonModule, RouterLink, FormsModule, ToastModule, RippleModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
+  providers: [MessageService]
 })
 export class LoginComponent {
   form: EfetuarLogin;
 
-  constructor(private usuarioService: UsuarioService, private router: Router){
+  constructor(private usuarioService: UsuarioService, private messageService: MessageService, private router: Router){
     this.form = new EfetuarLogin();
+  }
+
+  showSuccess() {
+    this.messageService.add({ severity: 'success', summary: 'Login efetuado!', detail: 'Usuário logado com sucesso.' });
+  }
+
+  showError() {
+    this.messageService.add({ severity: 'error', summary: 'Não foi possível realizar o login!', detail: 'CPF ou senha inválidos.' });
   }
 
   logar(){
@@ -27,14 +39,15 @@ export class LoginComponent {
       next: res => {
       localStorage.setItem('token', res.access_token);
       localStorage.setItem('usuario', JSON.stringify(res.usuario));
-
-      alert("Usuário logado com sucesso!");
       
-      this.router.navigate(["/logado"]);
+      this.showSuccess()
+      
+      setTimeout(() => {
+        this.router.navigate(["/logado"]);
+      }, 1200);
     },
     error: erro => {
-      alert("Não foi possível realizar o login!");
-      console.error("Erro ao tentar logar: ", erro);
+      this.showError()
     }
   });
   }

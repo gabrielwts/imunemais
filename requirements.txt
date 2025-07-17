@@ -16,3 +16,6 @@ pymysql # PyMySQL==1.1.1
 pydantic[email]
 python-telegram-bot==22.2
 email_validator==2.2.0
+
+# pip install "bcrypt==3.2.2"
+# pip install --upgrade passlib

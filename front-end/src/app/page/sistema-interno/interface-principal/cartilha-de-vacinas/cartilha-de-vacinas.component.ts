@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 import { EnfermeirosService } from '../../../../services/enfermeiros.service';
 import { LoginAdminService } from '../../../../services/admin.service';
 import { AdmCadastrarVacina } from '../../../../models/adm_models/adm-cadastrar-vacina';
+import { ToastModule } from 'primeng/toast';
+import { RippleModule } from 'primeng/ripple';
+import { MessageService } from 'primeng/api';
 
 interface AgeRange {
   name: string;
@@ -16,9 +19,10 @@ interface AgeRange {
 
 @Component({
   selector: 'app-cartilha-de-vacinas',
-  imports: [InputTextModule, CommonModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, Select],
+  imports: [InputTextModule, CommonModule, FormsModule, FloatLabelModule, ButtonModule, SelectModule, Select, ToastModule, RippleModule],
   templateUrl: './cartilha-de-vacinas.component.html',
-  styleUrl: './cartilha-de-vacinas.component.scss'
+  styleUrl: './cartilha-de-vacinas.component.scss',
+  providers: [MessageService]
 })
 export class CartilhaDeVacinasComponent implements OnInit {
   form!: AdmCadastrarVacina;
@@ -28,8 +32,16 @@ export class CartilhaDeVacinasComponent implements OnInit {
   vacinas: { vacinas_nome: string, descricao: string, faixa_etaria: string, doses: string }[] = [];
   botaoDesativado = false;
   
-  constructor(private enfermeiroService: EnfermeirosService, private adminService: LoginAdminService, private router: Router) {
+  constructor(private enfermeiroService: EnfermeirosService, private adminService: LoginAdminService, private messageService: MessageService, private router: Router) {
     this.form = new AdmCadastrarVacina();
+  }
+
+  cadastrarVacinaSuccess() {
+    this.messageService.add({ severity: 'success', summary: 'Cadastro realizado!', detail: 'Vacina cadastrada com sucesso!', life: 3000 });
+  }
+
+  cadastrarVacinaError() {
+    this.messageService.add({ severity: 'error', summary: 'Erro ao cadastrar!', detail: 'Não foi possível cadastrar a vacina, verifique os dados antes do envio.' });
   }
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -102,10 +114,24 @@ export class CartilhaDeVacinasComponent implements OnInit {
   }
   
   salvar(){
+    const nome = this.form.vacinas_nome?.trim();
+    const descricao = this.form.descricao?.trim();
+    const faixaEtaria = this.form.faixa_etaria;
+    const dose = this.form.doses?.trim();
+
+    if (!nome || !descricao || !faixaEtaria || !dose) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Campos obrigatórios',
+        detail: 'Preencha todos os campos antes de salvar.'
+      });
+      return;
+    }
+
     this.botaoDesativado = true;
     this.adminService.cadastrar(this.form).subscribe({
       next: adminService => {
-        alert("Vacina cadastrado com sucesso")
+        this.cadastrarVacinaSuccess()
         this.form = new AdmCadastrarVacina();
         this.enfermeiroService.getTodasAsVacinasCadastradas().subscribe(data => {
           this.vacinas = data;
@@ -113,13 +139,13 @@ export class CartilhaDeVacinasComponent implements OnInit {
         });
       },
       error: erro => {
-        alert("Não foi possível cadastrar")
+        this.cadastrarVacinaError()
         console.error("Erro ao tentar cadastrar:", erro);
         console.error("Detalhe do erro:", erro.error);
       }
     })
     setTimeout(() => {
-      this.botaoDesativado = false; // libera novamente após 3s
+      this.botaoDesativado = false;
     }, 3000);
   }
 
