@@ -11,12 +11,19 @@ from fastapi.openapi.utils import status_code_ranges
 from pydantic import BaseModel, Field
 from starlette.middleware.cors import CORSMiddleware
 from src.api.v1.endpoints import usuario_controller, admin_controller, autenticacao_controller, enfermeiro_controller
+from fastapi.staticfiles import StaticFiles
+import os
 
 
 # Cria as tabelas no banco de dados. Este comando verifica todos os modelos definidos em Base e cria as
 # tabelas correspondentes no banco de dados.
 # Em um projeto real, você pode querer usar Alembic para gerenciar migrações do banco de dados.
 Base.metadata.create_all(bind=engine)
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "src", "static")  # Ajustado para src/static
+
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
 @app.get("/")

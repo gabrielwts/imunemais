@@ -7,6 +7,11 @@ from sqlalchemy.orm import Session
 from src.app import router
 from src.auth.crypto import gerar_hash_senha
 from src.auth.mascaradores import mascarar_email, mascarar_telefone
+from fastapi import UploadFile, File, Form
+from typing import Optional
+from pydantic import EmailStr
+import shutil, uuid
+
 
 # Dependência de sessão
 def get_db():
@@ -25,6 +30,7 @@ def criar_usuario(usuario: UsuarioCreate, db: Session = Depends(get_db)) -> Usua
         data_nascimento=usuario.data_nascimento,
         telefone=usuario.telefone,
         email=usuario.email,
+        imagem_perfil="/static/perfis/standard-user.jpg"
     )
     db.add(db_usuario)
     db.commit()
@@ -84,18 +90,58 @@ def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db))
     )
     
 # Atualizar e-mail e telefone do usuário (profile)
-@router.put("/v1/usuarios/atualizardados")
-def atualizar_dados(atualizar: AtualizarDadosComCpf, db: Session = Depends(get_db)):
-    usuario = db.query(Usuario).filter(Usuario.cpf == atualizar.cpf).first()
+# @router.put("/v1/usuarios/atualizardados")
+# def atualizar_dados(atualizar: AtualizarDadosComCpf, db: Session = Depends(get_db)):
+#     usuario = db.query(Usuario).filter(Usuario.cpf == atualizar.cpf).first()
     
+#     if not usuario:
+#         raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+#     if atualizar.telefone is not None:
+#         usuario.telefone = atualizar.telefone
+
+#     if atualizar.email is not None:
+#         usuario.email = atualizar.email
+
+#     db.commit()
+#     db.refresh(usuario)
+
+#     return {
+#         "cpf": usuario.cpf,
+#         "nome": usuario.nome_completo,
+#         "data_nascimento": usuario.data_nascimento,
+#         "telefone": usuario.telefone,
+#         "email": usuario.email
+#     }
+
+@router.put("/v1/usuarios/atualizardados")
+def atualizar_dados(
+    cpf: str = Form(...),
+    telefone: Optional[str] = Form(None),
+    email: Optional[EmailStr] = Form(None),
+    imagem_perfil: Optional[UploadFile] = File(None),
+    db: Session = Depends(get_db)
+):
+    usuario = db.query(Usuario).filter(Usuario.cpf == cpf).first()
+
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
-    if atualizar.telefone is not None:
-        usuario.telefone = atualizar.telefone
+    if telefone is not None:
+        usuario.telefone = telefone
 
-    if atualizar.email is not None:
-        usuario.email = atualizar.email
+    if email is not None:
+        usuario.email = email
+
+    # ✅ salvar imagem de perfil
+    if imagem_perfil:
+        filename = f"{uuid.uuid4().hex}_{imagem_perfil.filename}"
+        caminho = f"src/static/perfis/{filename}"
+
+        with open(caminho, "wb") as buffer:
+            shutil.copyfileobj(imagem_perfil.file, buffer)
+
+        usuario.imagem_perfil = f"/static/perfis/{filename}"
 
     db.commit()
     db.refresh(usuario)
@@ -105,5 +151,6 @@ def atualizar_dados(atualizar: AtualizarDadosComCpf, db: Session = Depends(get_d
         "nome": usuario.nome_completo,
         "data_nascimento": usuario.data_nascimento,
         "telefone": usuario.telefone,
-        "email": usuario.email
+        "email": usuario.email,
+        "imagem_perfil": usuario.imagem_perfil
     }

@@ -17,7 +17,9 @@ import { CommonModule } from '@angular/common';
 })
 export class ConnectedHomePageComponent implements OnInit {
   vacinasPendentes: any[] = [];
+  usuario: any = {};
   dadosUsuario: boolean = false;
+  foto_perfil: string = "";
   mostrarCard () {
     this.dadosUsuario = !this.dadosUsuario;
   }
@@ -36,6 +38,7 @@ export class ConnectedHomePageComponent implements OnInit {
     if (usuarioData) {
       const usuario = JSON.parse(usuarioData);
       this.nome = usuario.nome || 'Visitante';
+      this.foto_perfil = usuario.imagem_perfil
     } else {
       console.warn("Usuário não encontrado no localStorage.");
       this.nome = 'Visitante';

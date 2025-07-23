@@ -35,7 +35,11 @@ class UsuarioComVacinas(BaseModel):
     email: str
     cpf: str
     data_nascimento: date
+    imagem_perfil: str
     # vacinas: List[UserVaccineListBase]
+    
+    class Config:
+        orm_mode = True
 
 class TokenComUsuario(BaseModel):
     access_token: str

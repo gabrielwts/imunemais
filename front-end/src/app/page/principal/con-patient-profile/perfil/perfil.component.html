@@ -8,12 +8,16 @@
     <div class="profile-card">
 
         <div class="profile-user">
-            <img src="/default-icon.jpg" alt="Foto de perfil" class="profile-user-icon">
+            <img [src]="getImagemUrl()" alt="Foto de perfil" class="profile-user-icon">
             <p> {{ nome }} </p>
             @if (this.alterarInfo) {
                 <p-button label="Alterar Dados" severity="contrast" (click)="mostrarInputs()"/>
             } @else {
                 <p-button label="Salvar alterações" (click)="salvarAlteracao()" severity="success" />
+            }
+
+            @if (!alterarInfo) {
+                <input type="file" accept="image/*" (change)="onFileSelected($event)" class="input-imagem" />
             }
         </div>
 

@@ -57,7 +57,8 @@ def login_usuario(form: AutenticacaoLogin, db: Session = Depends(get_db)):
             "telefone": usuario.telefone,
             "email": usuario.email,
             "cpf": usuario.cpf,
-            "data_nascimento": usuario.data_nascimento
+            "data_nascimento": usuario.data_nascimento,
+            "imagem_perfil": usuario.imagem_perfil
         }
     }
     

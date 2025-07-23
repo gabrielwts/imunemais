@@ -5,15 +5,17 @@
     height: 50px;
     width: 100%;
     text-align: center;
-    background-color: #f5f5f5;
-    border: 1px solid #B2B2B2;
-
+    background-color: #047857;
+    border: 1px solid #0a6448; 
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 
 .id-leftbar {
     height: 100%;
     width: 40%;
+    color: white;
     
     span {
         display: flex;
@@ -23,13 +25,6 @@
     }
 }
 
-.id-rightbar {
-    padding: 6px 0 0 0;
-
-    p-selectbutton {
-        margin-left: 10px;
-    }
-}
 
 .cartela-vacinas-user .vaccine {
     width: 100%;

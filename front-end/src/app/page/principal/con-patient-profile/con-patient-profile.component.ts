@@ -13,11 +13,13 @@ import { VacinasComponent } from './vacinas/vacinas.component';
   styleUrl: './con-patient-profile.component.scss'
 })
 export class ConPatientProfileComponent implements OnInit {
+  usuario: any = {};
   nome: string = "";
   cpf: string = "";
   data_nascimento: string = "";
   telefone: string = "";
   email: string = "";
+  foto_perfil: string = "";
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
@@ -43,6 +45,7 @@ export class ConPatientProfileComponent implements OnInit {
       this.data_nascimento = usuario.data_nascimento
       this.telefone = usuario.telefone
       this.email = usuario.email
+      this.foto_perfil = usuario.imagem_perfil
     } else {
       console.warn("Usuário não encontrado no localStorage.");
       this.nome = 'Visitante';

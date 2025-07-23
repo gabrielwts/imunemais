@@ -13,6 +13,7 @@ class Usuario(Base):
     telefone = Column(String(15), nullable=False)
     email = Column(String(254), nullable=False)
     password_hash = Column(String(150), nullable=True)
+    imagem_perfil = Column(String, nullable=True, default="/static/perfis/standard-user.jpg")
 
 
 class UserVaccine(Base):

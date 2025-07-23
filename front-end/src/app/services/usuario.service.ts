@@ -35,8 +35,12 @@ export class UsuarioService {
     return this.http.post<RecuperarSenhaResponse>(`${environment.apiUrl}/v1/usuarios/recuperarsenha`, recuperarSenhaCpf)
   }
 
-  AtualizarDados(alterarDadosPaciente: AlterarDadosPaciente): Observable<{ mensagem: string, telefone: string, email: string }> {
-    return this.http.put<{ mensagem: string, telefone: string, email: string }>(`${environment.apiUrl}/v1/usuarios/atualizardados`, alterarDadosPaciente)
+  // AtualizarDados(alterarDadosPaciente: AlterarDadosPaciente): Observable<{ mensagem: string, telefone: string, email: string }> {
+  //   return this.http.put<{ mensagem: string, telefone: string, email: string }>(`${environment.apiUrl}/v1/usuarios/atualizardados`, alterarDadosPaciente)
+  // }
+
+  AtualizarDadosComImagem(dados: FormData) {
+    return this.http.put<any>(`${environment.apiUrl}/v1/usuarios/atualizardados`, dados);
   }
 
   getVacinasPorCpf(cpf: string): Observable<any[]> {

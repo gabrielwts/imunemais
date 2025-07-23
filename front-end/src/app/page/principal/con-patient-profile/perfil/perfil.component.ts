@@ -21,17 +21,32 @@ import { MessageService } from 'primeng/api';
 
 })
 export class PerfilComponent implements OnInit {
+  usuario: any = {};
   nome: string = "";
   cpf: string = "";
   data_nascimento: string = "";
   telefone: string = "";
   email: string = "";
   telefoneInvalido = false;
+  imagem_perfil: string = "";
   
   form!: AlterarDadosPaciente;
   alterarInfo: boolean = true;
 
   numeroTelefone: string = "";
+
+  previewImagem: string | ArrayBuffer | null = null;
+  imagemArquivo!: File;
+
+  getImagemUrl(): string {
+    const baseUrl = 'http://localhost:8000';
+    if (this.imagem_perfil?.startsWith('/static')) {
+      const caminhoCompleto = baseUrl + this.imagem_perfil;
+      console.log('Caminho da imagem:', caminhoCompleto); // <-- veja o que aparece aqui
+      return caminhoCompleto;
+    }
+    return '/standard-user.jpg';
+  }
 
   validarTelefone() {
     const tel = this.form.telefone;
@@ -71,56 +86,137 @@ export class PerfilComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Alterações realizadas!', detail: 'Dados atualizados com sucesso.', life: 3000 });
   }
 
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length > 0) {
+      this.imagemArquivo = fileInput.files[0];
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.previewImagem = e.target?.result ?? null;
+      };
+      reader.readAsDataURL(this.imagemArquivo);
+    }
+  }
+
+  // alterarDados() {
+  //   const dados: any = {
+  //     cpf: this.cpf
+  //   };
+
+  //   let telefoneSendoEditado = false;
+
+  //   if (this.form.telefone && this.form.telefone.trim() !== "") {
+  //     this.validarTelefone(); 
+  //     telefoneSendoEditado = true;
+
+  //     if (this.telefoneInvalido) {
+  //       this.showWarn()
+  //       this.form = new AlterarDadosPaciente();
+  //       return;
+  //     }
+
+  //     dados.telefone = this.form.telefone;
+  //   }
+
+  //   if (this.form.email && this.form.email.trim() !== "") {
+  //     dados.email = this.form.email;
+  //     this.form = new AlterarDadosPaciente();
+  //   }
+
+  //   if (!dados.telefone && !dados.email) {
+  //     return;
+  //   }
+
+  //   this.usuarioService.AtualizarDados(dados).subscribe({
+  //     next: response => {
+  //       this.showSuccess()
+
+  //       this.form.telefone = response.telefone || this.form.telefone;
+  //       this.form.email = response.email || this.form.email;
+
+  //       this.telefone = this.form.telefone ?? '';
+  //       this.email = this.form.email ?? '';
+
+  //       const dadosOriginais = JSON.parse(localStorage.getItem('usuario') || '{}');
+  //       const novosDados = {
+  //         ...dadosOriginais,
+  //         telefone: response.telefone ?? dadosOriginais.telefone,
+  //         email: response.email ?? dadosOriginais.email
+  //       };
+  //       localStorage.setItem('usuario', JSON.stringify(novosDados));
+  //       // console.log("LocalStorage atualizado com os novos dados.");
+  //     },
+  //     error: erro => {
+  //       this.showError()
+  //       this.form = new AlterarDadosPaciente();
+  //     }
+  //   });
+  // }
+
   alterarDados() {
-    const dados: any = {
-      cpf: this.cpf
-    };
+    const formData = new FormData();
 
-    let telefoneSendoEditado = false;
+    formData.append('cpf', this.cpf);
 
+    let algumaCoisaFoiAlterada = false;
+
+    // TELEFONE
     if (this.form.telefone && this.form.telefone.trim() !== "") {
       this.validarTelefone(); 
-      telefoneSendoEditado = true;
-
       if (this.telefoneInvalido) {
-        this.showWarn()
+        this.showWarn();
         this.form = new AlterarDadosPaciente();
         return;
       }
-
-      dados.telefone = this.form.telefone;
+      formData.append('telefone', this.form.telefone);
+      algumaCoisaFoiAlterada = true;
     }
 
+    // EMAIL
     if (this.form.email && this.form.email.trim() !== "") {
-      dados.email = this.form.email;
-      this.form = new AlterarDadosPaciente();
+      formData.append('email', this.form.email);
+      algumaCoisaFoiAlterada = true;
     }
 
-    if (!dados.telefone && !dados.email) {
+    // IMAGEM DE PERFIL
+    if (this.imagemArquivo) {
+      formData.append('imagem_perfil', this.imagemArquivo);
+      algumaCoisaFoiAlterada = true;
+    }
+
+    if (!algumaCoisaFoiAlterada) {
+      this.messageService.add({ 
+        severity: 'info', 
+        summary: 'Nada alterado', 
+        detail: 'Nenhuma alteração foi feita.' 
+      });
       return;
     }
 
-    this.usuarioService.AtualizarDados(dados).subscribe({
+    this.usuarioService.AtualizarDadosComImagem(formData).subscribe({
       next: response => {
-        this.showSuccess()
+        this.showSuccess();
 
         this.form.telefone = response.telefone || this.form.telefone;
         this.form.email = response.email || this.form.email;
-
         this.telefone = this.form.telefone ?? '';
         this.email = this.form.email ?? '';
+        if (response.imagem_perfil) {
+          this.imagem_perfil = response.imagem_perfil;
+        }
 
         const dadosOriginais = JSON.parse(localStorage.getItem('usuario') || '{}');
         const novosDados = {
           ...dadosOriginais,
           telefone: response.telefone ?? dadosOriginais.telefone,
-          email: response.email ?? dadosOriginais.email
+          email: response.email ?? dadosOriginais.email,
+          imagem_perfil: response.imagem_perfil ?? dadosOriginais.imagem_perfil
         };
         localStorage.setItem('usuario', JSON.stringify(novosDados));
-        // console.log("LocalStorage atualizado com os novos dados.");
       },
       error: erro => {
-        this.showError()
+        this.showError();
         this.form = new AlterarDadosPaciente();
       }
     });
@@ -137,6 +233,7 @@ export class PerfilComponent implements OnInit {
       this.data_nascimento = usuario.data_nascimento
       this.telefone = usuario.telefone
       this.email = usuario.email
+      this.imagem_perfil = usuario.imagem_perfil
     } else {
       console.warn("Usuário não encontrado no localStorage.");
       this.nome = 'Visitante';

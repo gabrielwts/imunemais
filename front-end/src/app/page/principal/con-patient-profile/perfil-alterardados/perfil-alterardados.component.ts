@@ -13,6 +13,6 @@ export class PerfilAlterardadosComponent {
   alterarInfo: boolean = true;
   alteracaoDeInfo () {
     this.alterarInfo = false;
-    console.log("Deu boa pai"); 
+    // console.log("Deu boa pai"); 
   }
 }

@@ -20,7 +20,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    border: 1px solid #B2B2B2;
+    border: 1px solid #0a6448;
 }
 
 .navbar {
@@ -31,7 +31,7 @@ header {
     padding-right: 50px;
     height: 20px;
     width: 100%;
-    background-color: #FBFBFB;
+    background-color: #059669;
 
     .navbar-left .logo {
         padding: 4px 16px;
@@ -61,6 +61,7 @@ header {
         align-items: center;
         font-family: Arial, Helvetica, sans-serif;
         margin-left: 5px;
+        color: white;
     }
 }
 
@@ -75,8 +76,8 @@ header {
     height: 100%;
     font-weight: bold;
     color: black;
-    background-color: #E6E6E6;
-    border: 1px solid #B2B2B2;
+    background-color: #047857;
+    border: 1px solid #0a6448;
 
     .options {
         display: flex;
@@ -92,7 +93,7 @@ header {
 
     .options a {
         text-decoration: none;
-        color: black;
+        color: white;
         margin-left: 15px;
     }
 
