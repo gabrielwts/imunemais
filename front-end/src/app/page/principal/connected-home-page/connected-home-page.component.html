@@ -12,7 +12,7 @@
       </div>
 
       <div class="navbar-right">
-        <img [src]="usuario?.imagem_perfil || '/standard-user.jpg'" alt="Foto de perfil" class="profile-user-icon">
+        <img [src]="getImagemPerfilUrl()" alt="Foto de perfil" class="profile-user-icon">
         <span class="user-name-val"> {{ nome }} </span>
         <img src="/arrowsz.png" alt="arrow" (click)="mostrarCard()">
       </div>

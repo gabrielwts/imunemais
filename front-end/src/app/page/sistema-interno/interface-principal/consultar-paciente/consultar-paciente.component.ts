@@ -28,7 +28,8 @@ export class ConsultarPacienteComponent implements OnInit {
     nome_completo: '',
     data_nascimento: '',
     telefone: '',
-    email: ''
+    email: '',
+    imagem_perfil: ''
   };
 
   cpfOriginal: string = '';
@@ -45,6 +46,14 @@ export class ConsultarPacienteComponent implements OnInit {
   removerValidacaoVacina: boolean = false;
 
   constructor(private enfermeiroService: EnfermeirosService, private dataTransfer: DataTransferService, private messageService: MessageService, router: Router) {}
+
+  getImagemCompleta(): string {
+    const baseUrl = 'http://localhost:8000';
+    if (this.paciente.imagem_perfil?.startsWith('/static')) {
+      return baseUrl + this.paciente.imagem_perfil;
+    }
+    return '/standard-user.jpg'; // ou outro caminho local padrão
+  }
 
   showWarn() {
     this.messageService.add({ severity: 'warn', summary: 'Paciente não encontrado!', detail: 'CPF inválido ou paciente não cadastrado, confirme o CPF.', life: 3000 });
@@ -105,6 +114,7 @@ export class ConsultarPacienteComponent implements OnInit {
             this.paciente.data_nascimento = this.formatarDataParaInput(dados.dados_pessoais.data_nascimento);
             this.paciente.telefone = dados.dados_pessoais.telefone;
             this.paciente.email = dados.dados_pessoais.email;
+            this.paciente.imagem_perfil = dados.dados_pessoais.imagem_perfil;
 
             this.vacinasListagem = dados.vacinas || [];
           } else {
@@ -226,7 +236,8 @@ export class ConsultarPacienteComponent implements OnInit {
       nome_completo: '',
       data_nascimento: '',
       telefone: '',
-      email: ''
+      email: '',
+      imagem_perfil: ''
     };
     this.vacinasListagem = [];
   }

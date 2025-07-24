@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
@@ -21,6 +21,7 @@ import { MessageService } from 'primeng/api';
 
 })
 export class PerfilComponent implements OnInit {
+  @ViewChild('inputImagem') inputImagemRef!: ElementRef<HTMLInputElement>;
   usuario: any = {};
   nome: string = "";
   cpf: string = "";
@@ -38,13 +39,36 @@ export class PerfilComponent implements OnInit {
   previewImagem: string | ArrayBuffer | null = null;
   imagemArquivo!: File;
 
+  dispararInputImagem() {
+    this.inputImagemRef.nativeElement.click();
+  }
+
+  // getImagemUrl(): string {
+  //   const baseUrl = 'http://localhost:8000';
+  //   if (this.imagem_perfil?.startsWith('/static')) {
+  //     const caminhoCompleto = baseUrl + this.imagem_perfil;
+  //     console.log('Caminho da imagem:', caminhoCompleto); // <-- veja o que aparece aqui
+  //     return caminhoCompleto;
+  //   }
+  //   return '/standard-user.jpg';
+  // }
+
   getImagemUrl(): string {
     const baseUrl = 'http://localhost:8000';
+
+    // Prioriza imagem ainda não enviada (preview)
+    if (this.previewImagem) {
+      return this.previewImagem.toString();
+    }
+
+    // Imagem já salva no servidor
     if (this.imagem_perfil?.startsWith('/static')) {
       const caminhoCompleto = baseUrl + this.imagem_perfil;
-      console.log('Caminho da imagem:', caminhoCompleto); // <-- veja o que aparece aqui
+      console.log('Caminho da imagem:', caminhoCompleto);
       return caminhoCompleto;
     }
+
+    // Imagem padrão
     return '/standard-user.jpg';
   }
 
@@ -86,6 +110,19 @@ export class PerfilComponent implements OnInit {
     this.messageService.add({ severity: 'success', summary: 'Alterações realizadas!', detail: 'Dados atualizados com sucesso.', life: 3000 });
   }
 
+  // onFileSelected(event: Event) {
+  //   const fileInput = event.target as HTMLInputElement;
+  //   if (fileInput.files && fileInput.files.length > 0) {
+  //     this.imagemArquivo = fileInput.files[0];
+
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       this.previewImagem = e.target?.result ?? null;
+  //     };
+  //     reader.readAsDataURL(this.imagemArquivo);
+  //   }
+  // }
+
   onFileSelected(event: Event) {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
@@ -94,6 +131,7 @@ export class PerfilComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.previewImagem = e.target?.result ?? null;
+        console.log('Preview da imagem carregado:', this.previewImagem);
       };
       reader.readAsDataURL(this.imagemArquivo);
     }
@@ -188,8 +226,8 @@ export class PerfilComponent implements OnInit {
     if (!algumaCoisaFoiAlterada) {
       this.messageService.add({ 
         severity: 'info', 
-        summary: 'Nada alterado', 
-        detail: 'Nenhuma alteração foi feita.' 
+        summary: 'Nenhum dado alterado', 
+        detail: 'Nenhuma alteração de dados foi feita.' 
       });
       return;
     }

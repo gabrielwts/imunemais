@@ -8,7 +8,7 @@
     <div class="profile-card">
 
         <div class="profile-user">
-            <img [src]="getImagemUrl()" alt="Foto de perfil" class="profile-user-icon">
+            <img [src]="getImagemUrl()" alt="Foto de perfil" class="profile-user-icon" [class.clickable]="!alterarInfo" (click)="!alterarInfo && dispararInputImagem()">
             <p> {{ nome }} </p>
             @if (this.alterarInfo) {
                 <p-button label="Alterar Dados" severity="contrast" (click)="mostrarInputs()"/>
@@ -17,7 +17,8 @@
             }
 
             @if (!alterarInfo) {
-                <input type="file" accept="image/*" (change)="onFileSelected($event)" class="input-imagem" />
+                <input type="file" accept="image/*" #inputImagem (change)="onFileSelected($event)" style="display: none;" />
+                <!-- class="input-imagem" -->
             }
         </div>
 

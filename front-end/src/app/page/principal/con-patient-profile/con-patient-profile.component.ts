@@ -23,6 +23,14 @@ export class ConPatientProfileComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
+  getImagemPerfilUrl(): string {
+    const baseUrl = 'http://localhost:8000';
+    if (this.foto_perfil?.startsWith('/static')) {
+      return baseUrl + this.foto_perfil;
+    }
+    return '/standard-user.jpg';
+  }
+
   perfilDados: boolean = true;
   mostrarPerfil () {
     this.perfilDados = true;

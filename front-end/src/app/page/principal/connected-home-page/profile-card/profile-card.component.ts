@@ -23,6 +23,14 @@ export class ProfileCardComponent implements OnInit {
 // 
   constructor(private router: Router) {}
 
+  getImagemPerfilUrl(): string {
+    const baseUrl = 'http://localhost:8000';
+    if (this.foto_perfil?.startsWith('/static')) {
+      return baseUrl + this.foto_perfil;
+    }
+    return '/standard-user.jpg';
+  }
+
   ngOnInit() {
   
     const usuarioData: string | null = localStorage.getItem('usuario');

@@ -85,7 +85,8 @@ def consultar_paciente(cpf: str, db: Session = Depends(get_db)):
             nome_completo=user.nome_completo,
             data_nascimento=user.data_nascimento,
             telefone=user.telefone,
-            email=user.email
+            email=user.email,
+            imagem_perfil=user.imagem_perfil
         ),
         vacinas=[
             ListaUserVacinaResponse(

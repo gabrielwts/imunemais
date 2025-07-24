@@ -73,7 +73,8 @@ class ListaUserDados(BaseModel):
     nome_completo: str
     data_nascimento: date
     telefone: str
-    email: str  
+    email: str
+    imagem_perfil: str  
     
 # ====== VACINAS DO USUÁRIO ====== #
 class UserVaccineBase(BaseModel):

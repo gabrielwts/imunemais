@@ -21,6 +21,15 @@
     font-weight: bold;
 }
 
+.clickable {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
 .profile-card {
     display: flex;
     margin: 20px 0px 0px 320px;

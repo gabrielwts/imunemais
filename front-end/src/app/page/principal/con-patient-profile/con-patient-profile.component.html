@@ -7,7 +7,7 @@
             </div>
             <div class="navbar-right">
 
-                <img [src]="usuario?.imagem_perfil || '/standard-user.jpg'" alt="Foto de perfil" class="icon-profile">
+                <img [src]="getImagemPerfilUrl()" alt="Foto de perfil" class="icon-profile">
                 <div class="name-user"><span> {{ nome }} </span></div>
             </div>
         </nav>
@@ -16,11 +16,11 @@
     <div class="menu">
         <div class="options">
             <div>
-                <img src="icon_smile.png" alt="Smile">            
+                <img src="Smile.png" alt="Smile">            
                 <a class="your-profile" (click)="mostrarPerfil()">Seu Perfil</a>
             </div>
             <div>
-                <img src="icon_vaccine.png" alt="Vaccine">
+                <img src="white-vaccine-icon.png" alt="Vaccine">
                 <a class="your-vaccines" (click)="mostrarVacinas()">Suas Vacinas</a>
             </div>
             <div>

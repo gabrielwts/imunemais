@@ -60,7 +60,7 @@
 
         <div class="right-photo">
 
-            <img id="fotoUsuario" src="" alt="Foto do Usuário" class="foto-usuario">
+            <img id="fotoUsuario" [src]="getImagemCompleta()" alt="Foto do Usuário" class="foto-usuario">
                     
             @if (this.podeEditar) {
                 <p-button label="Salvar alterações" (click)="salvarAlteracoes()" severity="success" />

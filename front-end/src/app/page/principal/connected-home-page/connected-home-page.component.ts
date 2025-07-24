@@ -26,6 +26,14 @@ export class ConnectedHomePageComponent implements OnInit {
 
   constructor(private vacinaService: UsuarioService, private router: Router){}
 
+  getImagemPerfilUrl(): string {
+    const baseUrl = 'http://localhost:8000';
+    if (this.foto_perfil?.startsWith('/static')) {
+      return baseUrl + this.foto_perfil;
+    }
+    return '/standard-user.jpg';
+  }
+
   nome: string = '';
 
   irParaVacinas() {
