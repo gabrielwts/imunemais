@@ -31,8 +31,8 @@ export class VacinasComponent implements OnInit {
   }
 
   buscarVacinas() {
-    const usuario = localStorage.getItem('usuario');
-    const cpf = usuario ? JSON.parse(usuario).cpf : null;
+    const paciente = localStorage.getItem('paciente');
+    const cpf = paciente ? JSON.parse(paciente).cpf : null;
 
     // console.log('CPF usado na requisição:', cpf);
     if (cpf) {

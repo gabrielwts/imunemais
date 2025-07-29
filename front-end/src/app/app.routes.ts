@@ -14,6 +14,7 @@ import { SemAcessoTelefoneComponent } from './page/auth/recuperacao-senha/sem-ac
 import { InterfacePrincipalComponent } from './page/sistema-interno/interface-principal/interface-principal.component';
 import { ConsultarPacienteComponent } from './page/sistema-interno/interface-principal/consultar-paciente/consultar-paciente.component';
 import { LoginInternoComponent } from './page/sistema-interno/login-interno/login-interno.component';
+import { AdmProfissionaisCadastradosComponent } from './page/sistema-interno/interface-principal/adm-profissionais-cadastrados/adm-profissionais-cadastrados.component';
 
 
 export const routes: Routes = [
@@ -85,5 +86,9 @@ export const routes: Routes = [
     {
         path: "consultarpaciente",
         component: ConsultarPacienteComponent
+    },
+    {
+        path: "admcadastro",
+        component: AdmProfissionaisCadastradosComponent
     }
 ];

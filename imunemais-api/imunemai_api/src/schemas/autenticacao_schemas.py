@@ -41,10 +41,10 @@ class UsuarioComVacinas(BaseModel):
     class Config:
         orm_mode = True
 
-class TokenComUsuario(BaseModel):
+class TokenComPaciente(BaseModel):
     access_token: str
     token_type: str = "bearer"
-    usuario: UsuarioComVacinas
+    paciente: UsuarioComVacinas
     
 
 class AdmUsuarioDados(BaseModel):
@@ -52,6 +52,7 @@ class AdmUsuarioDados(BaseModel):
     nome: str
     usuario: str
     profissional: str
+    profile_photo: str
     
 class AdmComToken(BaseModel):
     access_token: str

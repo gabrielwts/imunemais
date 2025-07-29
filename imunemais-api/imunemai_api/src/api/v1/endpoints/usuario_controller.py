@@ -133,7 +133,6 @@ def atualizar_dados(
     if email is not None:
         usuario.email = email
 
-    # ✅ salvar imagem de perfil
     if imagem_perfil:
         filename = f"{uuid.uuid4().hex}_{imagem_perfil.filename}"
         caminho = f"src/static/perfis/{filename}"

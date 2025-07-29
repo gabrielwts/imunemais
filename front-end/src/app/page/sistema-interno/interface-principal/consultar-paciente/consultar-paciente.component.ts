@@ -154,9 +154,9 @@ export class ConsultarPacienteComponent implements OnInit {
     this.enfermeiroService.atualizarStatusVacina(payload).subscribe({
       next: (res) => {
         console.log(res.mensagem);
-        this.vacinaSuccess()
         this.validarVacina = false;
         this.vacinaSelecionada.validacao = 'true';
+        this.vacinaSuccess()
         this.buscarDadosPaciente();
         this.value = true;
       },
@@ -179,12 +179,12 @@ export class ConsultarPacienteComponent implements OnInit {
     this.enfermeiroService.atualizarStatusVacina(payload).subscribe({
       next: (res) => {
         console.log(res.mensagem);
-        this.removeVacinaSuccess()
         this.removerValidacaoVacina = false;
         this.vacinaSelecionada.validacao = 'false';
 
         this.buscarDadosPaciente();
         this.value = false;
+        this.removeVacinaSuccess()
       },
       error: (err) => {
         console.error(err);

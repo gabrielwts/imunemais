@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from src.app import router
 from src.database.database import SessionLocal
 from src.database.models import UserVaccine, Usuario
-from src.schemas.autenticacao_schemas import AutenticacaoLogin, Token, TokenComUsuario
+from src.schemas.autenticacao_schemas import AutenticacaoLogin, Token, TokenComPaciente
 from src.schemas.usuario_schemas import ListaUserVacinaResponse
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from sqlalchemy.exc import IntegrityError
@@ -20,7 +20,7 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/v1/autenticacao", response_model=TokenComUsuario)
+@router.post("/v1/autenticacao", response_model=TokenComPaciente)
 def login_usuario(form: AutenticacaoLogin, db: Session = Depends(get_db)):
 
     usuario = db.query(Usuario).filter(Usuario.cpf == form.cpf).first()
@@ -51,7 +51,7 @@ def login_usuario(form: AutenticacaoLogin, db: Session = Depends(get_db)):
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "usuario": {
+        "paciente": {
             "id": usuario.id,
             "nome": usuario.nome_completo,
             "telefone": usuario.telefone,

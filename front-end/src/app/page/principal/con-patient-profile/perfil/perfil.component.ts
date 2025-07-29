@@ -22,7 +22,7 @@ import { MessageService } from 'primeng/api';
 })
 export class PerfilComponent implements OnInit {
   @ViewChild('inputImagem') inputImagemRef!: ElementRef<HTMLInputElement>;
-  usuario: any = {};
+  paciente: any = {};
   nome: string = "";
   cpf: string = "";
   data_nascimento: string = "";
@@ -244,14 +244,14 @@ export class PerfilComponent implements OnInit {
           this.imagem_perfil = response.imagem_perfil;
         }
 
-        const dadosOriginais = JSON.parse(localStorage.getItem('usuario') || '{}');
+        const dadosOriginais = JSON.parse(localStorage.getItem('paciente') || '{}');
         const novosDados = {
           ...dadosOriginais,
           telefone: response.telefone ?? dadosOriginais.telefone,
           email: response.email ?? dadosOriginais.email,
           imagem_perfil: response.imagem_perfil ?? dadosOriginais.imagem_perfil
         };
-        localStorage.setItem('usuario', JSON.stringify(novosDados));
+        localStorage.setItem('paciente', JSON.stringify(novosDados));
       },
       error: erro => {
         this.showError();
@@ -262,16 +262,16 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit() {
   
-    const usuarioData: string | null = localStorage.getItem('usuario');
+    const usuarioData: string | null = localStorage.getItem('paciente');
 
     if (usuarioData) {
-      const usuario = JSON.parse(usuarioData);
-      this.nome = usuario.nome || 'Visitante';
-      this.cpf = usuario.cpf
-      this.data_nascimento = usuario.data_nascimento
-      this.telefone = usuario.telefone
-      this.email = usuario.email
-      this.imagem_perfil = usuario.imagem_perfil
+      const paciente = JSON.parse(usuarioData);
+      this.nome = paciente.nome || 'Visitante';
+      this.cpf = paciente.cpf
+      this.data_nascimento = paciente.data_nascimento
+      this.telefone = paciente.telefone
+      this.email = paciente.email
+      this.imagem_perfil = paciente.imagem_perfil
     } else {
       console.warn("Usuário não encontrado no localStorage.");
       this.nome = 'Visitante';

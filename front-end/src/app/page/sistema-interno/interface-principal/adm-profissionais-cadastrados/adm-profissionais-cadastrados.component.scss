@@ -84,6 +84,19 @@ header {
   z-index: 9999; /* garantir que fique por cima de tudo */
 }
 
+.foto-upload-label {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.foto-usuario {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
 .overlay-fundo.hidden {
   display: none;
   z-index: -1;

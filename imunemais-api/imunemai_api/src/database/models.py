@@ -13,7 +13,7 @@ class Usuario(Base):
     telefone = Column(String(15), nullable=False)
     email = Column(String(254), nullable=False)
     password_hash = Column(String(150), nullable=True)
-    imagem_perfil = Column(String, nullable=True, default="/static/perfis/standard-user.jpg")
+    imagem_perfil = Column(String(254), nullable=True, default="/static/perfis/standard-user.jpg")
 
 
 class UserVaccine(Base):
@@ -57,6 +57,7 @@ class RegisteredProfessional(Base):
     usuario = Column(String(50), nullable=False)
     password_prof = Column(String(150), nullable=False)
     cargo_prof = Column(String(50), nullable=False)
+    profile_photo = Column(String(254), nullable=True, default="/static/perfis/standard-user.jpg")
     
 # class Funcionario(Base):
 #     __tablename__ = "funcionarios"

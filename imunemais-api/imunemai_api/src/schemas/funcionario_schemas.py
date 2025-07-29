@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from fastapi import UploadFile
 
 # ====== PROFISSIONAIS REGISTRADOS ====== #
 class ProfissionalBase(BaseModel):
@@ -7,6 +8,7 @@ class ProfissionalBase(BaseModel):
     usuario: str
     password_prof: str
     cargo_prof: str
+    profile_photo: str
 
 
 class FuncionarioCreateResponse(BaseModel):
@@ -19,7 +21,6 @@ class Profissional(ProfissionalBase):
     model_config = {
     "from_attributes": True
     }
-
 
 class LoginAdminRequest(BaseModel):
     usuario: str
@@ -36,6 +37,7 @@ class ListaTodosFuncionariosCadastrados(BaseModel):
     usuario: str
     password_prof: str
     cargo_prof: str
+    profile_photo: str
     
     class Config:
         orm_mode = True
@@ -46,6 +48,7 @@ class DeletarFuncionario(BaseModel):
     usuario: str
     password_prof: str
     cargo_prof: str
+    profile_photo: str
 
 
 class AtualizarDados(BaseModel):
@@ -55,5 +58,6 @@ class AtualizarDados(BaseModel):
     usuario: Optional[str] = None
     password_prof: Optional[str] = None
     cargo_prof: Optional[str] = None
+    profile_photo: Optional[str] = None
     
     

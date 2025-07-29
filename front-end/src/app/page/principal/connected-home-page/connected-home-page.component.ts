@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ConnectedHomePageComponent implements OnInit {
   vacinasPendentes: any[] = [];
-  usuario: any = {};
+  paciente: any = {};
   dadosUsuario: boolean = false;
   foto_perfil: string = "";
   mostrarCard () {
@@ -41,18 +41,18 @@ export class ConnectedHomePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    const usuarioData: string | null = localStorage.getItem('usuario');
+    const usuarioData: string | null = localStorage.getItem('paciente');
 
     if (usuarioData) {
-      const usuario = JSON.parse(usuarioData);
-      this.nome = usuario.nome || 'Visitante';
-      this.foto_perfil = usuario.imagem_perfil
+      const paciente = JSON.parse(usuarioData);
+      this.nome = paciente.nome || 'Visitante';
+      this.foto_perfil = paciente.imagem_perfil
     } else {
       console.warn("Usuário não encontrado no localStorage.");
       this.nome = 'Visitante';
     }
-      const usuario = localStorage.getItem('usuario');
-      const cpf = usuario ? JSON.parse(usuario).cpf : null;
+      const paciente = localStorage.getItem('paciente');
+      const cpf = paciente ? JSON.parse(paciente).cpf : null;
 
     if (cpf) {
       this.vacinaService.getVacinasPorCpf(cpf).subscribe(res => {

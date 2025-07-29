@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, Depends, Query, status, Response
+from fastapi import APIRouter, HTTPException, Depends, Query, status, Response, UploadFile, File, Form
 from src.database import models
 from src.app import router
 from src.database.database import SessionLocal
@@ -9,6 +9,11 @@ from src.database.models import CartilhaVacina, UserVaccine, Usuario, Registered
 from src.schemas.autenticacao_schemas import AdmAutenticacaoLogin, Token, AdmComToken
 from src.schemas.funcionario_schemas import ProfissionalBase, FuncionarioCreateResponse
 from src.schemas.usuario_schemas import AtualizarDadosPaciente, AtualizarStatusVacinas, ListaTodasVacinasCadastradas, ListaTodosPacientesCadastrados, ListaUserDados, ListaUserVacinaResponse, PacienteCompleto
+from fastapi import UploadFile, File, Form
+from fastapi.responses import JSONResponse
+import shutil
+import os
+import uuid
 
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from src.service.adm_autenticacao_service import generate_token
@@ -24,19 +29,94 @@ def get_db():
 ADMIN_USER = "00000000000"
 ADMIN_SENHA = "admingps123"
 
-@router.post("/v1/adm/cadastro")
-def criar_usuario(adm_usuario: ProfissionalBase, db: Session = Depends(get_db)) -> FuncionarioCreateResponse:
+# @router.post("/v1/adm/cadastro")
+# def criar_usuario(adm_usuario: ProfissionalBase, db: Session = Depends(get_db)) -> FuncionarioCreateResponse:
+#     db_usuario = RegisteredProfessional(
+#         nome_pro=adm_usuario.nome_pro,
+#         usuario=adm_usuario.usuario,
+#         cargo_prof=adm_usuario.cargo_prof,
+#         profile_photo="/static/perfis/standard-user.jpg"
+#     )
+
+#     if not adm_usuario.password_prof or len(adm_usuario.password_prof) < 6:
+#         raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
+
+#     senha_hash = gerar_hash_senha(adm_usuario.password_prof)
+#     db_usuario.password_prof = senha_hash
+
+#     db.add(db_usuario)
+#     db.commit()
+#     db.refresh(db_usuario)
+
+#     return FuncionarioCreateResponse(id=db_usuario.id)
+
+# @router.post("/v1/adm/cadastro", response_model=FuncionarioCreateResponse)
+# def criar_usuario(
+#     nome_pro: str = Form(...),
+#     usuario: str = Form(...),
+#     password_prof: str = Form(...),
+#     cargo_prof: str = Form(...),
+#     imagem: UploadFile = File(None),  # ← imagem opcional
+#     db: Session = Depends(get_db)
+# ):
+#     if imagem:
+#         caminho_destino = f"static/perfis/{usuario}_{imagem.filename}"
+#         with open(caminho_destino, "wb") as buffer:
+#             shutil.copyfileobj(imagem.file, buffer)
+#         caminho_final = "/" + caminho_destino.replace("\\", "/")
+#     else:
+#         caminho_final = "/static/perfis/standard-user.jpg"
+
+#     senha_hash = gerar_hash_senha(password_prof)
+
+#     db_usuario = RegisteredProfessional(
+#         nome_pro=nome_pro,
+#         usuario=usuario,
+#         password_prof=senha_hash,
+#         cargo_prof=cargo_prof,
+#         profile_photo=caminho_final
+#     )
+
+#     db.add(db_usuario)
+#     db.commit()
+#     db.refresh(db_usuario)
+
+#     return FuncionarioCreateResponse(id=db_usuario.id)
+
+
+@router.post("/v1/adm/cadastro", response_model=FuncionarioCreateResponse)
+def criar_usuario(
+    nome_pro: str = Form(...),
+    usuario: str = Form(...),
+    password_prof: str = Form(...),
+    cargo_prof: str = Form(...),
+    imagem: UploadFile = File(None),
+    db: Session = Depends(get_db)
+    ):
+    # Caminho absoluto da pasta atual (onde está este arquivo .py)
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    static_dir = os.path.join(BASE_DIR, '..', '..', 'static', 'perfis')
+
+    if imagem:
+        filename = f"{uuid.uuid4().hex}_{imagem.filename}"
+        caminho = os.path.join("src", "static", "perfis", filename)
+
+        with open(caminho, "wb") as buffer:
+            shutil.copyfileobj(imagem.file, buffer)
+
+        caminho_final = f"/static/perfis/{filename}"
+    else:
+        caminho_final = "/static/perfis/standard-user.jpg"
+
+    senha_hash = gerar_hash_senha(password_prof)
+
     db_usuario = RegisteredProfessional(
-        nome_pro=adm_usuario.nome_pro,
-        usuario=adm_usuario.usuario,
-        cargo_prof=adm_usuario.cargo_prof,
+        nome_pro=nome_pro,
+        usuario=usuario,
+        password_prof=senha_hash,
+        cargo_prof=cargo_prof,
+        profile_photo=caminho_final
     )
-
-    if not adm_usuario.password_prof or len(adm_usuario.password_prof) < 6:
-        raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
-
-    senha_hash = gerar_hash_senha(adm_usuario.password_prof)
-    db_usuario.password_prof = senha_hash
 
     db.add(db_usuario)
     db.commit()
@@ -66,7 +146,8 @@ def login_adm(form: AdmAutenticacaoLogin, db: Session = Depends(get_db)):
             "id": adm_usuario.id,
             "nome": adm_usuario.nome_pro,
             "usuario": adm_usuario.usuario,
-            "profissional": adm_usuario.cargo_prof
+            "profissional": adm_usuario.cargo_prof,
+            "profile_photo": adm_usuario.profile_photo
         }
     }
 

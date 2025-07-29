@@ -3,6 +3,7 @@ export class AdmAlterarDadosFuncionario {
     public nome_pro?: string,
     public usuario?: string,
     public password_prof?: string,
-    public cargo_prof?: string
+    public cargo_prof?: string,
+    public profile_prof?: string
   ) {}
 }

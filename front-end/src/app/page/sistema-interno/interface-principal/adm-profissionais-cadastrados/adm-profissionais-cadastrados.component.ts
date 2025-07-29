@@ -14,6 +14,7 @@ import { AlterarDadosPaciente } from '../../../../models/alterar-dados-paciente'
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface userType {
   name: string;
@@ -27,7 +28,7 @@ interface userType {
   providers: [MessageService]
 })
 export class AdmProfissionaisCadastradosComponent {
-  funcionarios: { nome_pro: string, usuario:string, password_prof: string, cargo_prof: string }[] = [];
+  funcionarios: { nome_pro: string, usuario:string, password_prof: string, cargo_prof: string, profile_photo: string }[] = [];
   cadastrar: boolean = false;
   alterarPerfil: boolean = false;
   form: AdmEnfermeirosCadatro;
@@ -37,11 +38,38 @@ export class AdmProfissionaisCadastradosComponent {
   selecteduserType: userType | null = null; // Item selecionado
   funcionarioSelecionadoOriginal: any = null;
   filtroPesquisa: string = '';
-  funcionariosFiltrados: { nome_pro: string, usuario: string, password_prof: string, cargo_prof: string }[] = [];
+  funcionariosFiltrados: { nome_pro: string, usuario: string, password_prof: string, cargo_prof: string, profile_photo: string }[] = [];
 
   formCadastrar: AdmEnfermeirosCadatro = new AdmEnfermeirosCadatro();
   formEditar: AdmEnfermeirosCadatro = new AdmEnfermeirosCadatro();
-    
+
+  imagemSelecionada: File | null = null;
+  previewImagem: string | ArrayBuffer | null = null;
+  usuarioSelecionado: any = null;
+  imagemArquivo: File | null = null;
+  
+  profile_photo: string = "";
+
+  selecionarImagem() {
+    const input = document.getElementById('uploadFoto') as HTMLInputElement;
+    input.click();
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.imagemArquivo = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImagem = reader.result;
+      };
+      reader.readAsDataURL(this.imagemArquivo);
+
+      // Aqui você pode chamar a função para fazer o upload se quiser:
+      // this.uploadFoto();
+    }
+  }
 
   cadastrarUser() {
     this.cadastrar = !this.cadastrar;
@@ -58,7 +86,8 @@ export class AdmProfissionaisCadastradosComponent {
       nome_pro: funcionario.nome_pro,
       usuario: funcionario.usuario,
       password_prof: funcionario.password_prof, // senha em branco por segurança
-      cargo_prof: funcionario.cargo_prof
+      cargo_prof: funcionario.cargo_prof,
+      profile_photo: funcionario.profile_photo
     };
   }
   
@@ -106,6 +135,7 @@ export class AdmProfissionaisCadastradosComponent {
   carregarFuncionarios() {
     this.adminService.getTodosFuncionariosCadastrados().subscribe({
       next: (dados) => {
+        console.log('Funcionários recebidos:', dados);
         this.funcionarios = dados;
         this.funcionariosFiltrados = dados;
       },
@@ -134,6 +164,40 @@ export class AdmProfissionaisCadastradosComponent {
     );
   }
 
+  // salvar() {
+  //   const nome = this.formCadastrar.nome_pro?.trim();
+  //   const usuario = this.formCadastrar.usuario?.trim();
+  //   const senha = this.formCadastrar.password_prof?.trim();
+  //   const cargo = this.formCadastrar.cargo_prof;
+
+  //   if (!nome || !usuario || !senha || !cargo) {
+  //     this.messageService.add({
+  //       severity: 'error',
+  //       summary: 'Campos obrigatórios',
+  //       detail: 'Todos os campos devem ser preenchidos corretamente.'
+  //     });
+  //     return;
+  //   }
+
+  //   this.botaoDesativado = true;
+  //   this.professionalService.cadastrar(this.formCadastrar).subscribe({
+  //     next: () => {
+  //       this.showSuccess()
+  //       this.formCadastrar = new AdmEnfermeirosCadatro();
+  //       this.carregarFuncionarios();
+  //     },
+  //     error: erro => {
+  //       this.showError()
+  //       console.error("Erro ao tentar cadastrar:", erro);
+  //       console.error("Detalhe do erro:", erro.error);
+  //     }
+  //   });
+
+  //   setTimeout(() => {
+  //     this.botaoDesativado = false;
+  //   }, 3000);
+  // }
+
   salvar() {
     const nome = this.formCadastrar.nome_pro?.trim();
     const usuario = this.formCadastrar.usuario?.trim();
@@ -141,32 +205,36 @@ export class AdmProfissionaisCadastradosComponent {
     const cargo = this.formCadastrar.cargo_prof;
 
     if (!nome || !usuario || !senha || !cargo) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Campos obrigatórios',
-        detail: 'Todos os campos devem ser preenchidos corretamente.'
-      });
+      this.showError();
       return;
     }
 
-    this.botaoDesativado = true;
-    this.professionalService.cadastrar(this.formCadastrar).subscribe({
+    const formData = new FormData();
+    formData.append("nome_pro", this.formCadastrar.nome_pro);
+    formData.append("usuario", this.formCadastrar.usuario);
+    formData.append("password_prof", this.formCadastrar.password_prof);
+    formData.append("cargo_prof", this.formCadastrar.cargo_prof);
+
+    if (this.imagemSelecionada) {
+      formData.append("imagem", this.imagemSelecionada, this.imagemSelecionada.name); // <-- ESSENCIAL
+    }
+
+    this.professionalService.cadastrarComImagem(formData).subscribe({
       next: () => {
-        this.showSuccess()
+        this.showSuccess();
         this.formCadastrar = new AdmEnfermeirosCadatro();
         this.carregarFuncionarios();
+        this.imagemSelecionada = null;
+        this.previewImagem = null;
       },
       error: erro => {
-        this.showError()
-        console.error("Erro ao tentar cadastrar:", erro);
-        console.error("Detalhe do erro:", erro.error);
+        this.showError();
+        console.error("Erro:", erro);
       }
     });
-
-    setTimeout(() => {
-      this.botaoDesativado = false;
-    }, 3000);
   }
+  // -----------------
+  fotoPerfilSelecionado: string = '/static/perfis/standard-user.jpg';
 
   abrirFormularioEdicao(funcionario: AdmEnfermeirosCadatro) {
     this.alterarPerfil = true;
@@ -176,9 +244,90 @@ export class AdmProfissionaisCadastradosComponent {
       nome_pro: funcionario.nome_pro,
       usuario: funcionario.usuario,
       password_prof: funcionario.password_prof, // senha vazia
-      cargo_prof: funcionario.cargo_prof
+      cargo_prof: funcionario.cargo_prof,
+      profile_photo: funcionario.profile_photo
     };
+    this.fotoPerfilSelecionado = funcionario.profile_photo;
+    console.log("Foto selecionada:", this.fotoPerfilSelecionado); // 👈
   }
+
+  // alterarDadosFuncionario() {
+  //   const nome = this.formEditar.nome_pro?.trim();
+  //   const usuario = this.formEditar.usuario?.trim();
+  //   const senha = this.formEditar.password_prof?.trim();
+  //   const cargo = this.formEditar.cargo_prof;
+  //   const photo = this.formEditar.profile_photo;
+
+  //   if (!nome || !usuario || !senha || !cargo) {
+  //     this.messageService.add({
+  //       severity: 'error',
+  //       summary: 'Campos obrigatórios',
+  //       detail: 'Todos os campos devem ser preenchidos.'
+  //     });
+  //     return;
+  //   }
+
+  //   const dados = {
+  //     usuario_original: this.funcionarioSelecionadoOriginal.usuario,
+  //     nome_pro: nome,
+  //     usuario: usuario,
+  //     password_prof: senha,
+  //     cargo_prof: cargo,
+  //     profile_photo: photo
+  //   };
+
+  //   this.adminService.atualizarFuncionario(dados).subscribe({
+  //     next: () => {
+  //       this.showAlterarSuccess();
+  //       this.alterarPerfil = false;
+  //       this.formEditar = new AdmEnfermeirosCadatro();
+  //       this.carregarFuncionarios();
+  //     },
+  //     error: (erro) => {
+  //       this.showAlterarError();
+  //       console.error("Erro ao atualizar funcionário:", erro.error || erro);
+  //     }
+  //   });
+  // }
+
+  // alterarDadosFuncionario() {
+  //   const nome = this.formEditar.nome_pro?.trim();
+  //   const usuario = this.formEditar.usuario?.trim();
+  //   const senha = this.formEditar.password_prof?.trim();
+  //   const cargo = this.formEditar.cargo_prof;
+  //   const photo = this.formEditar.profile_photo;
+
+  //   if (!nome || !usuario || !senha || !cargo) {
+  //     this.messageService.add({
+  //       severity: 'error',
+  //       summary: 'Campos obrigatórios',
+  //       detail: 'Todos os campos devem ser preenchidos.'
+  //     });
+  //     return;
+  //   }
+
+  //   const dados = {
+  //     usuario_original: this.funcionarioSelecionadoOriginal.usuario,
+  //     nome_pro: nome,
+  //     usuario: usuario,
+  //     password_prof: senha,
+  //     cargo_prof: cargo,
+  //     profile_photo: photo // já vem do resultado do upload
+  //   };
+
+  //   this.adminService.atualizarFuncionario(dados).subscribe({
+  //     next: () => {
+  //       this.showAlterarSuccess();
+  //       this.alterarPerfil = false;
+  //       this.formEditar = new AdmEnfermeirosCadatro();
+  //       this.carregarFuncionarios();
+  //     },
+  //     error: (erro) => {
+  //       this.showAlterarError();
+  //       console.error("Erro ao atualizar funcionário:", erro.error || erro);
+  //     }
+  //   });
+  // }
 
   alterarDadosFuncionario() {
     const nome = this.formEditar.nome_pro?.trim();
@@ -195,62 +344,33 @@ export class AdmProfissionaisCadastradosComponent {
       return;
     }
 
-    const dados = {
-      usuario_original: this.funcionarioSelecionadoOriginal.usuario,
-      nome_pro: nome,
-      usuario: usuario,
-      password_prof: senha,
-      cargo_prof: cargo
-    };
+    const formData = new FormData();
+    formData.append('usuario_original', this.funcionarioSelecionadoOriginal.usuario);
+    formData.append('nome_pro', nome);
+    formData.append('usuario', usuario);
+    formData.append('password_prof', senha);
+    formData.append('cargo_prof', cargo);
 
-    this.adminService.atualizarFuncionario(dados).subscribe({
+    // Aqui você envia a imagem de fato
+    if (this.imagemSelecionada) {
+      formData.append('profile_photo', this.imagemSelecionada);
+    }
+
+    this.adminService.atualizarDadosComImagemFuncionario(formData).subscribe({
       next: () => {
         this.showAlterarSuccess();
         this.alterarPerfil = false;
         this.formEditar = new AdmEnfermeirosCadatro();
         this.carregarFuncionarios();
       },
-      error: (erro) => {
+      error: (erro: any) => {
         this.showAlterarError();
         console.error("Erro ao atualizar funcionário:", erro.error || erro);
       }
     });
   }
 
-  // alterarDadosFuncionario() {
-  //   const dados: any = {
-  //     usuario_original: this.funcionarioSelecionadoOriginal.usuario // ← identificador original
-  //   };
 
-  //   if (this.form.nome_pro && this.form.nome_pro.trim() !== "" && this.form.nome_pro !== this.funcionarioSelecionadoOriginal.nome_pro) {
-  //     dados.nome_pro = this.form.nome_pro;
-  //   }
-
-  //   if (this.form.usuario && this.form.usuario.trim() !== "" && this.form.usuario !== this.funcionarioSelecionadoOriginal.usuario) {
-  //     dados.usuario = this.form.usuario;
-  //   }
-
-  //   if (this.form.password_prof && this.form.password_prof.trim() !== "") {
-  //     dados.password_prof = this.form.password_prof;
-  //   }
-
-  //   if (this.form.cargo_prof && typeof this.form.cargo_prof === 'string' && this.form.cargo_prof !== this.funcionarioSelecionadoOriginal.cargo_prof) {
-  //     dados.cargo_prof = this.form.cargo_prof;
-  //   }
-
-  //   this.adminService.atualizarFuncionario(dados).subscribe({
-  //     next: () => {
-  //       this.showAlterarSuccess()
-  //       this.alterarPerfil = false;
-  //       this.carregarFuncionarios();
-  //       this.alterarForm = new AlterarDadosPaciente();
-  //     },
-  //     error: (erro) => {
-  //       this.showAlterarError()
-  //       console.error("Erro ao atualizar funcionário:", erro.error || erro);
-  //     }
-  //   });
-  // }
 
   // removerFuncionario() {
   //   if (!this.form.usuario) return;
@@ -330,5 +450,37 @@ export class AdmProfissionaisCadastradosComponent {
   onReject() {
     this.messageService.clear('confirm');
   }
+
+  onFotoSelecionada(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.imagemSelecionada = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImagem = reader.result;
+      };
+      reader.readAsDataURL(this.imagemSelecionada);
+    }
+  }
+  
+
+  getImagemUrl(): string {
+    const baseUrl = 'http://localhost:8000';
+
+    // Se tiver uma imagem em preview (ex: após selecionar novo arquivo)
+    if (this.previewImagem) {
+      return this.previewImagem.toString();
+    }
+
+    // Se tem uma imagem já cadastrada no formEditar
+    if (this.formEditar?.profile_photo?.startsWith('/static')) {
+      return `${baseUrl}${this.formEditar.profile_photo}`;
+    }
+
+    // Imagem padrão
+    return `${baseUrl}/static/perfis/standard-user.jpg`;
+  }
+
 
 }

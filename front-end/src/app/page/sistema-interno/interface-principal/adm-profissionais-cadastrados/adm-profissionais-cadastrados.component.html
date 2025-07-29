@@ -17,7 +17,10 @@
     <div class="overlay-fundo" *ngIf="cadastrar || alterarPerfil">
         <div class="form-container">
             <div class="top">
-                <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
+                <label for="uploadFoto">
+                    <img id="fotoUsuario" [src]="getImagemUrl()" alt="Foto do Usuário" class="foto-usuario" />
+                    <input type="file" id="uploadFoto" hidden (change)="onFotoSelecionada($event)" accept="image/*" />
+                </label>
             </div>
 
             <div class="left-form">
@@ -53,7 +56,10 @@
     <div class="overlay-fundo">
         <div class="form-container">
             <div class="top">
-                <img id="fotoUsuario" src="/default-icon.jpg" alt="Foto do Usuário" class="foto-usuario">
+                <label for="inputFoto" class="foto-upload-label">
+                  <img id="fotoUsuario" [src]="getImagemUrl()" alt="Foto do Usuário" class="foto-usuario" />
+                </label>
+                <input type="file" id="inputFoto" style="display:none" (change)="onFotoSelecionada($event)" />
             </div>
 
             <div class="left-form">

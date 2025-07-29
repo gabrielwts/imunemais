@@ -20,8 +20,8 @@ export class LoginAdminService {
     return this.http.post<{ mensagem: string }>(`${environment.apiUrl}/v1/adm/cadastrar/vacina`, vacinaCadastro);
   }
 
-  getTodosFuncionariosCadastrados(): Observable<{ nome_pro: string, usuario:string, password_prof: string, cargo_prof: string }[]> {
-    return this.http.get<{ nome_pro: string, usuario:string, password_prof: string, cargo_prof: string }[]>(`${environment.apiUrl}/v1/adm/lista/funcionários/cadastrados`);
+  getTodosFuncionariosCadastrados(): Observable<{ nome_pro: string, usuario:string, password_prof: string, cargo_prof: string, profile_photo: string }[]> {
+    return this.http.get<{ nome_pro: string, usuario:string, password_prof: string, cargo_prof: string, profile_photo: string }[]>(`${environment.apiUrl}/v1/adm/lista/funcionários/cadastrados`);
   }
 
   deletarFuncionarioCadastrado(usuario: string): Observable<{ mensagem: string }[]> {
@@ -30,6 +30,10 @@ export class LoginAdminService {
 
   atualizarFuncionario(alterarDadosFuncionario: AdmAlterarDadosFuncionario): Observable<{ mensagem: string }> {
     return this.http.put<{ mensagem: string }>(`${environment.apiUrl}/v1/adm/funcionario/alterar`, alterarDadosFuncionario)
+  }
+
+  atualizarDadosComImagemFuncionario(formData: FormData) {
+    return this.http.put<any>(`${environment.apiUrl}/v1/adm/funcionario/alterar-com-foto`, formData);
   }
 
 }

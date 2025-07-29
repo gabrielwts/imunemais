@@ -20,8 +20,17 @@ export class InterfacePrincipalComponent implements OnInit {
   nome: string = "";
   cargo: string = '';
   usuario: string = "";
+  profile_photo: string = "";
 
   constructor(private router: Router) {}
+
+  getImagemPerfilUrl(): string {
+    const baseUrl = 'http://localhost:8000';
+    if (this.profile_photo?.startsWith('/static')) {
+      return baseUrl + this.profile_photo;
+    }
+    return '/standard-user.jpg';
+  }
 
 
   ngOnInit() {
@@ -30,6 +39,7 @@ export class InterfacePrincipalComponent implements OnInit {
       const dados = JSON.parse(usuario);
       this.cargo = dados.profissional; 
       this.nome = dados.nome;
+      this.profile_photo = dados.profile_photo;
       console.log('Cargo:', this.cargo);
     }
 

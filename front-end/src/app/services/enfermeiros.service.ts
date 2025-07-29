@@ -18,8 +18,12 @@ export class EnfermeirosService {
   
   constructor(private http: HttpClient) {}
 
-  cadastrar(usuarioCadastro: AdmEnfermeirosCadatro) : Observable<AdmEnfermeirosCadastroResponse>{
-    return this.http.post<AdmEnfermeirosCadastroResponse>(`${environment.apiUrl}/v1/adm/cadastro`, usuarioCadastro);
+  // cadastrar(usuarioCadastro: AdmEnfermeirosCadatro) : Observable<AdmEnfermeirosCadastroResponse>{
+  //   return this.http.post<AdmEnfermeirosCadastroResponse>(`${environment.apiUrl}/v1/adm/cadastro`, usuarioCadastro);
+  // }
+
+  cadastrarComImagem(formData: FormData): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/v1/adm/cadastro`, formData);
   }
   
   AutenticacaoUsuario(efetuarLogin: AdmEfetuarLogin): Observable<AdmLoginResponse> {
