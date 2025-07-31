@@ -252,6 +252,7 @@ export class PerfilComponent implements OnInit {
           imagem_perfil: response.imagem_perfil ?? dadosOriginais.imagem_perfil
         };
         localStorage.setItem('paciente', JSON.stringify(novosDados));
+        location.reload();
       },
       error: erro => {
         this.showError();

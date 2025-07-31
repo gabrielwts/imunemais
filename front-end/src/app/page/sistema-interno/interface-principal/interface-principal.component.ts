@@ -40,7 +40,7 @@ export class InterfacePrincipalComponent implements OnInit {
       this.cargo = dados.profissional; 
       this.nome = dados.nome;
       this.profile_photo = dados.profile_photo;
-      console.log('Cargo:', this.cargo);
+      // console.log('Cargo:', this.cargo);
     }
 
     window.addEventListener('abrirConsultaPaciente', () => {
@@ -53,7 +53,7 @@ export class InterfacePrincipalComponent implements OnInit {
     this.pacientesLista = false;
     this.vacinasLista = false;
     this.funcinariosLista = false;
-    console.log("Acessou perfil")
+    // console.log("Acessou perfil")
   }
   pacientesLista: boolean = false;
   mostrarUsuarios () {
@@ -61,7 +61,7 @@ export class InterfacePrincipalComponent implements OnInit {
     this.pacientesLista = true;
     this.vacinasLista = false;
     this.funcinariosLista = false;
-    console.log("Acessou usuários cadastrados")
+    // console.log("Acessou usuários cadastrados")
   }
   vacinasLista: boolean = false;
   mostrarVacinas () {
@@ -81,7 +81,8 @@ export class InterfacePrincipalComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.clear();
+    // localStorage.clear();
+    localStorage.removeItem('usuario');
     this.router.navigate(['/login-sistema-interno']);
   }
 }
