@@ -19,3 +19,4 @@ email_validator==2.2.0
 
 # pip install "bcrypt==3.2.2"
 # pip install --upgrade passlib
+# pip install fastapi-mail

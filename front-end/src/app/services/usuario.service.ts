@@ -10,6 +10,7 @@ import { EfetuarLogin } from '../models/efetuar-login';
 import { RecuperarSenhaCpf } from '../models/recuperar-senha-cpf';
 import { RecuperarSenhaResponse } from '../models/recuperar-senha-response';
 import { AlterarDadosPaciente } from '../models/alterar-dados-paciente';
+import { RecuperarSenhaEmail } from '../models/recuperar-senha-email';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class UsuarioService {
 
   RecuperarSenhaCpf(recuperarSenhaCpf: RecuperarSenhaCpf): Observable<RecuperarSenhaResponse> {
     return this.http.post<RecuperarSenhaResponse>(`${environment.apiUrl}/v1/usuarios/recuperarsenha`, recuperarSenhaCpf)
+  }
+
+  RecuperarSenhaEmail(recuperarSenhaEmail: RecuperarSenhaEmail): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/v1/codigo-email-recuperar`, recuperarSenhaEmail)
   }
 
   // AtualizarDados(alterarDadosPaciente: AlterarDadosPaciente): Observable<{ mensagem: string, telefone: string, email: string }> {

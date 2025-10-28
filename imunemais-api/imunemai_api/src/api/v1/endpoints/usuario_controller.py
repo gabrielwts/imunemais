@@ -86,7 +86,9 @@ def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db))
 
     return UsuarioContatoMascarado(
         telefone=mascarar_telefone(usuario.telefone),
-        email=mascarar_email(usuario.email)
+        email=mascarar_email(usuario.email),
+        cpf=usuario.cpf,
+        email_real=usuario.email
     )
     
 # Atualizar e-mail e telefone do usuário (profile)

@@ -28,7 +28,7 @@ export class EsqueciMinhaSenhaComponent {
         // console.log('Telefone:', recuperarSenhaResponse.telefone);
         // console.log('Email:', recuperarSenhaResponse.email);
         alert("CPF encaminhado")
-        this.router.navigate(["/recuperar-senha"], {state: {telefone: recuperarSenhaResponse.telefone, email: recuperarSenhaResponse.email}})
+        this.router.navigate(["/recuperar-senha"], {state: {telefone: recuperarSenhaResponse.telefone, email: recuperarSenhaResponse.email, cpf: recuperarSenhaResponse.cpf, email_real: recuperarSenhaResponse.email_real }})
       },
       error: erro => {
         alert("Não foi possível cadastrar")

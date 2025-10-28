@@ -8,13 +8,13 @@
             <h2>Confirmar código de segurança</h2>
             <p>Enviamos o código de segurança para o seu novo telefone, confirme o código abaixo para alterar sua senha.</p>
 
-            <form>
+            <div class="form">
                 <span>Código de segurança</span>
                 <p-inputotp size="large" class="code-veri" [(ngModel)]="verification_code" [integerOnly]="true" />
 
                 <p-button type="submit" label="Confirmar código" severity="info" />
                 <a routerLink="/login" class="back-login">Cancelar</a>
-            </form>
+            </div>
         </div>
     </div>
 </div>

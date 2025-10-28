@@ -59,3 +59,6 @@ class AdmComToken(BaseModel):
     token_type: str = "bearer"
     usuario: AdmUsuarioDados
 
+class RecuperarSenhaRequest(BaseModel):
+    email: str
+    cpf: str

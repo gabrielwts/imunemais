@@ -1,13 +1,17 @@
 from datetime import datetime, timedelta, timezone
+import secrets
 import os
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from typing import List
-from fastapi import HTTPException, Depends, Query, status, Response
+from fastapi import HTTPException, Depends, Query, status, Response, APIRouter
 import jwt
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from src.app import router
+import asyncio
 from src.database.database import SessionLocal
 from src.database.models import UserVaccine, Usuario
-from src.schemas.autenticacao_schemas import AutenticacaoLogin, Token, TokenComPaciente
+from src.schemas.autenticacao_schemas import AutenticacaoLogin, RecuperarSenhaRequest, Token, TokenComPaciente
 from src.schemas.usuario_schemas import ListaUserVacinaResponse
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from sqlalchemy.exc import IntegrityError
@@ -80,6 +84,51 @@ def listar_vacinas(cpf: str, db: Session = Depends(get_db)):
         )
         for v in vacinas
     ]
+
+
+# AGORA VEM O CÓDIGO E-MAIL
+conf = ConnectionConfig(
+    MAIL_USERNAME="suporte.imunemais@gmail.com",
+    MAIL_PASSWORD="obuq ovqt pits ejhn",
+    MAIL_FROM="suporte.imunemais@gmail.com",
+    MAIL_PORT=587,
+    MAIL_SERVER="smtp.gmail.com",
+    MAIL_STARTTLS=True,   
+    MAIL_SSL_TLS=False, 
+)
+
+# Função gerar código
+def gerar_codigo():
+    return f"{secrets.randbelow(10000):04d}"
+
+
+# Função enviar e-mail
+async def enviar_email(destinatario: str, codigo: str):
+    mensagem = MessageSchema(
+        subject="Recuperação de senha",
+        recipients=[destinatario],
+        body=f"Seu código de recuperação é: {codigo}",
+        subtype="plain"
+    )
+    fm = FastMail(conf)
+    await fm.send_message(mensagem)
+    print(f"E-mail enviado para {destinatario} com o código {codigo}")
+
+    
+# ROTA RECUPERAR SENHA - COM EMAIL
+    
+@router.post("/v1/codigo-email-recuperar")
+async def recuperar_senha(request: RecuperarSenhaRequest, db: Session = Depends(get_db)):
+    user = db.query(Usuario).filter(Usuario.email == request.email).first()
+    if not user:
+        return {"Status": "O e-mail mencionado é inválido"}
+
+    codigo = gerar_codigo()
+    print(f"Código gerado: {codigo}")
+    await enviar_email(request.email, codigo)
+
+    return {"status": "Código de recuperação enviado para o e-mail informado."}
+    
 
 # Rotas testes
 

@@ -7,7 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
 import { PasswordModule } from 'primeng/password';
 import { Router } from '@angular/router';
-
+import { UsuarioService } from '../../../services/usuario.service';
+import { MessageService } from 'primeng/api';
+import { RecuperarSenhaEmail } from '../../../models/recuperar-senha-email';
 
 interface RecuperarSenhaResponse {
   email: string;
@@ -16,55 +18,57 @@ interface RecuperarSenhaResponse {
 
 @Component({
   selector: 'app-recuperacao-senha',
+  standalone: true,
   imports: [ RouterLink, FormsModule, CommonModule, InputMaskModule, PasswordModule, ButtonModule],
   templateUrl: './recuperacao-senha.component.html',
-  styleUrl: './recuperacao-senha.component.scss'
+  styleUrl: './recuperacao-senha.component.scss',
+  providers: [MessageService]
 })
 export class RecuperacaoSenhaComponent implements OnInit {
   telefone!: string;
   email!: string;
+  cpf!: string;
+  email_real!: string;
+  form!: RecuperarSenhaEmail;
+  opcaoSelecionada: string = 'email';
 
-  ngOnInit(): void {
-    const state = history.state as { telefone: string, email: string };
-    this.telefone = state.telefone;
-    this.email = state.email;
-
-    console.log('ID recebido via history.state:', this.telefone + '' + this.email);
+  constructor(private http: HttpClient, private usuarioService: UsuarioService, private messageService: MessageService, private router: Router) {
+    this.form = new RecuperarSenhaEmail();
   }
 
-  // cpf: string = '';
-  // emailMascarado: string = '';
-  // telefoneMascarado: string = '';
-  opcaoSelecionada: string = 'email'; // valor padrão
-  // dadosCarregados: boolean = false;
+  ngOnInit(): void {
+    const state = history.state as { telefone: string, email: string, cpf: string, email_real: string };
+    this.telefone = state.telefone;
+    this.email = state.email;
+    this.cpf = state.cpf;
+    this.email_real = state.email_real;
+  }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  proximo() {
+    if (this.opcaoSelecionada === 'email') {
+      this.form.email = this.email_real;
+      this.form.cpf = this.cpf;
+      this.enviarEmail();
+    } else if (this.opcaoSelecionada === 'telefone') {
+      // this.enviarCodigoTelefone();
+    }
+  }
 
-  // buscarOpcoes() {
-  //   this.http.post<RecuperarSenhaResponse>(
-  //     'http://127.0.0.1:8000/v1/usuarios/recuperarsenha',
-  //     { cpf: this.cpf }
-  //   ).subscribe({
-  //     next: (res) => {
-  //       console.log('Resposta recebida:', res);
-  //       this.emailMascarado = res.email;
-  //       this.telefoneMascarado = res.telefone;
-  //       this.dadosCarregados = true;
-  //     },
-  //     error: (err: HttpErrorResponse) => {
-  //       console.error('Erro ao recuperar dados:', err);
-  //       this.dadosCarregados = false;
-  //     }
-  //   });
-  // }
+  enviarEmail () {
+    // this.form.email = this.email;
+    // this.form.cpf = localStorage.getItem('cpf') || '';
 
-  // enviar() {
-  //   this.router.navigate(['/escolher-metodo'], {
-  //     state: {
-  //       telefone: this.telefoneMascarado,
-  //       email: this.emailMascarado,
-  //       opcaoSelecionada: this.opcaoSelecionada
-  //     }
-  //   });
-  // }
+    this.usuarioService.RecuperarSenhaEmail(this.form).subscribe({
+      next: res => {
+        console.log('Resposta backend:', res);
+        this.router.navigate(['/codigo-validacao']);
+
+        // this.showSuccess()
+      },
+      error: erro => {
+        // this.showError()
+      }
+    });
+  }
+
 }

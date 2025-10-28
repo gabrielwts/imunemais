@@ -11,18 +11,18 @@
 
         <form class="form-radio" > <!-- (ngSubmit)="enviar()" -->
           <div class="field-radio">
-            <input type="radio" id="email" name="recoveryMethod" [(ngModel)]="opcaoSelecionada" value="email" required />
+            <input type="radio" id="email" name="recoveryOption" [(ngModel)]="opcaoSelecionada" [ngModelOptions]="{standalone: true}" value="email" required />
             <label for="email">E-mail<br><span class="email_user">{{ this.email }}</span></label>
           </div>
 
           <div class="field-radio">
-            <input type="radio" id="telefone" [(ngModel)]="opcaoSelecionada" value="telefone" name="recoveryMethod" required checked />
+            <input type="radio" id="telefone" [(ngModel)]="opcaoSelecionada" [ngModelOptions]="{standalone: true}"  value="telefone" name="recoveryOption" required />
             <label for="telefone">Telefone<br><span class="number_user">{{ this.telefone }}</span></label>
           </div>
 
           <p *ngIf="opcaoSelecionada" [routerLink]="['/sem-acesso', opcaoSelecionada]" class="link-info">Perdi acesso a este {{ opcaoSelecionada }}</p>
 
-          <p-button type="submit" label="Próximo" severity="info" />
+          <p-button type="submit" (click)="proximo()" label="Próximo" severity="info" />
           <a routerLink="/login" class="forgot-password">Cancelar</a>
         </form>
       </div>

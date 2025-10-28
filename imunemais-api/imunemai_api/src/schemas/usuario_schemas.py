@@ -45,6 +45,8 @@ class CpfRecuperarSenha(BaseModel):
 class UsuarioContatoMascarado(BaseModel):
     telefone: str
     email: str
+    cpf: str
+    email_real: str
     
 class AtualizarDadosComCpf(BaseModel): # Função tela profile dos pacientes
     cpf: str

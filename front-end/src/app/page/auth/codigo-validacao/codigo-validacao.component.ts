@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputOtpModule } from 'primeng/inputotp';
+import { InputOtp } from 'primeng/inputotp';
 
 @Component({
   selector: 'app-codigo-validacao',
@@ -11,4 +12,5 @@ import { InputOtpModule } from 'primeng/inputotp';
 })
 export class CodigoValidacaoComponent {
   verification_code: string = '';
+  
 }
