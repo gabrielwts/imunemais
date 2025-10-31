@@ -31,6 +31,7 @@ export class RecuperacaoSenhaComponent implements OnInit {
   email_real!: string;
   form!: RecuperarSenhaEmail;
   opcaoSelecionada: string = 'email';
+  botaoDesativado: boolean = false;
 
   constructor(private http: HttpClient, private usuarioService: UsuarioService, private messageService: MessageService, private router: Router) {
     this.form = new RecuperarSenhaEmail();
@@ -42,9 +43,14 @@ export class RecuperacaoSenhaComponent implements OnInit {
     this.email = state.email;
     this.cpf = state.cpf;
     this.email_real = state.email_real;
+
+    localStorage.removeItem('codigo_recuperacao');
   }
 
   proximo() {
+    if (this.botaoDesativado) return; // Evita spam de clique
+    this.botaoDesativado = true;
+
     if (this.opcaoSelecionada === 'email') {
       this.form.email = this.email_real;
       this.form.cpf = this.cpf;
@@ -52,6 +58,10 @@ export class RecuperacaoSenhaComponent implements OnInit {
     } else if (this.opcaoSelecionada === 'telefone') {
       // this.enviarCodigoTelefone();
     }
+
+    setTimeout(() => {
+      this.botaoDesativado = false;
+    }, 5000);
   }
 
   enviarEmail () {
@@ -61,6 +71,12 @@ export class RecuperacaoSenhaComponent implements OnInit {
     this.usuarioService.RecuperarSenhaEmail(this.form).subscribe({
       next: res => {
         console.log('Resposta backend:', res);
+
+        if (res.codigo) {
+          localStorage.setItem('codigo_recuperacao', res.codigo);
+          localStorage.setItem('cpf', this.cpf)
+        }
+
         this.router.navigate(['/codigo-validacao']);
 
         // this.showSuccess()

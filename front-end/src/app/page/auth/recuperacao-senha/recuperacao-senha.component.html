@@ -22,7 +22,7 @@
 
           <p *ngIf="opcaoSelecionada" [routerLink]="['/sem-acesso', opcaoSelecionada]" class="link-info">Perdi acesso a este {{ opcaoSelecionada }}</p>
 
-          <p-button type="submit" (click)="proximo()" label="Próximo" severity="info" />
+          <p-button type="submit" (click)="proximo()" [disabled]="botaoDesativado" label="Próximo" severity="info" />
           <a routerLink="/login" class="forgot-password">Cancelar</a>
         </form>
       </div>

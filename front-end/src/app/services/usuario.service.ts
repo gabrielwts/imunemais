@@ -11,6 +11,7 @@ import { RecuperarSenhaCpf } from '../models/recuperar-senha-cpf';
 import { RecuperarSenhaResponse } from '../models/recuperar-senha-response';
 import { AlterarDadosPaciente } from '../models/alterar-dados-paciente';
 import { RecuperarSenhaEmail } from '../models/recuperar-senha-email';
+import { RecuperarSenhaCadastro } from '../models/recuperar-senha-cadastro';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,10 @@ export class UsuarioService {
 
   RecuperarSenhaEmail(recuperarSenhaEmail: RecuperarSenhaEmail): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/v1/codigo-email-recuperar`, recuperarSenhaEmail)
+  }
+
+  RecuperarCadastroNovaSenha(cpfSalvo: string, recuperarSenhaCadastro: RecuperarSenhaCadastro) : Observable<null>{
+    return this.http.post<null>(`${this.apiUrl}/recuperar-cadastro-senha?cpfSalvo=${cpfSalvo}`, recuperarSenhaCadastro);
   }
 
   // AtualizarDados(alterarDadosPaciente: AlterarDadosPaciente): Observable<{ mensagem: string, telefone: string, email: string }> {

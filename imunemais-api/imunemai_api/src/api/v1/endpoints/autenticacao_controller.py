@@ -12,10 +12,11 @@ import asyncio
 from src.database.database import SessionLocal
 from src.database.models import UserVaccine, Usuario
 from src.schemas.autenticacao_schemas import AutenticacaoLogin, RecuperarSenhaRequest, Token, TokenComPaciente
-from src.schemas.usuario_schemas import ListaUserVacinaResponse
+from src.schemas.usuario_schemas import ListaUserVacinaResponse, UsuarioCreateResponse, UsuarioSetPassword
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from sqlalchemy.exc import IntegrityError
 from src.service.autenticacao_service import generate_token
+from fastapi import Body, Query
 
 def get_db():
     db = SessionLocal()
@@ -127,8 +128,28 @@ async def recuperar_senha(request: RecuperarSenhaRequest, db: Session = Depends(
     print(f"Código gerado: {codigo}")
     await enviar_email(request.email, codigo)
 
-    return {"status": "Código de recuperação enviado para o e-mail informado."}
+    return {"status": "Código de recuperação enviado para o e-mail informado.", "codigo": codigo}
+    # return {}
     
+    
+# RECUPERAR SENHA - Cadastrar senha usuário
+@router.post("/v1/usuarios/recuperar-cadastro-senha")
+def criar_senha(cpfSalvo: str, recuperarSenhaCadastro: UsuarioSetPassword, db: Session = Depends(get_db)):
+    db_usuario = db.query(Usuario).filter(Usuario.cpf == cpfSalvo).first()
+    if not db_usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    if not recuperarSenhaCadastro.password_hash or len(recuperarSenhaCadastro.password_hash) < 6:
+        raise HTTPException(status_code=400, detail="Senha deve ter pelo menos 6 caracteres.")
+
+    senha_hash = gerar_hash_senha(recuperarSenhaCadastro.password_hash)
+    db_usuario.password_hash = senha_hash
+
+    db.add(db_usuario)
+    db.commit()
+    db.refresh(db_usuario)
+
+    return {"status": "Senha alterada com sucesso. Tente realizar o login novamente."}
 
 # Rotas testes
 

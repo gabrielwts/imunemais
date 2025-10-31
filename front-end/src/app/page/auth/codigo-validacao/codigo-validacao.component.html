@@ -1,3 +1,5 @@
+<p-toast position="top-right"></p-toast>
+
 <div class="container">
     <div class="left">
         <a class="logo" href="/">imune+</a>
@@ -12,7 +14,7 @@
                 <span>Código de segurança</span>
                 <p-inputotp size="large" class="code-veri" [(ngModel)]="verification_code" [integerOnly]="true" />
 
-                <p-button type="submit" label="Confirmar código" severity="info" />
+                <p-button (onClick)="validarCodigo()" type="submit" label="Confirmar código" severity="info" />
                 <a routerLink="/login" class="back-login">Cancelar</a>
             </div>
         </div>

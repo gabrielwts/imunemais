@@ -1,3 +1,5 @@
+<p-toast position="top-right"></p-toast>
+
 <div class="container">
 
     <div class="left">
@@ -11,15 +13,15 @@
             <form>
                 <div>
                     <label for="text">Nova senha</label>
-                    <p-password class="new_passw" maxlength="150" placeholder="Digite sua nova senha.." [feedback]="false" required />
+                    <p-password class="new_passw" maxlength="150" [(ngModel)]="form.senha" name="password_hash" placeholder="Digite sua nova senha.." [feedback]="false" required />
                 </div>
                 
             
                 <div>
                     <label for="text">Confirme sua nova senha</label>
-                    <p-password class="new_passw" maxlength="150" placeholder="Digite novamente sua senha.." [feedback]="false" required />
+                    <p-password class="new_passw" maxlength="150" [(ngModel)]="confirmarSenha" name="confirmarSenha" placeholder="Digite novamente sua senha.." [feedback]="false" required />
                 </div>
-                <p-button class="submit-btn" type="submit" label="Alterar senha" severity="info" />
+                <p-button class="submit-btn" type="submit" (onClick)="cadastrarSenha()" label="Alterar senha" severity="info" />
                 <a href="/esqueceu-senha" class="back-reset">Cancelar</a>
             </form>
     </div>
