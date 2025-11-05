@@ -7,7 +7,7 @@
     <div class="right">
       <div class="reset-pswd">
         <h2>Esqueci minha senha</h2>
-        <p>Para redefinir sua senha, confirme seu telefone<br> e lhe enviaremos um código de segurança.</p>
+        <p>Para redefinir sua senha, confirme seu e-mail<br> e lhe enviaremos um código de segurança.</p>
 
         <form class="form-radio" > <!-- (ngSubmit)="enviar()" -->
           <div class="field-radio">
@@ -15,12 +15,12 @@
             <label for="email">E-mail<br><span class="email_user">{{ this.email }}</span></label>
           </div>
 
-          <div class="field-radio">
+          <!-- <div class="field-radio">
             <input type="radio" id="telefone" [(ngModel)]="opcaoSelecionada" [ngModelOptions]="{standalone: true}"  value="telefone" name="recoveryOption" required />
             <label for="telefone">Telefone<br><span class="number_user">{{ this.telefone }}</span></label>
-          </div>
+          </div> -->
 
-          <p *ngIf="opcaoSelecionada" [routerLink]="['/sem-acesso', opcaoSelecionada]" class="link-info">Perdi acesso a este {{ opcaoSelecionada }}</p>
+          <p *ngIf="opcaoSelecionada" (click)="redirecionar()" class="link-info">Perdi acesso a este {{ opcaoSelecionada }}</p>
 
           <p-button type="submit" (click)="proximo()" [disabled]="botaoDesativado" label="Próximo" severity="info" />
           <a routerLink="/login" class="forgot-password">Cancelar</a>

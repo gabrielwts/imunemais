@@ -1,7 +1,7 @@
 from typing import List, Optional
 from datetime import date, datetime
 from pydantic.dataclasses import dataclass
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 # from src.schemas.usuario_schemas import UserVaccineListBase
 
 
@@ -62,3 +62,6 @@ class AdmComToken(BaseModel):
 class RecuperarSenhaRequest(BaseModel):
     email: str
     cpf: str
+
+class RecuperarSenhaEmailRequest(BaseModel):
+    email: str

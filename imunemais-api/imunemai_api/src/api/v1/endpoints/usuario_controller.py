@@ -90,31 +90,6 @@ def recuperar_senha(recuperar: CpfRecuperarSenha, db: Session = Depends(get_db))
         cpf=usuario.cpf,
         email_real=usuario.email
     )
-    
-# Atualizar e-mail e telefone do usuário (profile)
-# @router.put("/v1/usuarios/atualizardados")
-# def atualizar_dados(atualizar: AtualizarDadosComCpf, db: Session = Depends(get_db)):
-#     usuario = db.query(Usuario).filter(Usuario.cpf == atualizar.cpf).first()
-    
-#     if not usuario:
-#         raise HTTPException(status_code=404, detail="Usuário não encontrado")
-
-#     if atualizar.telefone is not None:
-#         usuario.telefone = atualizar.telefone
-
-#     if atualizar.email is not None:
-#         usuario.email = atualizar.email
-
-#     db.commit()
-#     db.refresh(usuario)
-
-#     return {
-#         "cpf": usuario.cpf,
-#         "nome": usuario.nome_completo,
-#         "data_nascimento": usuario.data_nascimento,
-#         "telefone": usuario.telefone,
-#         "email": usuario.email
-#     }
 
 @router.put("/v1/usuarios/atualizardados")
 def atualizar_dados(

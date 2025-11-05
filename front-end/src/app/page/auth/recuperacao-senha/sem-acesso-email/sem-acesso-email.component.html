@@ -10,15 +10,15 @@
         <h2>Como devemos contatá-lo?</h2>
         <p>Insira um e-mail diferente daquele que você<br>está tentando recuperar.</p>
 
-        <form onsubmit="delayedSubmit(event)">
+        <form>
 
           <div class="means-ctt">
             <label>E-mail de contato</label>
-            <input type="text" class="email" pInputText placeholder="Digite seu e-mail.."  /> <!-- declarar [(ngModel)]="value" -->
+            <input type="text" class="email" name="novo_email" [(ngModel)]="novo_email" pInputText placeholder="Digite seu e-mail.."  /> <!-- declarar [(ngModel)]="value" -->
           </div>
           
           <div>
-            <p-button class="submit-btn" type="submit" label="Próximo" severity="info" />
+            <p-button class="submit-btn" type="submit" (click)="proximo()" [disabled]="botaoDesativado" label="Próximo" severity="info" />
             <a routerLink="/esqueceu-senha" class="bttn-back">Voltar</a>
           </div>
         </form>

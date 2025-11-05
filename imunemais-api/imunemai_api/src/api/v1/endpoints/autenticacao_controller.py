@@ -11,8 +11,8 @@ from src.app import router
 import asyncio
 from src.database.database import SessionLocal
 from src.database.models import UserVaccine, Usuario
-from src.schemas.autenticacao_schemas import AutenticacaoLogin, RecuperarSenhaRequest, Token, TokenComPaciente
-from src.schemas.usuario_schemas import ListaUserVacinaResponse, UsuarioCreateResponse, UsuarioSetPassword
+from src.schemas.autenticacao_schemas import AutenticacaoLogin, RecuperarSenhaEmailRequest, RecuperarSenhaRequest, Token, TokenComPaciente
+from src.schemas.usuario_schemas import ListaUserVacinaResponse, UsuarioSetPassword
 from src.auth.crypto import gerar_hash_senha, verificar_senha
 from sqlalchemy.exc import IntegrityError
 from src.service.autenticacao_service import generate_token
@@ -104,16 +104,51 @@ def gerar_codigo():
 
 
 # Função enviar e-mail
+# async def enviar_email(destinatario: str, codigo: str):
+#     mensagem = MessageSchema(
+#         subject="Recuperação de senha",
+#         recipients=[destinatario],
+#         body=f"Seu código de recuperação é: {codigo}",
+#         subtype="plain"
+#     )
+#     fm = FastMail(conf)
+#     await fm.send_message(mensagem)
+#     print(f"E-mail enviado para {destinatario} com o código {codigo}")
+
 async def enviar_email(destinatario: str, codigo: str):
+    html = f"""
+    <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f6fa;">
+        <div style="max-width: 500px; margin: auto; background: white; border-radius: 8px; padding: 25px; text-align: center; border: 1px solid #e6e6e6;">
+            <a style="top: 20px; left: 20px; background-color: #3b82f6; color: white; padding: 10px 20px; border-radius: 5px; font-size: 24px; font-weight: bold; text-decoration: none;">Imune+</a>
+            <h2 style="color: #3b82f6;">Recuperação de senha</h2>
+            <p style="font-size: 16px; color: #333;">
+                Olá! Recebemos uma solicitação para redefinir sua senha.
+            </p>
+            <p style="font-size: 16px; color: #333;">
+                Seu código de recuperação é:
+            </p>
+            <div style="font-size: 32px; font-weight: bold; color: #3b82f6; margin: 15px 0;">
+                {codigo}
+            </div>
+            <hr style="margin: 25px 0;">
+            <p style="font-size: 12px; color: #888;">
+                Se você não solicitou essa alteração, por favor ignore este e-mail.
+            </p>
+        </div>
+    </div>
+    """
+
     mensagem = MessageSchema(
-        subject="Recuperação de senha",
+        subject="Recuperação de senha - Imune+",
         recipients=[destinatario],
-        body=f"Seu código de recuperação é: {codigo}",
-        subtype="plain"
+        body=html,
+        subtype="html"
     )
+    
     fm = FastMail(conf)
     await fm.send_message(mensagem)
     print(f"E-mail enviado para {destinatario} com o código {codigo}")
+
 
     
 # ROTA RECUPERAR SENHA - COM EMAIL
@@ -130,6 +165,21 @@ async def recuperar_senha(request: RecuperarSenhaRequest, db: Session = Depends(
 
     return {"status": "Código de recuperação enviado para o e-mail informado.", "codigo": codigo}
     # return {}
+    
+    
+# ROTA RECUPERAR SENHA - COM EMAIL DIFERENTE DA BASE
+
+@router.post("/v1/codigo-diferente-novo-email-recuperar")
+async def recuperar_senha_emaildif(request: RecuperarSenhaEmailRequest, db: Session = Depends(get_db)):
+    # user = db.query(Usuario).filter(Usuario.email == request.email).first()
+    # if not user:
+    #     return {"Status": "O e-mail mencionado é inválido"}
+
+    codigo = gerar_codigo()
+    print(f"Código gerado: {codigo}")
+    await enviar_email(request.email, codigo)
+
+    return {"status": "Código de recuperação enviado para o e-mail informado.", "codigo": codigo}
     
     
 # RECUPERAR SENHA - Cadastrar senha usuário

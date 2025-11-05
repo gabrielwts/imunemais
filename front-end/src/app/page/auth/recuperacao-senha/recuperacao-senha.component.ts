@@ -64,13 +64,17 @@ export class RecuperacaoSenhaComponent implements OnInit {
     }, 5000);
   }
 
+  redirecionar() {
+    localStorage.setItem('cpf', this.cpf)
+    this.router.navigate(['/sem-acesso-' + this.opcaoSelecionada]);
+  }
+
   enviarEmail () {
     // this.form.email = this.email;
     // this.form.cpf = localStorage.getItem('cpf') || '';
 
     this.usuarioService.RecuperarSenhaEmail(this.form).subscribe({
       next: res => {
-        console.log('Resposta backend:', res);
 
         if (res.codigo) {
           localStorage.setItem('codigo_recuperacao', res.codigo);
