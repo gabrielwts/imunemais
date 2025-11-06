@@ -1,5 +1,5 @@
 from src.database.database import SessionLocal
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, FastAPI, Response
 from src.schemas.usuario_schemas import AtualizarDadosComCpf, CpfRecuperarSenha, UsuarioContatoMascarado, UsuarioCreate, UsuarioCreateResponse, UsuarioSetPassword, LoginRequest
 from src.auth.crypto import verificar_senha
 from src.database.models import Usuario, CartilhaVacina, UserVaccine
@@ -11,6 +11,9 @@ from fastapi import UploadFile, File, Form
 from typing import Optional
 from pydantic import EmailStr
 import shutil, uuid
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from datetime import date
 
 
 # Dependência de sessão
@@ -130,3 +133,104 @@ def atualizar_dados(
         "email": usuario.email,
         "imagem_perfil": usuario.imagem_perfil
     }
+
+
+
+# GERAR PDF CARTEIRINHA DE VACINA
+@router.get("/v1/usuarios/carteira-vacina/{cpf}")
+async def gerar_carteira(cpf: str, db: Session = Depends(get_db)):
+    # Buscar usuário
+    usuario = db.query(Usuario).filter(Usuario.cpf == cpf).first()
+
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    # Buscar vacinas do usuário
+    vacinas_realizadas = (
+        db.query(UserVaccine)
+        .filter(UserVaccine.numero_cpf == cpf, UserVaccine.validacao == "REALIZADA")
+        .all()
+    )
+
+    vacinas_pendentes = (
+        db.query(UserVaccine)
+        .filter(UserVaccine.numero_cpf == cpf, UserVaccine.validacao == "PENDENTE")
+        .all()
+    )
+    
+    data_formatada = (
+        usuario.data_nascimento.strftime("%d/%m/%Y")
+        if isinstance(usuario.data_nascimento, date)
+        else str(usuario.data_nascimento)
+    )
+
+    # Criar PDF
+    buffer = BytesIO()
+    pdf = canvas.Canvas(buffer)
+
+    # Cabeçalho
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(215, 800, "Carteira de Vacinação")
+
+    # Dados do paciente
+    pdf.setFont("Helvetica", 10)
+    pdf.drawString(50, 770, f"Nome completo: {usuario.nome_completo}")
+    pdf.drawString(50, 750, f"CPF: {usuario.cpf}")
+    pdf.drawString(50, 730, f"Nascimento: {data_formatada}")
+    pdf.drawString(50, 710, f"Telefone: {usuario.telefone}")
+    pdf.drawString(50, 690, f"E-mail: {usuario.email}")
+
+    # Título da listagem
+    y = 660
+    pdf.setFont("Helvetica-Bold", 13)
+    pdf.drawString(50, y, "Vacinas Aplicadas:")
+    y -= 20
+    pdf.setFont("Helvetica", 11)
+
+    if not vacinas_realizadas:
+        pdf.drawString(50, y, "Nenhuma vacina aplicada no momento.")
+        y -= 30
+    else:
+        for v in vacinas_realizadas:
+            texto = f"{v.nome_vacina} — {v.tipo_dose}"
+            pdf.drawString(50, y, texto)
+            y -= 18
+            if y < 50:
+                pdf.showPage()
+                pdf.setFont("Helvetica", 11)
+                y = 800
+
+        y -= 15
+
+    # ========================
+    # VACINAS PENDENTES
+    # ========================
+    pdf.setFont("Helvetica-Bold", 13)
+    pdf.drawString(50, y, "Vacinas Pendentes:")
+    y -= 20
+    pdf.setFont("Helvetica", 11)
+
+    if not vacinas_pendentes:
+        pdf.drawString(50, y, "Nenhuma vacina pendente no momento.")
+    else:
+        for v in vacinas_pendentes:
+            texto = f"{v.nome_vacina} — {v.tipo_dose}"
+            pdf.drawString(50, y, texto)
+            y -= 18
+            if y < 50:
+                pdf.showPage()
+                pdf.setFont("Helvetica", 11)
+                y = 800
+
+    pdf.showPage()
+    pdf.save()
+    buffer.seek(0)
+
+    return Response(
+        content=buffer.getvalue(),
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f"attachment; filename=carteira_{cpf}.pdf"
+        }
+    )
+

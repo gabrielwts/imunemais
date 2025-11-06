@@ -102,6 +102,37 @@ header {
         height: 38px;
         object-fit: cover;
     }
+
+    .carteirinha {
+        display: flex;
+        flex-direction: column;
+        max-width: 210px;
+        margin-left: 17px;
+        margin-top: 75%;
+    }
+
+    .carteirinha div {
+        padding-bottom: 60px;
+        
+    }
+
+    .carteirinha a {
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 17px;
+        font-weight: bold;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.8);
+        cursor: pointer;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    // .carteirinha img {
+    //     width: 38px;
+    //     height: 38px;
+    //     object-fit: cover;
+    // }
 }
 
 .your-vaccines {

@@ -4,6 +4,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import 'primeicons/primeicons.css';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { VacinasComponent } from './vacinas/vacinas.component';
+import { UsuarioService } from '../../../services/usuario.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ConPatientProfileComponent implements OnInit {
   email: string = "";
   foto_perfil: string = "";
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute, private usuarioService: UsuarioService) {}
 
   getImagemPerfilUrl(): string {
     const baseUrl = 'http://localhost:8000';
@@ -66,5 +67,17 @@ export class ConPatientProfileComponent implements OnInit {
     } else {
       this.mostrarPerfil();
     }
+  }
+
+  baixarCarteira(cpf: string) {
+    this.usuarioService.downloadCarteira(cpf).subscribe((file) => {
+      const blob = new Blob([file], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `carteira_${cpf}.pdf`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
   }
 }

@@ -62,4 +62,10 @@ export class UsuarioService {
     return this.http.get<any[]>(`${environment.apiUrl}/v1/paciente/vacinas?cpf=${cpf}`);
   }
 
+  downloadCarteira(cpf: string): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/v1/usuarios/carteira-vacina/${cpf}`, {
+      responseType: 'blob'
+    });
+  }
+
 }
