@@ -13,7 +13,10 @@ from pydantic import EmailStr
 import shutil, uuid
 from reportlab.pdfgen import canvas
 from io import BytesIO
-from datetime import date
+from datetime import date, datetime
+from reportlab.lib.utils import ImageReader
+import os
+from reportlab.lib.utils import ImageReader
 
 
 # Dependência de sessão
@@ -170,31 +173,77 @@ async def gerar_carteira(cpf: str, db: Session = Depends(get_db)):
 
     # Cabeçalho
     pdf.setFont("Helvetica-Bold", 16)
-    pdf.drawString(215, 800, "Carteira de Vacinação")
+    pdf.drawString(215, 780, "Carteira de Vacinação")
+    data_emissao = datetime.now().strftime("%d/%m/%Y às %H:%M")
+    pdf.setFont("Helvetica", 10)
+    pdf.drawString(222, 765, f"Emitido em: {data_emissao}")
+    
+    pdf.setStrokeColorRGB(0.85, 0.85, 0.85)
+    pdf.setLineWidth(0.5)
+    pdf.line(50, 755, 550, 755)    
 
     # Dados do paciente
-    pdf.setFont("Helvetica", 10)
-    pdf.drawString(50, 770, f"Nome completo: {usuario.nome_completo}")
-    pdf.drawString(50, 750, f"CPF: {usuario.cpf}")
-    pdf.drawString(50, 730, f"Nascimento: {data_formatada}")
-    pdf.drawString(50, 710, f"Telefone: {usuario.telefone}")
-    pdf.drawString(50, 690, f"E-mail: {usuario.email}")
+    pdf.setFont("Helvetica-Bold", 11)
+    y = 715
+
+    pdf.drawString(60, y, "Nome")
+    pdf.setFont("Helvetica", 11)
+    pdf.drawString(62, y - 17, usuario.nome_completo)
+
+    pdf.setFont("Helvetica-Bold", 11)
+    pdf.drawString(310, y, "CPF")
+    pdf.setFont("Helvetica", 11)
+    pdf.drawString(312, y - 17, usuario.cpf)
+
+    pdf.setFont("Helvetica-Bold", 11)
+    pdf.drawString(60, y - 42, "Nascimento")
+    pdf.setFont("Helvetica", 11)
+    pdf.drawString(62, y - 60, data_formatada)
+
+    pdf.setFont("Helvetica-Bold", 11)
+    pdf.drawString(310, y - 42, "Telefone")
+    pdf.setFont("Helvetica", 11)
+    pdf.drawString(312, y - 60, usuario.telefone)
+
+    pdf.setFont("Helvetica-Bold", 11)
+    pdf.drawString(60, y - 82, "E-mail")
+    pdf.setFont("Helvetica", 11)
+    pdf.drawString(62, y - 97, usuario.email)
+    
+    # Marca d’água do brasão
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    image_path = os.path.join(base_dir, "../../../static/mmm.png")
+
+    brasao = ImageReader(image_path)
+    page_width, page_height = pdf._pagesize
+    img_width = 700
+    img_height = 950
+    x_center = (page_width - img_width) / 2
+    y_center = (page_height - img_height) / 2
+    pdf.saveState()
+    pdf.setFillAlpha(0.08)
+    pdf.drawImage(brasao, x_center, y_center, width=img_width, height=img_height, mask='auto')
+    pdf.restoreState()
+    
+    pdf.setStrokeColorRGB(0.85, 0.85, 0.85)
+    pdf.setLineWidth(0.5)
+    pdf.line(50, 605, 550, 605)    
 
     # Título da listagem
-    y = 660
+    y = 565
     pdf.setFont("Helvetica-Bold", 13)
     pdf.drawString(50, y, "Vacinas Aplicadas:")
     y -= 20
     pdf.setFont("Helvetica", 11)
 
     if not vacinas_realizadas:
-        pdf.drawString(50, y, "Nenhuma vacina aplicada no momento.")
+        pdf.drawString(52, y, "Nenhuma vacina aplicada no momento.")
         y -= 30
     else:
         for v in vacinas_realizadas:
             texto = f"{v.nome_vacina} — {v.tipo_dose}"
-            pdf.drawString(50, y, texto)
-            y -= 18
+            pdf.drawString(52, y, texto)
+            y -= 23
             if y < 50:
                 pdf.showPage()
                 pdf.setFont("Helvetica", 11)
@@ -211,16 +260,39 @@ async def gerar_carteira(cpf: str, db: Session = Depends(get_db)):
     pdf.setFont("Helvetica", 11)
 
     if not vacinas_pendentes:
-        pdf.drawString(50, y, "Nenhuma vacina pendente no momento.")
+        pdf.drawString(52, y, "Nenhuma vacina pendente no momento.")
     else:
         for v in vacinas_pendentes:
             texto = f"{v.nome_vacina} — {v.tipo_dose}"
-            pdf.drawString(50, y, texto)
-            y -= 18
+            pdf.drawString(52, y, texto)
+            y -= 23
             if y < 50:
                 pdf.showPage()
                 pdf.setFont("Helvetica", 11)
                 y = 800
+                
+    # ========================
+    # RODAPÉ OFICIAL
+    # ========================
+    pdf.setFont("Helvetica", 9)
+
+    # Linha de assinatura
+    pdf.line(350, 80, 550, 80)
+    pdf.drawString(400, 65, "Assinatura do paciente")
+
+    # Aviso de validade nacional
+    pdf.setFont("Helvetica", 9)
+    pdf.drawCentredString(300, 50,
+        "Válido em todo território nacional como comprovante digital de vacinação."
+    )
+
+    # Carimbo digital e data/hora
+    data_geracao = datetime.now().strftime("%d/%m/%Y às %H:%M")
+    pdf.setFont("Helvetica-Oblique", 8.5)
+    pdf.drawCentredString(300, 35,
+        f"Sistema Imune+ — Ministério da Saúde | Documento gerado automaticamente em {data_geracao}"
+    )
+    
 
     pdf.showPage()
     pdf.save()
